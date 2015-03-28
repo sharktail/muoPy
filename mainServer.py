@@ -2,6 +2,9 @@ import Settings
 import tornado.web
 import tornado.httpserver
 
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("hello.html")
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -13,12 +16,6 @@ class Application(tornado.web.Application):
             "static_path": Settings.STATIC_PATH,
         }
         tornado.web.Application.__init__(self, handlers, **settings)
-
-
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.render("hello.html")
-
 
 def main():
     applicaton = Application()
