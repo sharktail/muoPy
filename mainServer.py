@@ -2,17 +2,28 @@ import tornado.web
 import tornado.httpserver
 import Settings
 
-class loginHandler(tornado.web.RequestHandler):
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("username")
+
+class loginHandler(BaseHandler):
+    # Need to define a logout method
     def post(self):
         username = self.get_argument('username')
         password = self.get_argument('password')
-        print username, password
+        print username, password, Settings.COOKIE_SECRET
+        self.set_secure_cookie("username", username)
         self.render("index.html")
 
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(BaseHandler):
     def get(self):
-        self.render("hello.html")
+        if not self.current_user:
+            self.render("hello.html")
+        else:
+            #kwargs = {'name' : self.current_user}
+            #self.render("index.html", **kwargs)
+            self.render("index.html")
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -23,6 +34,8 @@ class Application(tornado.web.Application):
         settings = {
             "template_path": Settings.TEMPLATE_PATH,
             "static_path": Settings.STATIC_PATH,
+            "cookie_secret": Settings.COOKIE_SECRET,
+            "login_url": "/login"
         }
         tornado.web.Application.__init__(self, handlers, **settings)
 
