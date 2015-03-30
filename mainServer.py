@@ -19,7 +19,8 @@ class loginHandler(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            self.render("hello.html")
+            var = {'name' : 'World'}
+            self.render("hello.html", arg = var)
         else:
             #kwargs = {'name' : self.current_user}
             #self.render("index.html", **kwargs)

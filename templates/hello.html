@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+<script src="/static/scripts/homePage.js"></script>
 
 <body background = "/static/img/spongebob.jpg">
- <h2> Hi </h2>
+ <h2> Hello {{arg['name']}} </h2>
 	 <div>
 	 	Sign In:
 	 	<form action="/signin" method = "post">
@@ -12,7 +13,10 @@
 			<input type="submit" name="login" value="LOGIN"><br />
 		</form>
 	 </div>
-	 
+	 <p id="demo">A Paragraph</p>
+
+	<button type="button" onclick="myFunction()">Try it</button>
+	
 </body>
 
 </html>
