@@ -13,7 +13,7 @@ class loginHandler(BaseHandler):
         password = self.get_argument('password')
         print username, password, Settings.COOKIE_SECRET
         self.set_secure_cookie("username", username)
-        self.render("index.html")
+        self.render("index.html", username = username)
 
 
 class MainHandler(BaseHandler):
@@ -23,7 +23,7 @@ class MainHandler(BaseHandler):
         else:
             #kwargs = {'name' : self.current_user}
             #self.render("index.html", **kwargs)
-            self.render("index.html")
+            self.render("index.html", username = self.current_user)
 
 class Application(tornado.web.Application):
     def __init__(self):
