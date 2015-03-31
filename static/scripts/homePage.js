@@ -1,5 +1,5 @@
 
 function myFunction() {
-   var txt = "Paragraph changed" + ": ";
+   var txt = "Paragraph changed" + ": " + st.lastname;
    document.getElementById("demo").innerHTML = txt;
 }

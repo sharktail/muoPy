@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-<body background = "/static/img/spongebob.jpg">
+
 <script src="/static/scripts/homePage.js" type="application/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/homePage.css">
+
+<body background = "/static/img/spongebob.jpg">
+
+<script> 
+	var arg = "{{arg}}";
+	var arg = arg.replace(/&quot;/ig,'"');
+	var st = JSON.parse(arg);
+</script>
 
  <h2> Hello  </h2>
 	 <div>
-	 	Sign In:
+	 	<button type="button" class="button"> Sign In </button>
+	 	<button type="button" class="button"> Sign Up </button>
 	 	<form action="/signin" method = "post">
 			<input type="text" name="username" placeholder="Username"><br/><br>
 			<input type="password" name="password" placeholder="Password"><br />
@@ -17,12 +28,7 @@
 	 <p id="demo">A Paragraph</p>
 	<button type="button" onclick="myFunction()">Try it</button>
 
-<script> 
-var arg = "{{arg}}";
-var arg = arg.replace(/&quot;/ig,'"');
-var st = JSON.parse(arg);
-document.getElementById("demo").innerHTML = st.firstname;
-</script>
+
 
 </body>
 
