@@ -1,6 +1,8 @@
 import tornado.web
 import tornado.httpserver
 import Settings
+import json
+from tornado.escape import json_encode, xhtml_escape
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -19,8 +21,12 @@ class loginHandler(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            var = {'name' : 'World'}
-            self.render("hello.html", arg = var)
+            var = {"firstname":"Sankar", "lastname":"Datta"}
+            v = json.dumps(var)
+            #v = xhtml_escape(v)
+            sh = "hellooo"
+            sh = xhtml_escape(sh)
+            self.render("hello.html", arg=v)
         else:
             #kwargs = {'name' : self.current_user}
             #self.render("index.html", **kwargs)

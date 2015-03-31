@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-<script src="/static/scripts/homePage.js"></script>
 
 <body background = "/static/img/spongebob.jpg">
- <h2> Hello {{arg['name']}} </h2>
+<script src="/static/scripts/homePage.js" type="application/javascript"></script>
+
+ <h2> Hello  </h2>
 	 <div>
 	 	Sign In:
 	 	<form action="/signin" method = "post">
@@ -14,9 +15,15 @@
 		</form>
 	 </div>
 	 <p id="demo">A Paragraph</p>
-
 	<button type="button" onclick="myFunction()">Try it</button>
-	
+
+<script> 
+var arg = "{{arg}}";
+var arg = arg.replace(/&quot;/ig,'"');
+var st = JSON.parse(arg);
+document.getElementById("demo").innerHTML = st.firstname;
+</script>
+
 </body>
 
 </html>
