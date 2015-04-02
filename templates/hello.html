@@ -1,35 +1,44 @@
 <!DOCTYPE html>
 <html>
 
-
 <script src="/static/scripts/homePage.js" type="application/javascript"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/homePage.css">
 
 <body background = "/static/img/spongebob.jpg">
 
-<script> 
-	var arg = "{{arg}}";
-	var arg = arg.replace(/&quot;/ig,'"');
-	var st = JSON.parse(arg);
-</script>
+	<script> 
+		var arg = "{{arg}}";
+		var arg = arg.replace(/&quot;/ig,'"');
+		var st = JSON.parse(arg);
+	</script>
 
- <h2> Hello  </h2>
-	 <div>
-	 	<button type="button" class="button"> Sign In </button>
-	 	<button type="button" class="button"> Sign Up </button>
-	 	<form action="/signin" method = "post">
+	<h2> Hello  </h2>
+	<div>
+	 	<button type="button" onclick=toggle_visibility('SignIn','SignUp') class="button"> Sign In </button>
+	 	<button type="button" onclick=toggle_visibility('SignUp','SignIn') class="button"> Sign Up </button>
+	 	
+	 	<form id="SignIn" action="/signin" style="display:block" method = "post">
 			<input type="text" name="username" placeholder="Username"><br/><br>
-			<input type="password" name="password" placeholder="Password"><br />
-			
-			<input type="submit" name="login" value="LOGIN"><br />
+			<input type="password" name="password" placeholder="Password"><br/>
+			<input type="submit" name="login" value="LOGIN"><br/>
 		</form>
+		
+		<form id="SignUp" action="/signin" style="display:none" method = "post">
+			<input type="text" name="firstname" placeholder="First Name"><br/>
+			<input type="text" name="lastname" placeholder="Last Name"><br/>
+			<input type="text" name="username" placeholder="Chose Username"><br/><br>
+			<input type="password" name="password" placeholder="Password"><br/>
+			<input type="password" name="confPassword" placeholder="Confirm Password"><br><br/>
+			<input type="text" name="email" placeholder="Email ID"><br/>
+			
+			<input type="submit" name="login" value="Sign Up"><br/>
+		</form>
+		
 	 </div>
+		 
 	 <p id="demo">A Paragraph</p>
-	<button type="button" onclick="myFunction()">Try it</button>
-
-
+	 <button type="button" onclick="myFunction()">Try it</button>
 
 </body>
-
 </html>

@@ -2,7 +2,7 @@ import tornado.web
 import tornado.httpserver
 import Settings
 import json
-from tornado.escape import json_encode, xhtml_escape
+from tornado.escape import xhtml_escape
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
