@@ -2,7 +2,10 @@ import tornado.web
 import tornado.httpserver
 import Settings
 import json
-from tornado.escape import xhtml_escape
+import md5
+import dbCon
+
+myDb = dbCon.datacon()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -10,22 +13,44 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class loginHandler(BaseHandler):
     # Need to define a logout method
+    def get(self):
+        if not self.current_user:
+            var = {"firstname":"Sankar", "lastname":"Datta"} # example to be removed
+            v = json.dumps(var)
+            self.render("hello.html", arg = v)
+        elif self.current_user:
+            self.render("index.html", username = self.current_user)
+        
     def post(self):
         username = self.get_argument('username')
         password = self.get_argument('password')
-        print username, password, Settings.COOKIE_SECRET
         self.set_secure_cookie("username", username)
         self.render("index.html", username = username)
 
-
+class makeUser(BaseHandler):
+    def get(self):
+        self.write("Invalid link: Only Post requests.")
+    
+    def post(self):
+        email = self.get_argument('email')
+        username = self.get_argument('username')
+        password = md5.md5(self.get_argument('password')).digest()
+        lastname = self.get_argument('lastname')
+        firstname = self.get_argument('firstname')
+        querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
+                     values(%s, %s, %s, %s, %s, %s, %s);'
+        resp = myDb.run(querry, (username, password, lastname, firstname, email, "OVGU", "Magdeburg"))
+        if resp:
+            self.set_secure_cookie("username", username)
+            self.render("index.html", username = username)
+        else:
+            self.write("Fatal Error in Creating user in Database !!! \nNo worries, contact the admin.")
+         
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            var = {"firstname":"Sankar", "lastname":"Datta"}
+            var = {"firstname":"Sankar", "lastname":"Datta"} # example to be removed
             v = json.dumps(var)
-            #v = xhtml_escape(v)
-            sh = "hellooo"
-            sh = xhtml_escape(sh)
             self.render("hello.html", arg=v)
         else:
             #kwargs = {'name' : self.current_user}
@@ -36,7 +61,8 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/login/?", MainHandler),
-            (r"/signin/?", loginHandler)
+            (r"/signin/?", loginHandler),
+            (r"/signup/?", makeUser)
         ]
         settings = {
             "template_path": Settings.TEMPLATE_PATH,
