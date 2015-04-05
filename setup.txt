@@ -1,0 +1,5 @@
+install tornado
+install mysql server
+login with$ mysql -uroot -ppassword
+
+install mysqldb python
