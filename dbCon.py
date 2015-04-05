@@ -15,6 +15,13 @@ class datacon(object):
             return False
         return True
     
+    def fetchone(self, querry, tup):
+        try:
+            self.cur.execute(querry, tup)
+            return self.cur.fetchone()
+        except:
+            return False
+        
     def save(self):
         try:
             self.db.commit()

@@ -23,9 +23,18 @@ class loginHandler(BaseHandler):
         
     def post(self):
         username = self.get_argument('username')
-        password = self.get_argument('password')
-        self.set_secure_cookie("username", username)
-        self.render("index.html", username = username)
+        password = md5.md5( self.get_argument('password')).digest()
+        querry = 'Select Password from Users where UserName = %s;'
+        resp = myDb.fetchone(querry, (username))
+        if not resp:
+            self.write("Username not found. Forgot username? Ask the admin")
+        else:
+            dBpass = resp[0]
+            if dBpass == password :
+                self.set_secure_cookie("username", username)
+                self.render("index.html", username = username)
+            else:
+                self.write("Wrong Password. Forgot password? Ask the admin")
 
 class makeUser(BaseHandler):
     def get(self):
