@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
 
+<script src="/static/scripts/indexPage.js" type="application/javascript"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/homePage.css">
+
 <body background = "/static/img/patrick.jpg">
  <h2> Hi {{username}} </h2>
 	 <div>
-	 	You are Signed In
+	 	You are Signed In <br><br>
 	 	
-	 	<button type="button" onclick="document.getElementById('demo').innerHTML = Date()">
-		Click me to display Date and Time.</button>
-		<p id="demo"></p>
-		
-	 </div>
+	 	Select a file to upload:
+			<input type="file" id="myFile">
+
+			<p>Click the button below to find out which type of form element the FileUpload 
+			object is.</p>
+			
+			<button onclick="myFunction()">Try it</button>
+			
+			<p id="demo"></p>
+					
+		</div>
 	 
 </body>
 
