@@ -19,7 +19,21 @@ class Test(BaseHandler):
         self.render("test.html")
 
 class Upload(BaseHandler):
+    def get(self):
+        f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'r')
+        data= f.read()
+        print data
+        data = data.replace('\n', '&#13;&#10;')
+        print
+        print 
+        print data
+        f.close()
+        var = {"data" : data}
+        var = json.dumps(var)
+        self.render("test.html", arg = var)
+        
     def post(self):
+        #Need to put try except for empty filearg
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         

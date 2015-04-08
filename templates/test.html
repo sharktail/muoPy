@@ -13,22 +13,44 @@
 		background-color:lightblue;
 		}
 		
-		.textContainer {
+		.editor {
 		float: right;
-		
 		}
+		
+		.textContainer {
+		position: relative;
+		float: right; 
+		top: 20px;
+		height: 500px;
+		width: 800px;
+		}
+		
 	</style>
+	
+	<script> 
+		var arg = "{{arg}}";
+		var arg = arg.replace(/&quot;/ig,'"');
+		var arg = arg.replace(/&amp;/ig,'&');
+		var st = JSON.parse(arg);
+		
+		function myFunction() 
+			{
+			   var txt = "Paragraph changed" + ": " + st.data;
+			   document.getElementById("textAreadId").innerHTML = txt;
+			}
+	</script>
 
 <body>
  
 	 <div class = "infoContainer">
 	 	Well This is the first class
 	 </div>
-
-	 <textarea class = "textContainer">
-		Here Goes the text.
-		I have no freaking idea how.
-	 </textarea>
+     <div class = "editor">
+	 	<textarea class = "textContainer" id="textAreadId">
+		 	Here Goes the text. &#13;&#10;I have no freaking idea how.
+	 	</textarea>
+	 	<button type="button" onclick="myFunction()">Load</button>
+	 </div>
 	 
 </body>
 </html>
