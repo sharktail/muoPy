@@ -15,3 +15,4 @@ CREATE TABLE Users
 	Primary Key(Id)	
 )ENGINE=INNODB;
 
+//Login info

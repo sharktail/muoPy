@@ -1,5 +1,8 @@
 import tornado.web
 import tornado.httpserver
+
+import os, uuid
+__UPLOADS__ = "uploads/"
 import Settings
 import json
 import md5
@@ -10,6 +13,17 @@ myDb = dbCon.datacon()
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("username")
+
+class Upload(tornado.web.RequestHandler):
+    def post(self):
+        fileinfo = self.request.files['filearg'][0]
+        print "fileinfo is", fileinfo
+        fname = fileinfo['filename']
+        extn = os.path.splitext(fname)[1]
+        cname = str(uuid.uuid4()) + extn
+        fh = open(__UPLOADS__ + cname, 'w')
+        fh.write(fileinfo['body'])
+        self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
 
 class loginHandler(BaseHandler):
     # Need to define a logout method
@@ -71,7 +85,8 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/login/?", MainHandler),
             (r"/signin/?", loginHandler),
-            (r"/signup/?", makeUser)
+            (r"/signup/?", makeUser),
+            (r"/upload/?", Upload)
         ]
         settings = {
             "template_path": Settings.TEMPLATE_PATH,
