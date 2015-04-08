@@ -7,28 +7,20 @@
 
 <body background = "/static/img/patrick.jpg">
  <h2> Hi {{username}} </h2>
-	 <div>
-	 	You are Signed In <br><br>
-	 	
-	 	Select a file to upload:
-			<input type="file" id="myFile">
-
-			<p>Click the button below to find out which type of form element the FileUpload 
-			object is.</p>
-			
-			<button onclick="myFunction()">Try it</button>
-			
-			<p id="demo"></p>
-					
-		</div>
-		
+	 <div class = "infoContainer">
+	 	You are Signed In {{username}} <br><br>
 		<form enctype="multipart/form-data" action="/upload" method="post">
 			File: <input type="file" name="filearg" />
 			<br />
 			<br />
 			<input type="submit" value="upload" />
 		</form>
+	 </div>
+
+	 <textarea class = "textContainer">
+		Here Goes the text.
+		I have no freaking idea how.
+	 </textarea>
 	 
 </body>
-
 </html>

@@ -1,8 +1,22 @@
-body {
-    background-color: lightblue;
-}
-
 h2 {
     color: navy;
     margin-left: 20px;
+}
+
+body{
+	background-color: lightblue;
+   	background-size:contain;
+   	background-repeat:no-repeat;
+}
+
+.infoContainer {
+    float: left;
+    height: 100%;
+    width: 49%;
+}
+
+.textContainer {
+    float: right;
+    height: 100%;
+    width: 49%;
 }
