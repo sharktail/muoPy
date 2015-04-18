@@ -6,6 +6,7 @@ import md5
 
 import Settings
 import dbCon
+#import fileHandler
 
 myDb = dbCon.datacon()
 
@@ -17,16 +18,34 @@ class Test(BaseHandler):
     def get(self):
         self.render("test.html")
 
+class FileExecution(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        data = json.dumps("hellooooooo it's updated")
+        self.write(data)
+        
+    def post(self):
+        data = self.get_argument('Data')
+        f = open(Settings.UPLOAD_LOCATION + "executefile.py", 'w')
+        f.write(data)
+        f.close()
+
+class SaveAndLoad(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.write("You are not supposed to be here.")
+    def post(self):
+        data = self.get_argument('Data')
+        f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'w')
+        f.write(data)
+        f.close()
+
 class Upload(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'r')
         data= f.read()
-        print data
         data = data.replace('\n', '&#13;&#10;')
-        print
-        print 
-        print data
         f.close()
         var = {"data" : data}
         var = json.dumps(var)
@@ -111,6 +130,8 @@ class Application(tornado.web.Application):
             (r"/signin/?", loginHandler),
             (r"/signup/?", makeUser),
             (r"/upload/?", Upload),
+            (r"/upload/save?", SaveAndLoad),
+            (r"/upload/execute?", FileExecution),
             (r"/test?", Test)
         ]
         settings = {
