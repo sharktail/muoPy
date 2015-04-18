@@ -1,11 +1,10 @@
 import tornado.web
 import tornado.httpserver
-
 import os
-
-import Settings
 import json
 import md5
+
+import Settings
 import dbCon
 
 myDb = dbCon.datacon()
@@ -19,6 +18,7 @@ class Test(BaseHandler):
         self.render("test.html")
 
 class Upload(BaseHandler):
+    @tornado.web.authenticated
     def get(self):
         f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'r')
         data= f.read()
@@ -30,7 +30,7 @@ class Upload(BaseHandler):
         f.close()
         var = {"data" : data}
         var = json.dumps(var)
-        self.render("test.html", arg = var)
+        self.render("upload.html", arg = var)
         
     def post(self):
         #Need to put try except for empty filearg
@@ -41,7 +41,13 @@ class Upload(BaseHandler):
         cname = str("lastfile") + extn
         fh = open(Settings.UPLOAD_LOCATION + cname, 'w')
         fh.write(fileinfo['body'])
+        fh.close()
         
+        data= fileinfo['body']
+        data = data.replace('\n', '&#13;&#10;')
+        var = {"data" : data}
+        var = json.dumps(var)
+        self.render("upload.html", arg = var)
 
 class loginHandler(BaseHandler):
     # Need to define a logout method
