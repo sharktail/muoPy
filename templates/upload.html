@@ -43,8 +43,10 @@
     					$("#executeButtonId").click(function(){
         				$.post("/upload/execute",
         				       { Data: $("#textAreaId").val() },
-        				       consoleUpdate() 
-        				      );
+        				       	 function(result){
+        							$("#consoleAreaId").html(result);
+        							},
+        						 "json");
     						}
     					);
 			   		}

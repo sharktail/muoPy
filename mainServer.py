@@ -1,6 +1,7 @@
 import tornado.web
 import tornado.httpserver
 import os
+import subprocess
 import json
 import md5
 
@@ -19,9 +20,16 @@ class Test(BaseHandler):
         self.render("test.html")
 
 class FileExecution(BaseHandler):
-    @tornado.web.authenticated
+    #@tornado.web.authenticated
     def get(self):
-        data = json.dumps("hellooooooo it's updated")
+        path = Settings.UPLOAD_LOCATION + "executefile.py"
+        #os.system("python" + " " + path + " " + "&> resultantFile")
+        #subprocess.call(["python", path, "&> resultantFile"])
+        f = open(Settings.UPLOAD_LOCATION + "executefile.py", 'r')
+        data= f.read()
+        #data = data.replace('\n', '&#13;&#10;')
+        f.close()
+        data = json.dumps(data)
         self.write(data)
         
     def post(self):
@@ -29,9 +37,17 @@ class FileExecution(BaseHandler):
         f = open(Settings.UPLOAD_LOCATION + "executefile.py", 'w')
         f.write(data)
         f.close()
-
+        
+        f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'w')
+        subprocess.call(["python", Settings.UPLOAD_LOCATION + "executefile.py"], stderr=f, stdout=f)
+        f.close()
+        f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'r')
+        data = f.read()
+        data = json.dumps(data)
+        self.write(data)
+        
 class SaveAndLoad(BaseHandler):
-    @tornado.web.authenticated
+    #@tornado.web.authenticated
     def get(self):
         self.write("You are not supposed to be here.")
     def post(self):
@@ -41,7 +57,7 @@ class SaveAndLoad(BaseHandler):
         f.close()
 
 class Upload(BaseHandler):
-    @tornado.web.authenticated
+    #@tornado.web.authenticated
     def get(self):
         f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'r')
         data= f.read()
