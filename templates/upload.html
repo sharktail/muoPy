@@ -52,23 +52,15 @@
 			   		}
 			   		);
 		
-		function loadFile() 
+		function loadTextArea() 
 			{
-			   var txt = "Paragraph changed" + ": " + st.data;
+			   var txt = st.data;
 			   document.getElementById("textAreaId").innerHTML = txt;
 			}
-		function saveFile() 
-			{
-				var id = document.getElementById("textAreaId");
-			    var txt = id.innerHTML;
-			}
-		function consoleUpdate()
-			{
-			var id = document.getElementById("consoleAreaId");
-			id.innerHTML = $.get( "/upload/execute", function( data ) {
-								$( "#consoleAreaId" ).html(data);
-									}, "json" );
-			}
+
+		window.onload = function(){
+		loadTextArea();
+		}
 	</script>
 
 <body>
@@ -80,7 +72,6 @@
 	 	<textarea class = "textContainer" id="textAreaId">
 		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
 	 	</textarea>
-	 	<button type="button" onclick="loadFile()" id="loadButtonId">Load</button>
 	 	<button type="button" id="saveButtonId">Save</button>
 	 	<button type="button" id="executeButtonId">Execute</button>
 	 	<textarea class = "textContainer" id="consoleAreaId">
