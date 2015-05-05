@@ -11,9 +11,15 @@
 		var arg = "{{arg}}";
 		var arg = arg.replace(/&quot;/ig,'"');
 		var st = JSON.parse(arg);
+		$(document).ready(function(){        				
+				document.getElementById("downloadLink").href="/static/downloads/" + st.path + "/" + st.filename;
+				});
 	</script>
 
 	<h2> Hello  </h2>
+	<a id="downloadLink" download>
+  		Download Your File.
+	</a>
 	<div>
 	 	<button type="button" onclick=toggle_visibility('SignIn','SignUp') class="button"> Sign In </button>
 	 	<button type="button" onclick=toggle_visibility('SignUp','SignIn') class="button"> Sign Up </button>

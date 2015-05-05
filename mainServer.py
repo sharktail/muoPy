@@ -123,7 +123,7 @@ class makeUser(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            var = {"firstname":"Sankar", "lastname":"Datta"} # example to be removed
+            var = {"firstname":"Sankar", "lastname":"Datta", "path":"test", "filename":"hello.txt" } # example to be removed
             v = json.dumps(var)
             self.render("hello.html", arg=v)
         else:
