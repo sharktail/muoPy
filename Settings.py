@@ -11,3 +11,7 @@ host = "localhost"
 user = "root"
 passwd = "narayan"
 db = "muoPy"
+
+#Logger info
+loggerPath = "loggers/"
+mainLogger = "mainLogger.log"
