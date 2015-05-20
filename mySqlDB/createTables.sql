@@ -15,4 +15,13 @@ CREATE TABLE Users
 	Primary Key(Id)	
 )ENGINE=INNODB;
 
-//Login info
+Create Table LoginInfo
+( 
+	Id int Not NULL AUTO_INCREMENT, 
+	LastLogin TIMESTAMP Default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	User_Id INT, 
+	INDEX User_Index(Id), 
+	Foreign Key(User_Id) 
+		References Users(Id),
+	Primary Key(Id)
+)ENGINE=INNODB;

@@ -4,7 +4,8 @@ import logging.config
 
 class logger(object):
     def __init__(self, name = Settings.mainLogger):
-        logging.basicConfig(filename = Settings.loggerPath + name, level=logging.DEBUG, format='%(asctime)s :: %(message)s')
+        logging.basicConfig(filename = Settings.loggerPath + name, level=logging.DEBUG,\
+                             format='%(asctime)s :: %(message)s')
     
     def writeInfo(self, msg):
         logging.info(msg)
