@@ -10,7 +10,7 @@ UPLOAD_LOCATION = "uploads/"
 host = "localhost"
 user = "root"
 passwd = "narayan"
-db = "muoPy"
+db = "test"#"muoPy"
 
 #Logger info
 loggerPath = "loggers/"
