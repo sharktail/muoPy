@@ -1,5 +1,10 @@
-install tornado
-install mysql server
+install pip -> sudo apt-get install python-pip
+install tornado -> sudo pip install tornado
+install mysql server -> already installed
 login with$ mysql -uroot -ppassword
 
-install mysqldb python
+install mysqldb python -> sudo apt-get install python-mysqldb
+
+go to mysql and create a database
+and execute > source /path/createTables.sql
+modify user and password for mysql in Settings.py
