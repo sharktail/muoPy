@@ -31,7 +31,7 @@ class FileExecution(BaseHandler):
         f.close()
         
         f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'w')
-        subprocess.call(["python", Settings.UPLOAD_LOCATION + "executefile.py"], stderr=f, stdout=f)
+        subprocess.call(["python3", Settings.UPLOAD_LOCATION + "executefile.py"], stderr=f, stdout=f)
         f.close()
         f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'r')
         data = f.read()
