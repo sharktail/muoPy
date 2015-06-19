@@ -15,7 +15,15 @@ class datacon(object):
             return False
         return True
     
-    def fetchone(self, querry, tup):
+    def fetchAll(self, querry, tup):
+        try:
+            self.cur.execute(querry, tuple)
+            rows = self.cur.fetchall(querry, tup)
+            return rows
+        except:
+            return False
+    
+    def fetchOne(self, querry, tup):
         try:
             self.cur.execute(querry, tup)
             return self.cur.fetchone()

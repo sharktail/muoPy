@@ -90,7 +90,7 @@ class loginHandler(BaseHandler):
         username = self.get_argument('username')
         password = md5.md5( self.get_argument('password')).digest()
         querry = 'Select Password from Users where UserName = %s;'
-        resp = myDb.fetchone(querry, (username))
+        resp = myDb.fetchOne(querry, (username))
         if not resp:
             self.write("Username not found. Forgot username? Ask the admin")
         else:
@@ -102,23 +102,35 @@ class loginHandler(BaseHandler):
                 self.write("Wrong Password. Forgot password? Ask the admin")
 
 class makeUser(BaseHandler):
+    def createUser(self):
+        querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
+                     values(%s, %s, %s, %s, %s, %s, %s);'
+        resp = myDb.run(querry, (self.username, self.password, self.lastname, self.firstname, self.email, "OVGU", "Magdeburg"))
+        if resp:
+            try:
+                subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username])
+                querry = 'select Id from Users where UserName = %s;'
+                resp = myDb.fetchOne(querry, (self.username) )
+                UserId = resp[0]
+                querry = 'Insert into AccountInfo(User_Id, Path) Values(%s, %s);'
+                resp = myDb.run(querry, (UserId, Settings.UPLOAD_LOCATION + self.username))
+                self.set_secure_cookie("username", self.username)
+                self.render("index.html", username = self.username)
+            except:
+                self.write("Error in creating Directory !!! \nNo worries, contact the admin.")
+        else:
+            self.write("Fatal Error in Creating user in Database !!! \nNo worries, contact the admin.")
     def get(self):
         self.write("Invalid link: Only Post requests.")
     
     def post(self):
-        email = self.get_argument('email')
-        username = self.get_argument('username')
-        password = md5.md5(self.get_argument('password')).digest()
-        lastname = self.get_argument('lastname')
-        firstname = self.get_argument('firstname')
-        querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
-                     values(%s, %s, %s, %s, %s, %s, %s);'
-        resp = myDb.run(querry, (username, password, lastname, firstname, email, "OVGU", "Magdeburg"))
-        if resp:
-            self.set_secure_cookie("username", username)
-            self.render("index.html", username = username)
-        else:
-            self.write("Fatal Error in Creating user in Database !!! \nNo worries, contact the admin.")
+        self.email = self.get_argument('email')
+        self.username = self.get_argument('username')
+        self.password = md5.md5(self.get_argument('password')).digest()
+        self.lastname = self.get_argument('lastname')
+        self.firstname = self.get_argument('firstname')
+        self.createUser()
+        
          
 class MainHandler(BaseHandler):
     def get(self):
