@@ -1,6 +1,6 @@
 import tornado.web
 import tornado.httpserver
-import os
+import glob
 import subprocess
 import json
 import md5
@@ -51,10 +51,7 @@ class SaveAndLoad(BaseHandler):
 class Upload(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'r')
-        data= f.read()
-        data = data.replace('\n', '&#13;&#10;')
-        f.close()
+        data = 'No files selected.'
         var = {"data" : data}
         var = json.dumps(var)
         self.render("upload.html", arg = var)
@@ -64,8 +61,9 @@ class Upload(BaseHandler):
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         
-        extn = os.path.splitext(fname)[1]
-        cname = str("lastfile") + extn
+        #extn = os.path.splitext(fname)[1]
+        #cname = str("lastfile") + extn
+        cname = str(fname)
         fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
@@ -73,10 +71,24 @@ class Upload(BaseHandler):
         data= fileinfo['body']
         data = data.replace('\n', '&#13;&#10;')
         data = data.replace('"', '\u0022')
+        data = data.replace("'", '\u0027')
         
+        listOfFiles = []
+        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        pys = glob.glob(filePathtoUserDirectory + '*.py')
+        for each in pys:
+            listOfFiles.append(each.split('/')[-1])
+        
+        txts =  glob.glob(filePathtoUserDirectory + '*.txt')
+        for each in txts:
+            listOfFiles.append(each.split('/')[-1])  
+            
+             
         var = {"data" : data}
+        flist = { "fileNames" : listOfFiles}
         var = json.dumps(var)
-        self.render("upload.html", arg = var)
+        flist = json.dumps(flist)
+        self.render("upload.html", arg = var, arg2 = flist)
 
 class loginHandler(BaseHandler):
     # Need to define a logout method

@@ -1,1 +1,88 @@
-Hello
+<!DOCTYPE html>
+<html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<head>
+	<style>
+		body {
+		background-color:lightgray;
+		}
+		
+		.infoContainer {
+		float: left;
+		background-color:lightblue;
+		}
+		
+		.editor {
+		float: right;
+		}
+		
+		.textContainer {
+		position: relative;
+		float: right; 
+		top: 20px;
+		height: 500px;
+		width: 600px;
+		}
+		
+	</style>
+	
+	<script> 
+		var arg = "{{arg}}";
+		var arg = arg.replace(/&quot;/ig,'"');
+		var arg = arg.replace(/&amp;/ig,'&');
+		var arg = escape(arg);
+		var st = JSON.parse(arg);
+		
+		$(document).ready(function(){
+    					$("#saveButtonId").click(function(){
+        				$.post("/upload/save",
+        				       { Data: $("#textAreaId").val() } 
+        				      );
+    						}
+    					);
+    					$("#executeButtonId").click(function(){
+        				$.post("/upload/execute",
+        				       { Data: $("#textAreaId").val() },
+        				       	 function(result){
+        							$("#consoleAreaId").html(result);
+        							},
+        						 "json");
+    						}
+    					);
+			   		}
+			   		);
+		
+		function loadTextArea() 
+			{
+			   var txt = st.data;
+			   document.getElementById("textAreaId").innerHTML = txt;
+			}
+
+		window.onload = function(){
+		loadTextArea();
+		}
+	</script>
+
+<body>
+	<div class = "infoContainer">
+		<form enctype="multipart/form-data" action="/upload" method="post">
+			File: <input type="file" name="filearg" />
+			<br />
+			<input type="submit" value="upload" />
+		</form>
+	</div>
+	 
+	 <div class = "editor">
+	    <textarea class = "textContainer" id="consoleAreaId">
+		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
+	 	</textarea>
+	 	<textarea class = "textContainer" id="textAreaId">
+		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
+	 	</textarea>
+	 	<button type="button" id="saveButtonId">Save</button>
+	 	<button type="button" id="executeButtonId">Execute</button>
+	 </div>
+	 
+</body>
+</html>

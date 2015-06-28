@@ -27,12 +27,24 @@
 		
 	</style>
 	
-	<script> 
+	<script>
 		var arg = "{{arg}}";
+		var flist = "{{arg2}}";
+		
+		flist = flist.replace(/&quot;/ig,'"');
+		flist = flist.replace(/&amp;/ig,'&');
+		var fnamelist = JSON.parse(flist);
+		
 		var arg = arg.replace(/&quot;/ig,'"');
 		var arg = arg.replace(/&amp;/ig,'&');
-		
-		var st = JSON.parse(arg);
+		try
+		    {
+		        var st = JSON.parse(arg);
+		    }
+		catch(err)
+		    {
+		        var st = "Unable to parse the data. \n Error: " + err.message; 
+		    }
 		
 		$(document).ready(function(){
     					$("#saveButtonId").click(function(){
@@ -58,19 +70,36 @@
 			   var txt = st.data;
 			   document.getElementById("textAreaId").innerHTML = txt;
 			}
-
+        function loadListOfFiles()
+            {
+                var names = fnamelist.fileNames;
+                var list = document.getElementById("fileList");
+                for(var i=0; i<names.length; i++)
+                    { var item = document.createElement('li'); 
+                      item.appendChild(document.createTextNode(names[i]));
+                      list.appendChild(item);
+                    }
+            }
 		window.onload = function(){
 		loadTextArea();
+		loadListOfFiles();
 		}
 	</script>
 
 <body>
- 
-	 <div class = "infoContainer">
-	 	Well! This is the first class.
+	<div class = "infoContainer">
+		<form enctype="multipart/form-data" action="/upload" method="post">
+			File: <input type="file" name="filearg" />
+			<input type="submit" value="upload" />
+		</form>
+	</div>
+	 
+	 <div class="editor">
+	     <ul id="fileList"> </ul>
 	 </div>
-     <div class = "editor">
-        <textarea class = "textContainer" id="consoleAreaId">
+	 
+	 <div class = "editor">
+	    <textarea class = "textContainer" id="consoleAreaId">
 		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
 	 	</textarea>
 	 	<textarea class = "textContainer" id="textAreaId">
