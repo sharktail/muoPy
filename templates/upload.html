@@ -40,10 +40,11 @@
 		try
 		    {
 		        var st = JSON.parse(arg);
+		        var parsedText = st.data;
 		    }
 		catch(err)
 		    {
-		        var st = "Unable to parse the data. \n Error: " + err.message; 
+		        var parsedText = "Unable to parse the data. \n Error: " + err.message; 
 		    }
 		
 		$(document).ready(function(){
@@ -67,8 +68,7 @@
 		
 		function loadTextArea() 
 			{
-			   var txt = st.data;
-			   document.getElementById("textAreaId").innerHTML = txt;
+			   document.getElementById("textAreaId").innerHTML = parsedText;
 			}
         function loadListOfFiles()
             {
