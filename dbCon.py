@@ -17,8 +17,8 @@ class datacon(object):
     
     def fetchAll(self, querry, tup):
         try:
-            self.cur.execute(querry, tuple)
-            rows = self.cur.fetchall(querry, tup)
+            self.cur.execute(querry, tup)
+            rows = self.cur.fetchall()
             return rows
         except:
             return False

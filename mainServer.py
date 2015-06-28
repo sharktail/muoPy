@@ -66,12 +66,14 @@ class Upload(BaseHandler):
         
         extn = os.path.splitext(fname)[1]
         cname = str("lastfile") + extn
-        fh = open(Settings.UPLOAD_LOCATION + cname, 'w')
+        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
         
         data= fileinfo['body']
         data = data.replace('\n', '&#13;&#10;')
+        data = data.replace('"', '\u0022')
+        
         var = {"data" : data}
         var = json.dumps(var)
         self.render("upload.html", arg = var)
@@ -89,12 +91,14 @@ class loginHandler(BaseHandler):
     def post(self):
         username = self.get_argument('username')
         password = md5.md5( self.get_argument('password')).digest()
-        querry = 'Select Password from Users where UserName = %s;'
+        #querry = 'Select Password from Users where UserName = %s;'
+        querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
         resp = myDb.fetchOne(querry, (username))
         if not resp:
             self.write("Username not found. Forgot username? Ask the admin")
         else:
             dBpass = resp[0]
+            dBPathToDirectory = resp[1]
             if dBpass == password :
                 self.set_secure_cookie("username", username)
                 self.render("index.html", username = username)
@@ -146,6 +150,7 @@ class MainHandler(BaseHandler):
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
+            (r"/?", MainHandler),
             (r"/login/?", MainHandler),
             (r"/signin/?", loginHandler),
             (r"/signup/?", makeUser),
