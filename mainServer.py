@@ -50,11 +50,30 @@ class SaveAndLoad(BaseHandler):
 
 class Upload(BaseHandler):
     @tornado.web.authenticated
-    def get(self):
-        data = 'No files selected.'
+    def get(self, fileName=None):
+        listOfFiles = []
+        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        
+        if not fileName:
+            data = 'No files selected.'
+        else:
+            f = open(filePathtoUserDirectory,"r")
+            data = f.read()
+        
+        pys = glob.glob(filePathtoUserDirectory + '*.py')
+        for each in pys:
+            listOfFiles.append(each.split('/')[-1])
+        
+        txts =  glob.glob(filePathtoUserDirectory + '*.txt')
+        for each in txts:
+            listOfFiles.append(each.split('/')[-1])  
+            
+             
         var = {"data" : data}
+        flist = { "fileNames" : listOfFiles}
         var = json.dumps(var)
-        self.render("upload.html", arg = var)
+        flist = json.dumps(flist)
+        self.render("upload.html", arg = var, arg2 = flist)
         
     def post(self):
         #Need to put try except for empty filearg
@@ -82,8 +101,7 @@ class Upload(BaseHandler):
         txts =  glob.glob(filePathtoUserDirectory + '*.txt')
         for each in txts:
             listOfFiles.append(each.split('/')[-1])  
-            
-             
+                 
         var = {"data" : data}
         flist = { "fileNames" : listOfFiles}
         var = json.dumps(var)
@@ -158,6 +176,7 @@ class MainHandler(BaseHandler):
             #kwargs = {'name' : self.current_user}
             #self.render("index.html", **kwargs)
             self.render("index.html", username = self.current_user)
+            
 
 class Application(tornado.web.Application):
     def __init__(self):

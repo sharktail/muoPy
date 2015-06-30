@@ -2,6 +2,7 @@
 <html>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/static/scripts/jquery.min.js"></script>
 <head>
 	<style>
 		body {
@@ -70,12 +71,14 @@
 			{
 			   document.getElementById("textAreaId").innerHTML = parsedText;
 			}
+	    
         function loadListOfFiles()
             {
                 var names = fnamelist.fileNames;
                 var list = document.getElementById("fileList");
                 for(var i=0; i<names.length; i++)
                     { var item = document.createElement('li'); 
+                      item.onclick = function() { alert("hello");}
                       item.appendChild(document.createTextNode(names[i]));
                       list.appendChild(item);
                     }
@@ -88,6 +91,7 @@
 
 <body>
 	<div class = "infoContainer">
+	    Only .py or .txt formats
 		<form enctype="multipart/form-data" action="/upload" method="post">
 			File: <input type="file" name="filearg" />
 			<input type="submit" value="upload" />
