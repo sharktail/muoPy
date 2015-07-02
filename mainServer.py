@@ -17,7 +17,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class Test(BaseHandler):
     def get(self):
-        self.render("test.html")
+        arg = self.get_argument("fileOptions")
+        self.render("test.html", arg = arg)
 
 class FileExecution(BaseHandler):
     @tornado.web.authenticated
