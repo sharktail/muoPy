@@ -63,6 +63,7 @@
 					{
 					    var a = document.getElementById("currentFileName");
 	                    a.innerHTML = "Current File Set to:" + currentFile;
+	                    document.getElementById("downloadLink").href = fnamelist.downloadLink;
 	                    
     					$("#saveButtonId").click(
     						function()
@@ -149,7 +150,9 @@
 	 <div class="editor">
 	     <ul id="fileList"> </ul>
 	 </div>
-	 
+	 <a id="downloadLink" download>
+  		Download Your File.
+	</a>
 	 <div class = "editor">
 	    <textarea class = "textContainer" id="consoleAreaId">
 		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.

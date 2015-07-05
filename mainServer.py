@@ -37,7 +37,7 @@ class FileExecution(BaseHandler):
         f.close()
         if msg == 0:
             f = open(path + "resultantFile", 'a')
-            msg = subprocess.call(["zip", '-r', path + "cmpc.zip","cmpc"], stderr=f, stdout=f)
+            subprocess.call(["zip", '-r', Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip","cmpc"], stderr=f, stdout=f)
             f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()
@@ -125,7 +125,7 @@ class Upload(BaseHandler):
             listOfFiles.append(each.split('/')[-1])  
                  
         var = {"data" : data}
-        flist = { "fileNames" : listOfFiles, "currentFile": fname}
+        flist = { "fileNames" : listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
@@ -165,6 +165,7 @@ class makeUser(BaseHandler):
         if resp:
             try:
                 subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username])
+                subprocess.call(["mkdir", Settings.DOWNLOAD_LOCATION + self.username])
                 querry = 'select Id from Users where UserName = %s;'
                 resp = myDb.fetchOne(querry, (self.username) )
                 UserId = resp[0]
