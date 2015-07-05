@@ -49,10 +49,21 @@
 		    }
 		
 		var currentFile = "";
+		try
+		{
+		    currentFile = fnamelist.currentFile;
+		}
+		catch(err)
+		    {
+		        alert("Current File Error: "+ err.message); 
+		    }
 		
 		$(document).ready(
 				function()
 					{
+					    var a = document.getElementById("currentFileName");
+	                    a.innerHTML = "Current File Set to:" + currentFile;
+	                    
     					$("#saveButtonId").click(
     						function()
     							{
@@ -71,11 +82,18 @@
     					$("#executeButtonId").click(
     						function()
     						{
-        						$.post("/upload/execute", { fileName: currentFile},
-        				       	 				function(result)
-        				       	 				{
-        											$("#consoleAreaId").html(result);
-        										}, "json");
+    							if(currentFile=="")
+    							    	{
+    							    		alert("Set current file by clicking on the list");
+    							    	}
+    							else
+    							{
+	        						$.post("/upload/execute", { fileName: currentFile},
+	        				       	 				function(result)
+	        				       	 				{
+	        											$("#consoleAreaId").html(result);
+	        										}, "json");
+	        					}
     						}
     					);
 			   		}

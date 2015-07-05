@@ -88,7 +88,7 @@ class Upload(BaseHandler):
             
              
         var = {"data" : data}
-        flist = { "fileNames" : listOfFiles}
+        flist = { "fileNames" : listOfFiles, "currentFile": ""}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
@@ -121,7 +121,7 @@ class Upload(BaseHandler):
             listOfFiles.append(each.split('/')[-1])  
                  
         var = {"data" : data}
-        flist = { "fileNames" : listOfFiles}
+        flist = { "fileNames" : listOfFiles, "currentFile": fname}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
