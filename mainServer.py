@@ -26,7 +26,6 @@ class FileExecution(BaseHandler):
         self.write("You are not supposed to be here")
         
     def post(self):
-        data = self.get_argument('Data')
         fileName = self.get_argument('fileName')
         path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
         #f = open(path, 'w')

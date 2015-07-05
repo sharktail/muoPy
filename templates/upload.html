@@ -56,15 +56,22 @@
     					$("#saveButtonId").click(
     						function()
     							{
-        							$.post("/upload/save",
-        				       			{ Data: $("#textAreaId").val(), fileName: currentFile} 
-        				      			);
+    							    if(currentFile=="")
+    							    	{
+    							    		alert("Set current file by clicking on the list");
+    							    	}
+    							    else
+    							    {
+	        							$.post("/upload/save",
+	        				       			{ Data: $("#textAreaId").val(), fileName: currentFile} 
+	        				      			);
+	        				      	}
     							}
     					);
     					$("#executeButtonId").click(
     						function()
     						{
-        						$.post("/upload/execute", { Data: $("#textAreaId").val(), fileName: currentFile},
+        						$.post("/upload/execute", { fileName: currentFile},
         				       	 				function(result)
         				       	 				{
         											$("#consoleAreaId").html(result);
