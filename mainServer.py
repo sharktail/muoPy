@@ -33,8 +33,12 @@ class FileExecution(BaseHandler):
         #f.close()
         
         f = open(path + "resultantFile", 'w')
-        subprocess.call(["python3", path + fileName], stderr=f, stdout=f)
+        msg = subprocess.call(["python", path + fileName], stderr=f, stdout=f)
         f.close()
+        if msg == 0:
+            f = open(path + "resultantFile", 'a')
+            msg = subprocess.call(["zip", '-r', path + "cmpc.zip","cmpc"], stderr=f, stdout=f)
+            f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()
         data = json.dumps(data)
