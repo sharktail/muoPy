@@ -27,14 +27,16 @@ class FileExecution(BaseHandler):
         
     def post(self):
         data = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + "executefile.py", 'w')
-        f.write(data)
-        f.close()
+        fileName = self.get_argument('fileName')
+        path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
+        #f = open(path, 'w')
+        #f.write(data)
+        #f.close()
         
-        f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'w')
-        subprocess.call(["python3", Settings.UPLOAD_LOCATION + "executefile.py"], stderr=f, stdout=f)
+        f = open(path + "resultantFile", 'w')
+        subprocess.call(["python3", path + fileName], stderr=f, stdout=f)
         f.close()
-        f = open(Settings.UPLOAD_LOCATION + "resultantFile", 'r')
+        f = open(path + "resultantFile", 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)

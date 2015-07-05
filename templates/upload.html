@@ -64,7 +64,7 @@
     					$("#executeButtonId").click(
     						function()
     						{
-        						$.post("/upload/execute", { Data: $("#textAreaId").val() },
+        						$.post("/upload/execute", { Data: $("#textAreaId").val(), fileName: currentFile},
         				       	 				function(result)
         				       	 				{
         											$("#consoleAreaId").html(result);
