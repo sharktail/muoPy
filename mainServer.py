@@ -38,14 +38,30 @@ class FileExecution(BaseHandler):
         data = f.read()
         data = json.dumps(data)
         self.write(data)
+
+class Load(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):
+        #Meant for Loading a file
+        fileName = self.get_argument('Data')
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'r')
+        data = f.read()
+        data = json.dumps(data)
+        self.write(data)
         
-class SaveAndLoad(BaseHandler):
+    def get(self):
+        self.write("You are not supposed to be here")
+        
+class Save(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("You are not supposed to be here.")
+        self.write("You are not supposed to be here")
+        
     def post(self):
+        #Meant for saving a file from the editor
         data = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + "lastfile.txt", 'w')
+        fileName = self.get_argument('fileName')
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'w')
         f.write(data)
         f.close()
 
@@ -187,7 +203,8 @@ class Application(tornado.web.Application):
             (r"/signin/?", loginHandler),
             (r"/signup/?", makeUser),
             (r"/upload/?", Upload),
-            (r"/upload/save?", SaveAndLoad),
+            (r"/upload/save?", Save),
+            (r"/upload/load?", Load),
             (r"/upload/execute?", FileExecution),
             (r"/test?", Test)
         ]

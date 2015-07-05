@@ -48,20 +48,27 @@
 		        var parsedText = "Unable to parse the data. \n Error: " + err.message; 
 		    }
 		
-		$(document).ready(function(){
-    					$("#saveButtonId").click(function(){
-        				$.post("/upload/save",
-        				       { Data: $("#textAreaId").val() } 
-        				      );
-    						}
+		var currentFile = "";
+		
+		$(document).ready(
+				function()
+					{
+    					$("#saveButtonId").click(
+    						function()
+    							{
+        							$.post("/upload/save",
+        				       			{ Data: $("#textAreaId").val(), fileName: currentFile} 
+        				      			);
+    							}
     					);
-    					$("#executeButtonId").click(function(){
-        				$.post("/upload/execute",
-        				       { Data: $("#textAreaId").val() },
-        				       	 function(result){
-        							$("#consoleAreaId").html(result);
-        							},
-        						 "json");
+    					$("#executeButtonId").click(
+    						function()
+    						{
+        						$.post("/upload/execute", { Data: $("#textAreaId").val() },
+        				       	 				function(result)
+        				       	 				{
+        											$("#consoleAreaId").html(result);
+        										}, "json");
     						}
     					);
 			   		}
@@ -74,25 +81,28 @@
 	    function fileListOnclick()
 	    {
 	        var a = document.getElementById("currentFileName");
-	        a.innerHTML = "Current File Set to:" + this.fileName;
+	        currentFile = this.fileName;
+	        a.innerHTML = "Current File Set to:" + currentFile;
+	        $.post("/upload/load", { Data: currentFile},
+        				       	 				function(result)
+        				       	 				{
+        											$("#textAreaId").html(result);
+        										}, "json");
 	        
 	    }
         function loadListOfFiles()
             {
                 var names = fnamelist.fileNames;
                 var list = document.getElementById("fileList");
-                var optList = document.getElementById("fileOptions");
                 
                 for(var i=0; i<names.length; i++)
-                    { var item = document.createElement('li');
+                    { 
+                      var item = document.createElement('li');
                       item.fileName = names[i];
                       item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
                       item.appendChild(document.createTextNode(names[i]));
                       list.appendChild(item);
                       
-                      var opt = document.createElement("OPTION");
-                      opt.setAttribute("value", names[i]);
-                      optList.appendChild(opt);
                     }
             }
 		window.onload = function(){
@@ -109,16 +119,7 @@
 			<input type="submit" value="upload" />
 		</form>
 	</div>
-	//action="/test" method="get"
-	<form >
-		<input list="fileOptions" name="fileOptions">
-			<datalist id="fileOptions">
-			</datalist>
-		<input type="submit" value="Execute" onclick="javascript: form.action='/test'; form.method='get';">
-		<input type="submit" value="Load" >
-		<input type="submit" value="Save" >
-	</form>
-	
+	 
 	 <div id="currentFileName">  </div>
 	 <div class="editor">
 	     <ul id="fileList"> </ul>
