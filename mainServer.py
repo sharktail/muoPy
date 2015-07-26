@@ -117,18 +117,11 @@ class Upload(BaseHandler):
         data = data.replace('"', '\u0022')
         data = data.replace("'", '\u0027')
         
-        listOfFiles = []
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
-        pys = glob.glob(filePathtoUserDirectory + '*.py')
-        for each in pys:
-            listOfFiles.append(each.split('/')[-1])
-        
-        txts =  glob.glob(filePathtoUserDirectory + '*.txt')
-        for each in txts:
-            listOfFiles.append(each.split('/')[-1])  
+        f = fileHandler.FileHandler(self.current_user)
+        f.someFiles(["*.py","*.txt"])  
                  
         var = {"data" : data}
-        flist = { "fileNames" : listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip"}
+        flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
