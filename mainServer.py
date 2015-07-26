@@ -7,7 +7,7 @@ import md5
 
 import Settings
 import dbCon
-#import fileHandler
+import fileHandler
 
 myDb = dbCon.datacon()
 
@@ -73,26 +73,29 @@ class Save(BaseHandler):
 class Upload(BaseHandler):
     @tornado.web.authenticated
     def get(self, fileName=None):
-        listOfFiles = []
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        f = fileHandler.FileHandler(self.current_user)
+        f.someFiles(["*.py","*.txt"])
         
+#         listOfFiles = []
+        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+#         
         if not fileName:
             data = 'No files selected.'
         else:
             f = open(filePathtoUserDirectory,"r")
             data = f.read()
-        
-        pys = glob.glob(filePathtoUserDirectory + '*.py')
-        for each in pys:
-            listOfFiles.append(each.split('/')[-1])
-        
-        txts =  glob.glob(filePathtoUserDirectory + '*.txt')
-        for each in txts:
-            listOfFiles.append(each.split('/')[-1])  
+#         
+#         pys = glob.glob(filePathtoUserDirectory + '*.py')
+#         for each in pys:
+#             listOfFiles.append(each.split('/')[-1])
+#         
+#         txts =  glob.glob(filePathtoUserDirectory + '*.txt')
+#         for each in txts:
+#             listOfFiles.append(each.split('/')[-1])  
             
              
         var = {"data" : data}
-        flist = { "fileNames" : listOfFiles, "currentFile": ""}
+        flist = { "fileNames" : f.listOfFiles, "currentFile": ""}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
