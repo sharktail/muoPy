@@ -1,10 +1,4 @@
 
-function myFunction() 
-{
-   var txt = "Paragraph changed" + ": " + st.lastname;
-   document.getElementById("demo").innerHTML = txt;
-}
-
 function toggle_visibility(showId, hideId) 
 {
 	var show = document.getElementById(showId);

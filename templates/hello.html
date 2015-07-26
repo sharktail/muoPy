@@ -11,9 +11,6 @@
 		var arg = "{{arg}}";
 		var arg = arg.replace(/&quot;/ig,'"');
 		var st = JSON.parse(arg);
-		$(document).ready(function(){        				
-				document.getElementById("downloadLink").href="/static/downloads/" + st.path + "/" + st.filename;
-				});
 	</script>
 
 	<h2> Hello  </h2>
@@ -42,9 +39,6 @@
 		</form>
 		
 	 </div>
-		 
-	 <p id="demo">A Paragraph</p>
-	 <button type="button" onclick="myFunction()">Try it</button>
 
 </body>
 </html>

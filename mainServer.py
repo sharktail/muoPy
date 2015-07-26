@@ -134,11 +134,9 @@ class loginHandler(BaseHandler):
     # Need to define a logout method
     def get(self):
         if not self.current_user:
-            var = {"firstname":"Sankar", "lastname":"Datta"} # example to be removed
-            v = json.dumps(var)
-            self.render("hello.html", arg = v)
+            self.redirect('/')
         elif self.current_user:
-            self.render("index.html", username = self.current_user)
+            self.redirect('/upload/')
         
     def post(self):
         username = self.get_argument('username')
@@ -153,7 +151,8 @@ class loginHandler(BaseHandler):
             dBPathToDirectory = resp[1]
             if dBpass == password :
                 self.set_secure_cookie("username", username)
-                self.render("index.html", username = username)
+                self.redirect('/upload/')
+                #self.render("index.html", username = username)
             else:
                 self.write("Wrong Password. Forgot password? Ask the admin")
 
@@ -192,13 +191,11 @@ class makeUser(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            var = {"firstname":"Sankar", "lastname":"Datta", "path":"test", "filename":"hello.txt" } # example to be removed
+            var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
             v = json.dumps(var)
             self.render("hello.html", arg=v)
         else:
-            #kwargs = {'name' : self.current_user}
-            #self.render("index.html", **kwargs)
-            self.render("index.html", username = self.current_user)
+            self.redirect('/upload/')
             
 
 class Application(tornado.web.Application):
