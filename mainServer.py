@@ -1,6 +1,5 @@
 import tornado.web
 import tornado.httpserver
-import glob
 import subprocess
 import json
 import md5
