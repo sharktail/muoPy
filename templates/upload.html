@@ -36,8 +36,8 @@
 <body>
 	<div class = "infoContainer">
 	    Only .py or .txt formats
-		<form enctype="multipart/form-data" action="/upload" method="post">
-			File: <input type="file" name="filearg" />
+		<form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return fileValidate()">
+			File: <input id="fileInput" type="file" name="filearg"/>
 			<input type="submit" value="upload" />
 		</form>
 	</div>
