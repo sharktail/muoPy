@@ -7,30 +7,8 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="/static/scripts/jquery.min.js"></script>
 	<script src="/static/scripts/uploadPage.js" type="application/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/uploadPage.css">
 <head>
-	<style>
-		body {
-		background-color:lightgray;
-		}
-		
-		.infoContainer {
-		float: left;
-		background-color:lightblue;
-		}
-		
-		.editor {
-		float: right;
-		}
-		
-		.textContainer {
-		position: relative;
-		float: right; 
-		top: 20px;
-		height: 500px;
-		width: 600px;
-		}
-		
-	</style>
 
 <body>
 	<div class = "infoContainer">
@@ -41,14 +19,21 @@
 		</form>
 	</div>
 	 
-	 <div id="currentFileName">  </div>
+	 <div id="currentFileName"></div>
+	 
 	 <div class="editor">
 	     <ul id="fileList"> </ul>
 	 </div>
-	 <a id="downloadLink" download>
+	
+	<a id="downloadLink" download>
   		Download Your File.
 	</a>
-	 <div class = "editor">
+	
+	<div>
+	<button type="button" onclick=toggle_visibility('prbAreaId','paramAreaId') class="button"> Prb </button>
+	<button type="button" onclick=toggle_visibility('paramAreaId','prbAreaId') class="button"> Param </button>
+	
+	 <div class = "editor" id="prbAreaId">
 	    <textarea class = "textContainer" id="consoleAreaId">
 		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
 	 	</textarea>
@@ -57,6 +42,16 @@
 	 	</textarea>
 	 	<button type="button" id="saveButtonId">Save</button>
 	 	<button type="button" id="executeButtonId">Execute</button>
+	 </div>
+	 
+	 <div class = "editor" id="paramAreaId">
+	    <textarea class = "textContainer" id="consoleAreaId2">
+		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
+	 	</textarea>
+	 	<textarea class = "textContainer" id="textAreaId2">
+		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
+	 	</textarea>
+	 </div>
 	 </div>
 	 
 </body>

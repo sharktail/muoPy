@@ -96,8 +96,6 @@ class Upload(BaseHandler):
              
         var = {"data" : data}
         flist = { "fileNames" : f.listOfFiles, "currentFile": ""}
-        print var
-        print flist
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
