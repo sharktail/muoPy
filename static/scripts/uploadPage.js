@@ -1,6 +1,3 @@
-var arg = "{{arg}}";
-var flist = "{{arg2}}";
-
 flist = flist.replace(/&quot;/ig,'"');
 flist = flist.replace(/&amp;/ig,'&');
 var fnamelist = JSON.parse(flist);
@@ -73,6 +70,7 @@ function loadTextArea()
 	{
 	   document.getElementById("textAreaId").innerHTML = parsedText;
 	}
+
 function fileListOnclick()
 {
     var a = document.getElementById("currentFileName");
