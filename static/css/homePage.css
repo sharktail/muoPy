@@ -1,11 +1,25 @@
 
-body {
+body 
+{
     background-color: lightblue;
 }
 
-h2 {
-    color: navy;
-    margin-left: 20px;
+h2 
+{
+    margin:0;
+    padding:0;
+    border: none;
+    top:0px;
+    position: absolute;
+    background-color: #3B5998;
+	height: 50px;
+	left: 0px;
+	width: 100%;
+}
+
+.loginBox
+{
+    margin-top: 60px;
 }
 
 .button {

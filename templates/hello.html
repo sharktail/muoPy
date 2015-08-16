@@ -5,7 +5,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/homePage.css">
 
-<body background = "/static/img/spongebob.jpg">
 
 	<script> 
 		var arg = "{{arg}}";
@@ -13,8 +12,9 @@
 		var st = JSON.parse(arg);
 	</script>
 
-	<h2> Hello  </h2>
-	<div>
+	<h2></h2>
+	
+	<div class="loginBox">
 	 	<button type="button" onclick=toggle_visibility('SignIn','SignUp') class="button"> Sign In </button>
 	 	<button type="button" onclick=toggle_visibility('SignUp','SignIn') class="button"> Sign Up </button>
 	 	
