@@ -31,21 +31,25 @@ $(document).ready(
                 a.innerHTML = "Current File Set to:" + currentFile;
                 document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 
-				$("#saveButtonId").click(
-					function()
-						{
-						    if(currentFile=="")
-						    	{
-						    		alert("Set current file by clicking on the list");
-						    	}
-						    else
-						    {
-    							$.post("/upload/save",
-    				       			{ Data: $("#textAreaId").val(), fileName: currentFile} 
-    				      			);
-    				      	}
-						}
-				);
+				$("#saveButtonId").click( saveFile);
+//					function()
+//						{
+//						    if(currentFile!="")
+//						    	{
+//						    		$.post("/upload/save",
+//	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
+//	    				       			function(result)
+//		    				       			{
+//		    				       				$("#consoleAreaId").html(result);
+//		    				       			} 
+//	    				      			);    	
+//						    	}
+//						    else
+//						    {
+//						    	alert("Set current file by clicking on the list");
+//    				      	}
+//						}
+//				);
 				$("#executeButtonId").click(
 					function()
 					{
@@ -66,23 +70,41 @@ $(document).ready(
 	   		}
 	   		);
 
-function loadTextArea() 
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function saveFile()
 	{
-	   document.getElementById("textAreaId").innerHTML = parsedText;
+		//post("/upload/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
+		post("/upload/save", { Data: $("#textAreaId").val(), fileName: currentFile})
 	}
 
-function fileListOnclick()
-{
-    var a = document.getElementById("currentFileName");
-    currentFile = this.fileName;
-    a.innerHTML = "Current File Set to:" + currentFile;
-    $.post("/upload/load", { Data: currentFile},
-				       	 				function(result)
-				       	 				{
-											$("#textAreaId").html(result);
-										}, "json");
-    
-}
+function loadTextArea() 
+	{
+	   //document.getElementById("textAreaId").innerHTML = parsedText;
+		$("#textAreaId").html(parsedText);
+	}
 
 function fileValidate()
 	{
@@ -97,6 +119,19 @@ function fileValidate()
 	    		return true;
 	    		}
 		}
+
+function fileListOnclick()
+{
+    var a = document.getElementById("currentFileName");
+    currentFile = this.fileName;
+    a.innerHTML = "Current File Set to:" + currentFile;
+    $.post("/upload/load", { Data: currentFile},
+				       	 				function(result)
+				       	 				{
+											$("#textAreaId").html(result);
+    										//document.getElementById("textAreaId").innerHTML = result;
+										}, "json");
+}
 
 function loadListOfFiles()
     {
@@ -116,10 +151,7 @@ function loadListOfFiles()
 
 function toggle_visibility(showId, hideId) 
 {
-	var show = document.getElementById(showId);
-	var hide = document.getElementById(hideId);
-	show.style.display = 'block';
-	hide.style.display = 'none';
+    alert("I do nothing right now !!!");
 }
 
 window.onload = function(){

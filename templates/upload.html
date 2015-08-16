@@ -3,9 +3,9 @@
 	<script>
 		var arg = "{{arg}}";
 		var flist = "{{arg2}}";
-	</script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="/static/scripts/jquery.min.js"></script>
+		//http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js
+	</script>	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="/static/scripts/uploadPage.js" type="application/javascript"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/uploadPage.css">
 <head>
@@ -30,10 +30,8 @@
 	</a>
 	
 	<div>
-	<button type="button" onclick=toggle_visibility('prbAreaId','paramAreaId') class="button"> Prb </button>
-	<button type="button" onclick=toggle_visibility('paramAreaId','prbAreaId') class="button"> Param </button>
 	
-	 <div class = "editor" id="prbAreaId">
+	 <div class = "editor" id="prbAreaId" >
 	    <textarea class = "textContainer" id="consoleAreaId">
 		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
 	 	</textarea>
@@ -44,15 +42,6 @@
 	 	<button type="button" id="executeButtonId">Execute</button>
 	 </div>
 	 
-	 <div class = "editor" id="paramAreaId">
-	    <textarea class = "textContainer" id="consoleAreaId2">
-		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
-	 	</textarea>
-	 	<textarea class = "textContainer" id="textAreaId2">
-		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
-	 	</textarea>
-	 </div>
-	 </div>
 	 
 </body>
 </html>

@@ -68,6 +68,8 @@ class Save(BaseHandler):
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'w')
         f.write(data)
         f.close()
+        self.redirect('/upload/')
+        #self.write("File Saved")
 
 class Upload(BaseHandler):
     @tornado.web.authenticated
@@ -111,10 +113,12 @@ class Upload(BaseHandler):
         fh.write(fileinfo['body'])
         fh.close()
         
-        data= fileinfo['body']
-        data = data.replace('\n', '&#13;&#10;')
-        data = data.replace('"', '\u0022')
-        data = data.replace("'", '\u0027')
+        #data= fileinfo['body']
+        #data = data.replace('\n', '&#13;&#10;')
+        #data = data.replace('"', '\u0022')
+        #data = data.replace("'", '\u0027')
+        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'r').read()
+        data = json.dumps(data)
         
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.py","*.txt"])  
@@ -143,7 +147,7 @@ class loginHandler(BaseHandler):
             self.write("Username not found. Forgot username? Ask the admin")
         else:
             dBpass = resp[0]
-            dBPathToDirectory = resp[1]
+            #dBPathToDirectory = resp[1]
             if dBpass == password :
                 self.set_secure_cookie("username", username)
                 self.redirect('/upload/')
