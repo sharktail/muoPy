@@ -8,12 +8,13 @@ function toggleClass(idOne, idTwo)
 }
 
 
-function toggle_visibility(showId, hideId) 
+function toggle_visibility(showId, hideId, activeId, defaultId) 
 {
 	var show = document.getElementById(showId);
 	var hide = document.getElementById(hideId);
 	show.style.display = 'block';
 	hide.style.display = 'none';
 	
-	toggleClass("signInBtnId", "signUpBtnId");
+	document.getElementById(activeId).className = "btn btn-info active";
+	document.getElementById(defaultId).className = "btn btn-default";
 }
