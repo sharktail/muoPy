@@ -68,12 +68,15 @@ class Save(BaseHandler):
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'w')
         f.write(data)
         f.close()
-        self.redirect('/upload/')
+        self.redirect('/upload/?fileName=' + fileName)
         #self.write("File Saved")
 
 class Upload(BaseHandler):
     @tornado.web.authenticated
-    def get(self, fileName=None):
+    def get(self):
+        
+        fileName = self.get_argument("fileName", default=None)
+            
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.py","*.txt"])
         
@@ -83,8 +86,8 @@ class Upload(BaseHandler):
         if not fileName:
             data = 'No files selected.'
         else:
-            f = open(filePathtoUserDirectory,"r")
-            data = f.read()
+            fileReader = open(filePathtoUserDirectory + fileName,"r")
+            data = fileReader.read()
 #         
 #         pys = glob.glob(filePathtoUserDirectory + '*.py')
 #         for each in pys:
