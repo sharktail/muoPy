@@ -67,6 +67,12 @@ body
 	margin-right:3px;
 }
 
+.fileList
+{
+	position:relative; 
+	left: -23px; 
+}
+
 .button 
 {
 	border-top: 1px solid #96d1f8;
