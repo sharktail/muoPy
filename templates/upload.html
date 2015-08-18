@@ -13,19 +13,22 @@
 	
 <head>
 <h2></h2>
+
 <body>
-	<div class = "infoContainer">
-	    Only .py or .txt formats
-		<form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return fileValidate()">
-			File: <input id="fileInput" type="file" name="filearg"/>
-			<input type="submit" value="upload" />
-		</form>
-	</div>
 	 
 	 <div id="currentFileName"></div>
 	 
-	 <div class="editor">
-	     <ul id="fileList"> </ul>
+	 <div class="infoContainer">
+	     <div>
+	    	Only .py or .txt formats
+			<form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return fileValidate()">
+				<span class="btn btn-info active btn-file">
+					<input id="fileInput" type="file" name="filearg"/>
+				</span><br/>
+				<input class="submit btn btn-success" type="submit" value="upload" />
+			</form>
+		</div >
+	    <ul id="fileList"> </ul>
 	 </div>
 	
 	<a id="downloadLink" download>
@@ -35,14 +38,14 @@
 	<div>
 	
 	 <div class = "editor" id="prbAreaId" >
+	    <textarea class = "textContainer" id="textAreaId">
+		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
+	 	</textarea>
 	    <textarea class = "textContainer" id="consoleAreaId">
 		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
 	 	</textarea>
-	 	<textarea class = "textContainer" id="textAreaId">
-		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
-	 	</textarea>
-	 	<button type="button" id="saveButtonId">Save</button>
-	 	<button type="button" id="executeButtonId">Execute</button>
+	 	<button class="commandBtn btn btn-success" type="button" id="saveButtonId">Save</button>
+	 	<button class="commandBtn btn btn-info active" type="button" id="executeButtonId">Execute</button>
 	 </div>
 	 
 	 
