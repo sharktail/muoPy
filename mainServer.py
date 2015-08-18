@@ -195,7 +195,7 @@ class MainHandler(BaseHandler):
         if not self.current_user:
             var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
             v = json.dumps(var)
-            self.render("hello.html", arg=v)
+            self.render("home.html", arg=v)
         else:
             self.redirect('/upload/')
             
