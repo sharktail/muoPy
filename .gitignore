@@ -1,3 +1,9 @@
+#Pablo's stuffs
+*.json
+install_*/*
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
