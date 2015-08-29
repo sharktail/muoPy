@@ -59,7 +59,7 @@ $(document).ready(
 						    	}
 						else
 						{
-    						$.get("/upload/execute", { fileName: currentFile},
+    						$.get("/upload/execute", { fileName: currentFile, action: "executeForCode"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").html(result);
@@ -67,6 +67,23 @@ $(document).ready(
     					}
 					}
 				);
+				$("#executeDataButtonId").click(
+						function()
+						{
+							if(currentFile=="")
+							    	{
+							    		alert("Set current file by clicking on the list");
+							    	}
+							else
+							{
+	    						$.get("/upload/execute", { fileName: currentFile, action: "executeForData"},
+	    				       	 				function(result)
+	    				       	 				{
+	    											$("#consoleAreaId").html(result);
+	    										}, "json");
+	    					}
+						}
+					);
 	   		}
 	   		);
 

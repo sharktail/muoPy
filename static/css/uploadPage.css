@@ -60,6 +60,7 @@ body
 
 .commandBtn
 {
+	display: block;
 	position:relative;
 	float: left;
 	top: 20px;
