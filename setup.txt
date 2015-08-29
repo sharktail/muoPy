@@ -8,3 +8,8 @@ install mysqldb python -> sudo apt-get install python-mysqldb
 go to mysql and create a database
 and execute > source /path/createTables.sql
 modify user and password for mysql in Settings.py
+
+to support Pablo's new code with separate generate_code and 
+problem file, we need to install python pudb (pip(3) install pudb)
+and also add the muaompc(the one inside muaompc with _init_) python to
+pythonpath

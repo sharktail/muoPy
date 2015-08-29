@@ -22,7 +22,21 @@ class Test(BaseHandler):
 class FileExecution(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("You are not supposed to be here")
+        fileName = self.get_argument('fileName')
+        path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
+        f = open(path + "resultantFile", 'w')
+        #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
+        msg = subprocess.call(["python", "executeForCode.py", path + fileName], stderr=f, stdout=f)
+        f.close()
+#         if msg == 0:
+#             f = open(path + "resultantFile", 'a')
+#             subprocess.call(["zip", '-r', Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip","cmpc"], stderr=f, stdout=f)
+#             f.close()
+        f = open(path + "resultantFile", 'r')
+        data = f.read()
+        data = json.dumps(data)
+        self.write(data)
+        #self.write("You are not supposed to be here")
         
     def post(self):
         fileName = self.get_argument('fileName')
@@ -78,7 +92,7 @@ class Upload(BaseHandler):
         fileName = self.get_argument("fileName", default=None)
             
         f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.py","*.txt"])
+        f.someFiles(["*.py", "*.txt", "*.prb"])
         
 #         listOfFiles = []
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'

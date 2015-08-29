@@ -59,7 +59,7 @@ $(document).ready(
 						    	}
 						else
 						{
-    						$.post("/upload/execute", { fileName: currentFile},
+    						$.get("/upload/execute", { fileName: currentFile},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").html(result);
