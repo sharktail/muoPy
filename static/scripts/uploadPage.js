@@ -30,7 +30,7 @@ $(document).ready(
 			    var a = document.getElementById("currentFileName");
                 a.innerHTML = "Current File Set to:" + currentFile;
                 document.getElementById("downloadLink").href = fnamelist.downloadLink;
-                
+                                
 				$("#saveButtonId").click( saveFile);
 //					function()
 //						{
@@ -154,19 +154,33 @@ function loadListOfFiles()
     {
         var names = fnamelist.fileNames;
         var list = document.getElementById("fileList");
+        var prbFileList = document.getElementById("prbFileList");
         
         for(var i=0; i<names.length; i++)
             { 
-              var item = document.createElement('li');
-              item.fileName = names[i];
-              item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
-              item.appendChild(document.createTextNode(names[i]));
-              list.appendChild(item);
+	          var item = document.createElement('li');
+	          item.fileName = names[i];
+	          
+        	  if (names[i].split(".").pop()=="prb")
+        		  {
+        		  	item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.setAttribute("class", "listItems");
+        		  	item.appendChild(document.createTextNode(names[i]));
+        		  	prbFileList.appendChild(item);
+        		  }
+        	  else
+        		  {
+        		  	item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.setAttribute("class", "listItems");
+        		  	item.appendChild(document.createTextNode(names[i]));
+        		  	list.appendChild(item);
+        		  }
+              
               
             }
     }
 
-function toggle_visibility(showId, hideId) 
+function toggle_visibility(showId, hideId)
 {
     alert("I do nothing right now !!!");
 }

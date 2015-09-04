@@ -74,6 +74,11 @@ body
 	left: -23px; 
 }
 
+.listItems
+{
+	cursor:pointer;
+}
+
 .button 
 {
 	border-top: 1px solid #96d1f8;
