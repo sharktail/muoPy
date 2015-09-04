@@ -1,5 +1,6 @@
 from sys import path
 from importlib import import_module
+import sys
 
 #from regmpcdata import data
 import numpy as np
@@ -31,13 +32,23 @@ u_lb=u_lb, u_ub=u_ub,
 e_lb=e_lb, e_ub=e_ub,
 f_lb=f_lb, f_ub=f_ub, F=F,
 mu=mu)
-print "Execute For Data"
+
 def main():
     prefix='bcg'  # basic code generation
-
-    path.append('install_'+prefix)
+    destdir = sys.argv[1]
+    path.append(destdir + 'install_'+prefix)
     mpc = import_module(prefix+'.mpc')
     mpc.generate_mpc_data(data)
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+

@@ -24,13 +24,14 @@ class FileExecution(BaseHandler):
     def get(self):
         fileName = self.get_argument('fileName')
         action = self.get_argument('action')
+        destdir = Settings.DOWNLOAD_LOCATION + self.current_user + '/'
         path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForData":
-            msg = subprocess.call(["python", "executeForData.py"], stderr=f, stdout=f)
+            msg = subprocess.call(["python3", "executeForData.py", destdir], stderr=f, stdout=f)
         elif action == "executeForCode":
-            msg = subprocess.call(["python", "executeForCode.py", path + fileName], stderr=f, stdout=f)
+            msg = subprocess.call(["python3", "executeForCode.py", path + fileName, destdir], stderr=f, stdout=f)
         f.close()
 #         if msg == 0:
 #             f = open(path + "resultantFile", 'a')
