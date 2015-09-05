@@ -30,6 +30,9 @@ class FileExecution(BaseHandler):
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForData":
             msg = subprocess.call(["python3", "executeForData.py", destdir], stderr=f, stdout=f)
+            if msg == 0:
+                #this is just a work around to move the file, so remove it once pablo gives the new code
+                subprocess.call(["mv", "bcg_fgm_cvp.json",destdir], stderr=f, stdout=f)
         elif action == "executeForCode":
             msg = subprocess.call(["python3", "executeForCode.py", path + fileName, destdir], stderr=f, stdout=f)
         f.close()
