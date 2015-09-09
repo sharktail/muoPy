@@ -1,4 +1,5 @@
-from sys import path
+import sys
+import os
 from importlib import import_module
 import sys
 
@@ -33,13 +34,21 @@ e_lb=e_lb, e_ub=e_ub,
 f_lb=f_lb, f_ub=f_ub, F=F,
 mu=mu)
 
-def main():
+def mainT():
     prefix='bcg'  # basic code generation
     destdir = sys.argv[1]
-    path.append(destdir + 'install_'+prefix)
+    sys.path.append(destdir + 'install_'+prefix)
     mpc = import_module(prefix+'.mpc')
     mpc.generate_mpc_data(data)
 
+def main():
+    prefix='bcg'
+    filePath = sys.argv[1]
+    destdir = sys.argv[2]
+    sys.path.append(os.path.join(destdir, 'install_'+prefix))
+    mpc = import_module(prefix+'.mpc')
+    mpc.generate_mpc_data(filePath + 'regmpc.dat')
+    
 if __name__ == '__main__':
     main()
 

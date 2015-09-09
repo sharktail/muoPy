@@ -29,10 +29,10 @@ class FileExecution(BaseHandler):
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForData":
-            msg = subprocess.call(["python3", "executeForData.py", destdir], stderr=f, stdout=f)
-            if msg == 0:
+            msg = subprocess.call(["python3", "executeForData.py", path , destdir], stderr=f, stdout=f)
+            #if msg == 0:
                 #this is just a work around to move the file, so remove it once pablo gives the new code
-                subprocess.call(["mv", "bcg_fgm_cvp.json",destdir], stderr=f, stdout=f)
+            #    subprocess.call(["mv", "bcg_fgm_cvp.json",destdir], stderr=f, stdout=f)
         elif action == "executeForCode":
             msg = subprocess.call(["python3", "executeForCode.py", path + fileName, destdir], stderr=f, stdout=f)
         f.close()
@@ -44,7 +44,6 @@ class FileExecution(BaseHandler):
         data = f.read()
         data = json.dumps(data)
         self.write(data)
-        #self.write("You are not supposed to be here")
         
     def post(self):
         fileName = self.get_argument('fileName')
@@ -110,14 +109,6 @@ class Upload(BaseHandler):
         else:
             fileReader = open(filePathtoUserDirectory + fileName,"r")
             data = fileReader.read()
-#         
-#         pys = glob.glob(filePathtoUserDirectory + '*.py')
-#         for each in pys:
-#             listOfFiles.append(each.split('/')[-1])
-#         
-#         txts =  glob.glob(filePathtoUserDirectory + '*.txt')
-#         for each in txts:
-#             listOfFiles.append(each.split('/')[-1])  
             
              
         var = {"data" : data}

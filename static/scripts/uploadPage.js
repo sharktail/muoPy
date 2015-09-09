@@ -30,7 +30,8 @@ $(document).ready(
 			    var a = document.getElementById("currentFileName");
                 a.innerHTML = "Current File Set to:" + currentFile;
                 document.getElementById("downloadLink").href = fnamelist.downloadLink;
-                                
+                //document.getElementById("downloadJSONLink").href = ;
+                
 				$("#saveButtonId").click( saveFile);
 //					function()
 //						{
