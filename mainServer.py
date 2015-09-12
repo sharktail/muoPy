@@ -29,7 +29,7 @@ class FileExecution(BaseHandler):
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForData":
-            msg = subprocess.call(["python3", "executeForData.py", path , destdir], stderr=f, stdout=f)
+            msg = subprocess.call(["python3", "executeForData.py", path + fileName , destdir], stderr=f, stdout=f)
             #if msg == 0:
                 #this is just a work around to move the file, so remove it once pablo gives the new code
             #    subprocess.call(["mv", "bcg_fgm_cvp.json",destdir], stderr=f, stdout=f)
@@ -99,7 +99,7 @@ class Upload(BaseHandler):
         fileName = self.get_argument("fileName", default=None)
             
         f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.py", "*.txt", "*.prb"])
+        f.someFiles(["*.dat", "*.prb"])
         
 #         listOfFiles = []
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'

@@ -47,7 +47,7 @@ def main():
     destdir = sys.argv[2]
     sys.path.append(os.path.join(destdir, 'install_'+prefix))
     mpc = import_module(prefix+'.mpc')
-    mpc.generate_mpc_data(filePath + 'regmpc.dat')
+    mpc.generate_mpc_data(filePath) # + 'regmpc.dat')
     
 if __name__ == '__main__':
     main()

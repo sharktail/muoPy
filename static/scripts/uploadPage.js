@@ -15,6 +15,8 @@ catch(err)
     }
 
 var currentFile = "";
+var currentDatFile = "";
+
 try
 {
     currentFile = fnamelist.currentFile;
@@ -28,7 +30,7 @@ $(document).ready(
 		function()
 			{
 			    var a = document.getElementById("currentFileName");
-                a.innerHTML = "Current File Set to:" + currentFile;
+                a.innerHTML = "Current PRB File Set to:" + currentFile;
                 document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
                 
@@ -77,7 +79,7 @@ $(document).ready(
 							    	}
 							else
 							{
-	    						$.get("/upload/execute", { fileName: currentFile, action: "executeForData"},
+	    						$.get("/upload/execute", { fileName: currentDatFile, action: "executeForData"},
 	    				       	 				function(result)
 	    				       	 				{
 	    											$("#consoleAreaId").html(result);
@@ -138,7 +140,7 @@ function fileValidate()
 	    		}
 		}
 
-function fileListOnclick()
+function prbFileListOnclick()
 {
     var a = document.getElementById("currentFileName");
     currentFile = this.fileName;
@@ -151,10 +153,23 @@ function fileListOnclick()
 										}, "json");
 }
 
+function datFileListOnclick()
+{
+	var a = document.getElementById("currentDatFileName");
+	currentDatFile = this.fileName;
+    a.innerHTML = "Current Data File Set to:" + currentDatFile;
+    $.post("/upload/load", { Data: currentDatFile},
+				       	 				function(result)
+				       	 				{
+											$("#textAreaId").html(result);
+    										//document.getElementById("textAreaId").innerHTML = result;
+										}, "json");
+}
+
 function loadListOfFiles()
     {
         var names = fnamelist.fileNames;
-        var list = document.getElementById("fileList");
+        var list = document.getElementById("datFileList");
         var prbFileList = document.getElementById("prbFileList");
         
         for(var i=0; i<names.length; i++)
@@ -164,14 +179,14 @@ function loadListOfFiles()
 	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		  	item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
         		  	item.setAttribute("class", "listItems");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	prbFileList.appendChild(item);
         		  }
         	  else
         		  {
-        		  	item.onclick = fileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.onclick = datFileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
         		  	item.setAttribute("class", "listItems");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	list.appendChild(item);
