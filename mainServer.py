@@ -30,6 +30,11 @@ class FileExecution(BaseHandler):
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForData":
             msg = subprocess.call(["python3", "executeForData.py", path + fileName , destdir], stderr=f, stdout=f)
+            if msg == 0:
+                zipPath = Settings.DOWNLOAD_LOCATION + self.current_user + "/"
+                f = open(path + "resultantFile", 'a')
+                subprocess.call(["zip", '-r', zipPath + "install_bcg.zip", zipPath + "install_bcg"], stderr=f, stdout=f)
+                f.close()
             #if msg == 0:
                 #this is just a work around to move the file, so remove it once pablo gives the new code
             #    subprocess.call(["mv", "bcg_fgm_cvp.json",destdir], stderr=f, stdout=f)
@@ -57,7 +62,7 @@ class FileExecution(BaseHandler):
         f.close()
         if msg == 0:
             f = open(path + "resultantFile", 'a')
-            subprocess.call(["zip", '-r', Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip","cmpc"], stderr=f, stdout=f)
+            subprocess.call(["zip", '-r', Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip","install_bcg"], stderr=f, stdout=f)
             f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()
@@ -112,7 +117,7 @@ class Upload(BaseHandler):
             
              
         var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": ""}
+        flist = { "fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
@@ -140,7 +145,7 @@ class Upload(BaseHandler):
         f.someFiles(["*.py","*.txt"])  
                  
         var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "cmpc.zip"}
+        flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
