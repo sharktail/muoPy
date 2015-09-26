@@ -36,6 +36,9 @@ class FileHandler(object):
                 newList.append(l)
         
         return newList
+    
+    def zipFolder(self, sourceList, destination):
+        print "Here the folders will be zipped"
 
 if __name__ == "__main__":
     pass

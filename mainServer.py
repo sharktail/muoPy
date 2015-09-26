@@ -7,6 +7,7 @@ import md5
 import Settings
 import dbCon
 import fileHandler
+import mpcGenerator
 
 myDb = dbCon.datacon()
 
@@ -229,7 +230,7 @@ class Application(tornado.web.Application):
             (r"/upload/save?", Save),
             (r"/upload/load?", Load),
             (r"/upload/execute?", FileExecution),
-            (r"/test?", Test)
+            (r"/test?", mpcGenerator.codeGen)
         ]
         settings = {
             "template_path": Settings.TEMPLATE_PATH,

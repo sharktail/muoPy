@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<script>
+		//var arg = "{{arg}}";
+		//var flist = "{{arg2}}";
+		//http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js
+	</script>
+	<meta charset="utf-8">	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="/static/scripts/codeAndDataGen.js" type="application/javascript"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/codeAndDataGen.css">
+	
+<head>
+
+<body>
+	 
+	 <div id="currentFileName"></div>
+	 <div id="currentDatFileName"></div>
+	 
+	 <div class="infoContainer">
+	     <div>
+			<form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return fileValidate()">
+				<span class="btn btn-info active btn-file">
+					<input id="fileInput" type="file" name="filearg"/>
+				</span><br/>
+				<input class="submit btn btn-success" type="submit" value="upload" />
+			</form>
+		</div >
+	    <ul class="fileList" id="datFileList"> </ul>
+	    <hr class="line"/>
+	    <ul class="fileList" id="prbFileList"> </ul>
+	 </div>
+	
+	<a id="downloadLink" download> Download Your File </a>
+	<br/>
+	<a id="downloadPatrickLink" download href="/static/img/patrick.jpg"> Code </a>
+	<br/>
+	<a id="downloadJSONLink" download href="/static/downloads/sanD/bcg_fgm_cvp.json"> Data + Code </a>
+	
+	<div>
+	
+	 <div class = "editor" id="prbAreaId" >
+	    <textarea class = "textContainer" id="textAreaId">
+		 	Here Goes the text. &#13;&#10;Click on Load to update the text.
+	 	</textarea>
+	    <textarea class = "textContainer" id="consoleAreaId">
+		 	Here goes the console output. &#13;&#10;Click on Execute to execute the text.
+	 	</textarea>
+	 	<button class="commandBtn btn btn-success" type="button" id="saveButtonId">Save</button>
+	 	<button class="commandBtn btn btn-info active" type="button" id="executeButtonId">Execute Code</button>
+	 	<button class="commandBtn btn btn-info active" type="button" id="executeDataButtonId">Execute Data</button>
+	 </div>
+	 
+	 
+</body>
+</html>
