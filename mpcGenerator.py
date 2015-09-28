@@ -8,7 +8,7 @@ class BaseHandler(tornado.web.RequestHandler):
 class codeGen(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("Hello")
+        self.render("codeGen.html")
         
 class dataGen(BaseHandler):
     @tornado.web.authenticated
