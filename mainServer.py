@@ -186,7 +186,7 @@ class makeUser(BaseHandler):
             try:
                 subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username])
                 subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username + "/datFiles"])
-                subprocess.call(["mkdir", Settings.DOWNLOAD_LOCATION + self.username])
+                subprocess.call(["mkdir", "."+Settings.DOWNLOAD_LOCATION + self.username])
                 querry = 'select Id from Users where UserName = %s;'
                 resp = myDb.fetchOne(querry, (self.username) )
                 UserId = resp[0]
@@ -194,7 +194,7 @@ class makeUser(BaseHandler):
                 resp = myDb.run(querry, (UserId, Settings.UPLOAD_LOCATION + self.username))
                 self.set_secure_cookie("username", self.username)
                 #self.render("index.html", username = self.username)
-                self.redirect("/upload/")
+                self.redirect("/codegen/")
             except:
                 self.write("Error in creating Directory !!! \nNo worries, contact the admin.")
         else:

@@ -31,7 +31,7 @@ $(document).ready(
 			{
 			    var a = document.getElementById("currentFileName");
                 a.innerHTML = "Current PRB File Set to:" + currentFile;
-                document.getElementById("downloadLink").href = fnamelist.downloadLink;
+                //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
                 
 				$("#saveButtonId").click( saveFile);
@@ -39,7 +39,7 @@ $(document).ready(
 //						{
 //						    if(currentFile!="")
 //						    	{
-//						    		$.post("/upload/save",
+//						    		$.post("/codegen/save",
 //	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
 //	    				       			function(result)
 //		    				       			{
@@ -62,7 +62,7 @@ $(document).ready(
 						    	}
 						else
 						{
-    						$.get("/upload/execute", { fileName: currentFile, action: "executeForCode"},
+    						$.get("/codegen/execute", { fileName: currentFile, action: "executeForCode"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").html(result);
@@ -79,7 +79,7 @@ $(document).ready(
 							    	}
 							else
 							{
-	    						$.get("/upload/execute", { fileName: currentDatFile, action: "executeForData"},
+	    						$.get("/codegen/execute", { fileName: currentDatFile, action: "executeForData"},
 	    				       	 				function(result)
 	    				       	 				{
 	    											$("#consoleAreaId").html(result);
@@ -116,8 +116,8 @@ function post(path, params, method) {
 
 function saveFile()
 	{
-		//post("/upload/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
-		post("/upload/save", { Data: $("#textAreaId").val(), fileName: currentFile})
+		//post("/codegen/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
+		post("/codegen/save", { Data: $("#textAreaId").val(), fileName: currentFile})
 	}
 
 function loadTextArea() 
@@ -179,14 +179,14 @@ function loadListOfFiles()
 	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
         		  	item.setAttribute("class", "listItems");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	prbFileList.appendChild(item);
         		  }
         	  else
         		  {
-        		  	item.onclick = datFileListOnclick; //this function is to make it a method and prvents it from calling the fileListOnclick function itself
+        		  	item.onclick = datFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
         		  	item.setAttribute("class", "listItems");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	list.appendChild(item);
