@@ -7,22 +7,24 @@ class FileHandler(object):
     def __init__(self, username):
         self.username = username;
         self.listOfFiles = []
-    
+        self.filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
+        
     def createFolder(self):
         path = Settings.UPLOAD_LOCATION + "/" + self.username
         subprocess.call(["mkdir", path])
     
-    def someFiles(self, fileTypes):
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
+    def someFiles(self, fileTypes, additionalPath=""):
+        #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
+        self.filePathtoUserDirectory = self.filePathtoUserDirectory + additionalPath
         
         for name in fileTypes:
-            files = glob.glob(filePathtoUserDirectory + name)
+            files = glob.glob(self.filePathtoUserDirectory + name)
             for each in files:
                 self.listOfFiles.append(each.split('/')[-1])
     
     def allFileFolders(self):
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
-        files = glob.glob(filePathtoUserDirectory + "*")
+        #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
+        files = glob.glob(self.filePathtoUserDirectory + "*")
         
         for each in files:
             self.listOfFiles.append(each.split('/')[-1])
