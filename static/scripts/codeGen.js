@@ -145,7 +145,7 @@ function prbFileListOnclick()
     var a = document.getElementById("currentFileName");
     currentFile = this.fileName;
     a.innerHTML = "Current File Set to:" + currentFile;
-    $.post("/upload/load", { Data: currentFile},
+    $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").html(result);
@@ -158,7 +158,7 @@ function datFileListOnclick()
 	var a = document.getElementById("currentDatFileName");
 	currentDatFile = this.fileName;
     a.innerHTML = "Current Data File Set to:" + currentDatFile;
-    $.post("/upload/load", { Data: currentDatFile},
+    $.post("/codegen/load", { Data: currentDatFile},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").html(result);

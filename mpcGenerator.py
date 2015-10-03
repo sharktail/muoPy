@@ -15,7 +15,8 @@ class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         fileName = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'r')
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
+                 Settings.DAT_FILE_LOCATION + fileName, 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)
@@ -32,7 +33,8 @@ class Save(BaseHandler):
         #Meant for saving a file from the editor
         data = self.get_argument('Data')
         fileName = self.get_argument('fileName')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + fileName, 'w')
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
+                 Settings.DAT_FILE_LOCATION + fileName, 'w')
         f.write(data)
         f.close()
         self.redirect('/upload/?fileName=' + fileName)
@@ -111,5 +113,5 @@ class codeGen(BaseHandler):
         flist = { "fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
-        self.render("upload.html", arg = var, arg2 = flist)
+        self.render("codeGen.html", arg = var, arg2 = flist)
 
