@@ -88,7 +88,7 @@ $(document).ready(
 //	    					}
 //						}
 //					);
-				$("#nextButtonId").click(
+				$("#previousButtonId").click(
 						function()
 						{
 							if(currentFile=="")

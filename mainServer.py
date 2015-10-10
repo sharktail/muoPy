@@ -8,6 +8,7 @@ import Settings
 import dbCon
 import fileHandler
 import mpcGenerator
+import dataGenerator
 
 myDb = dbCon.datacon()
 
@@ -186,6 +187,7 @@ class makeUser(BaseHandler):
             try:
                 subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username])
                 subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username + "/datFiles"])
+                subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username + "/prbFiles"])
                 subprocess.call(["mkdir", "."+Settings.DOWNLOAD_LOCATION + self.username])
                 querry = 'select Id from Users where UserName = %s;'
                 resp = myDb.fetchOne(querry, (self.username) )
@@ -236,6 +238,7 @@ class Application(tornado.web.Application):
             (r"/codegen/save?", mpcGenerator.Save),
             (r"/codegen/load?", mpcGenerator.Load),
             (r"/codegen/execute?", mpcGenerator.FileExecution),
+            (r"/datagen/?", dataGenerator.codeGen),
             (r"/test?", mpcGenerator.codeGen)
         ]
         settings = {

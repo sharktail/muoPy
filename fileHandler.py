@@ -39,6 +39,13 @@ class FileHandler(object):
         
         return newList
     
+    def findDataFiles(self, prbFileName="", prefix="_bcg"):
+        if prbFileName=="":
+            return 0
+        else:
+            fName = prbFileName.split(".")[0] + prefix
+            directory = self.filePathtoUserDirectory + fName + '/'
+        
     def zipFolder(self, sourceList, destination):
         print "Here the folders will be zipped"
 
