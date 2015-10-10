@@ -16,7 +16,7 @@ class Load(BaseHandler):
     def post(self):
         fileName = self.get_argument('Data')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.DAT_FILE_LOCATION + fileName, 'r')
+                 Settings.PRB_FILE_LOCATION + fileName, 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)
@@ -34,7 +34,7 @@ class Save(BaseHandler):
         data = self.get_argument('Data')
         fileName = self.get_argument('fileName')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.DAT_FILE_LOCATION + fileName, 'w')
+                 Settings.PRB_FILE_LOCATION + fileName, 'w')
         f.write(data)
         f.close()
         self.redirect('/upload/?fileName=' + fileName)
@@ -49,7 +49,7 @@ class FileExecution(BaseHandler):
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForCode":
-            msg = subprocess.call(["python3", "executeForCode.py", path + Settings.DAT_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
+            msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
                 f = open(path + "resultantFile", 'a')
@@ -94,7 +94,7 @@ class codeGen(BaseHandler):
         fileName = self.get_argument("fileName", default=None)
             
         f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.prb"], Settings.DAT_FILE_LOCATION)
+        f.someFiles(["*.prb"], Settings.PRB_FILE_LOCATION)
         
 #         listOfFiles = []
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
@@ -117,15 +117,15 @@ class codeGen(BaseHandler):
         fname = fileinfo['filename']
         
         cname = str(fname)
-        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + cname, 'w')
+        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
         
-        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + cname, 'r').read()
+        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'r').read()
         data = json.dumps(data)
         
         f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.prb"], Settings.DAT_FILE_LOCATION)
+        f.someFiles(["*.prb"], Settings.PRB_FILE_LOCATION)
                  
         var = {"data" : data}
         flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
