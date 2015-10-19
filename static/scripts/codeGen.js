@@ -97,25 +97,25 @@ $(document).ready(
 							    	}
 							else
 							{
-	    						$.get("/datagen", { fileName: currentFile, action: "executeForData"},
-	    				       	 				function(result)
-	    				       	 				{
-	    											$("#consoleAreaId").html(result);
-	    											//$("#dataGenPage").html(result);
-	    											$("#codeGenPage").slideDown("slow");
-	    											$("#dataGenPage").slideDown("slow");
-	    											
-	    										}, "json");
+//	    						$.get("/codegen/datagen", { fileName: currentFile, action: "redirect"},
+//	    								function(result)
+//	    								{
+//	    									alert("hello");
+//	    								}, "json");
+								$form = $('<form></form>');
+								$form.attr('action', '/codegen/datagen');
+								$form.append('<input type="hidden" name="fileName">' + currentFile + '</input>');
+								$form.appendTo('body').submit();
 	    					}
 						}
 					);
 	   		}
 	   		);
 
-function toggleDataSection()
-{
-	$("#dataGenPage");
-	}
+//function prbToDat()
+//{
+//	get("/codegen/datagen", {fileName : currentFile})
+//	}
 
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.

@@ -11,6 +11,14 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("username")
 
+class Redirect(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        fileName = self.get_argument("fileName")
+        self.set_secure_cookie("prbFileName", fileName.split(".")[0])
+        self.redirect("/datagen")
+        #self.write("success")
+
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
@@ -50,11 +58,14 @@ class FileExecution(BaseHandler):
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForCode":
             msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
+            f.close()
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
                 f = open(path + "resultantFile", 'a')
                 folderName = fileName.split(".")[0] + "_bcg"
-                subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
+                msg = subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
+                if msg == 0:
+                    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
                 f.close()
 
         elif action == "executeForData":
