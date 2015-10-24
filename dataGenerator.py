@@ -25,7 +25,6 @@ class codeGen(BaseHandler):
     def get(self):
         fileName = self.getLasDatFileName()
         self.prbLoc = self.get_prbfilename()
-        print self.prbLoc
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.dat"], Settings.DAT_FILE_LOCATION + self.prbLoc + "/")
         
@@ -45,19 +44,19 @@ class codeGen(BaseHandler):
         self.render("dataGen.html", arg = var, arg2 = flist)
 
     def post(self):
-        fileinfo = self.request.files['filearg'][0]
+        fileinfo = self.request.files['file'][0]
         fname = fileinfo['filename']
-        
         cname = str(fname)
-        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'w')
+        datPath = Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + self.get_prbfilename() + "/"
+        fh = open( datPath + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
         
-        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'r').read()
+        data = open(datPath + cname, 'r').read()
         data = json.dumps(data)
         
         f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.dat"], Settings.DAT_FILE_LOCATION)
+        f.someFiles(["*.dat"], absolutePath=datPath)
                  
         var = {"data" : data}
         flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}

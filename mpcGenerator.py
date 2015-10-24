@@ -15,8 +15,7 @@ class Redirect(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         fileName = self.get_argument("fileName")
-        print fileName
-        self.set_secure_cookie("prbFileName", fileName.split(".")[0])
+        self.set_secure_cookie("prbFileName", fileName)
         self.redirect("/datagen")
         #self.write("success")
 

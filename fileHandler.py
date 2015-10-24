@@ -13,12 +13,15 @@ class FileHandler(object):
         path = Settings.UPLOAD_LOCATION + "/" + self.username
         subprocess.call(["mkdir", path])
     
-    def someFiles(self, fileTypes, additionalPath=""):
+    def someFiles(self, fileTypes, additionalPath="", absolutePath=""):
         #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
-        self.filePathtoUserDirectory = self.filePathtoUserDirectory + additionalPath
+        if absolutePath != "":
+            path = absolutePath
+        else:
+            path = self.filePathtoUserDirectory + additionalPath
         
         for name in fileTypes:
-            files = glob.glob(self.filePathtoUserDirectory + name)
+            files = glob.glob(path + name)
             for each in files:
                 self.listOfFiles.append(each.split('/')[-1])
     
