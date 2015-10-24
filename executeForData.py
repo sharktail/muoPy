@@ -1,54 +1,28 @@
-import sys
 import os
-from importlib import import_module
 import sys
+from importlib import import_module
 
-#from regmpcdata import data
-import numpy as np
-# input constraints
-u_lb = np.array([[-100]])
-u_ub = np.array([[100]])
-# weighting matrices
-Q = np.array([[1, 0], [0, 1]])
-R = np.array([[1]])
-P = np.array([[2, 3], [3, 4]])
-A = np.array([[ 1.,  0.0095162581964040437],
-        [ 0.,  0.90483741803595941]])
-B = np.array([[9.6748360719191485e-05],
-        [0.019032516392808087]])
-N = 2
-mu = 256.
-e_lb = np.array([[-1]])
-e_ub = np.array([[1]])
-f_lb = np.array([[-0.5]])
-f_ub = np.array([[0.5]])
-Kx = np.array([[3.5, 5.5]])
-F = np.array([[0.2, 1.1]])
-Ad = A
-Bd = B
-dt = 0.001
-n, m = B.shape
-data = dict(A=A, B=B, P=P, Q=Q, R=R, Kx=Kx, N=N, n=n, m=m,
-u_lb=u_lb, u_ub=u_ub,
-e_lb=e_lb, e_ub=e_ub,
-f_lb=f_lb, f_ub=f_ub, F=F,
-mu=mu)
+from muaompc import ldt
 
-def mainT():
-    prefix='bcg'  # basic code generation
-    destdir = sys.argv[1]
-    sys.path.append(destdir + 'install_'+prefix)
-    mpc = import_module(prefix+'.mpc')
-    mpc.generate_mpc_data(data)
-
-def main():
+def mainS():
     prefix='bcg'
     filePath = sys.argv[1]
     destdir = sys.argv[2]
     sys.path.append(os.path.join(destdir, 'install_'+prefix))
     mpc = import_module(prefix+'.mpc')
     mpc.generate_mpc_data(filePath) # + 'regmpc.dat')
+
+def main():
+    codePath = sys.argv[1]
+    datfname = sys.argv[2]
     
+    codegendir = codePath
+    sys.path.append(codegendir)
+    mpc = import_module('src.mpc')
+    mpc.generate_mpc_data(datfname)
+    datname = ldt._get_name(datfname)
+    datadir = os.path.join(codegendir, 'data', datname)
+
 if __name__ == '__main__':
     main()
 
