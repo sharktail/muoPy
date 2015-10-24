@@ -25,6 +25,7 @@ class codeGen(BaseHandler):
     def get(self):
         fileName = self.getLasDatFileName()
         self.prbLoc = self.get_prbfilename()
+        print self.prbLoc
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.dat"], Settings.DAT_FILE_LOCATION + self.prbLoc + "/")
         
@@ -32,7 +33,7 @@ class codeGen(BaseHandler):
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
 #         
         if not fileName:
-            data = 'No files selected.'
+            data = 'No data file selected.'
         else:
             fileReader = open(filePathtoUserDirectory + fileName, "r")
             data = fileReader.read()

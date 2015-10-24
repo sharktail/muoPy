@@ -104,6 +104,7 @@ $(document).ready(
 //	    								}, "json");
 								$form = $('<form></form>');
 								$form.attr('action', '/codegen/datagen');
+								$form.attr('method', 'get');
 								$form.append('<input type="hidden" name="fileName">' + currentFile + '</input>');
 								$form.appendTo('body').submit();
 	    					}
