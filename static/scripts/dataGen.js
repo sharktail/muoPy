@@ -35,25 +35,27 @@ $(document).ready(
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
                 
-				$("#saveButtonId").click( saveFile);
-//					function()
-//						{
-//						    if(currentFile!="")
-//						    	{
-//						    		$.post("/codegen/save",
-//	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
-//	    				       			function(result)
-//		    				       			{
-//		    				       				$("#consoleAreaId").html(result);
-//		    				       			} 
-//	    				      			);    	
-//						    	}
-//						    else
-//						    {
-//						    	alert("Set current file by clicking on the list");
-//    				      	}
-//						}
-//				);
+				//$("#saveButtonId").click( saveFile);
+				$("#saveButtonId").click(
+					function()
+						{
+						    if(currentDatFile!="")
+						    	{
+						    		$.post("/datagen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			} 
+	    				      			);    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
+				
 				$("#executeButtonId").click(
 					function()
 					{
@@ -63,7 +65,7 @@ $(document).ready(
 						    	}
 						else
 						{
-    						$.get("/codegen/execute", { fileName: currentFile, action: "executeForCode"},
+    						$.get("/datagen/execute", { fileName: currentFile, action: "executeForCode"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").html(result);
@@ -144,7 +146,7 @@ function post(path, params, method) {
 function saveFile()
 	{
 		//post("/codegen/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
-		post("/codegen/save", { Data: $("#textAreaId").val(), fileName: currentFile})
+		post("/datagen/save", { Data: $("#textAreaId").val(), fileName: currentDatFile})
 	}
 
 function loadTextArea() 
@@ -185,7 +187,7 @@ function datFileListOnclick()
 	var a = document.getElementById("currentDatFileName");
 	currentDatFile = this.fileName;
     a.innerHTML = "Current Data File Set to:" + currentDatFile;
-    $.post("/codegen/load", { Data: currentDatFile},
+    $.post("/datagen/load", { Data: currentDatFile},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").html(result);

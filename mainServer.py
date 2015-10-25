@@ -240,6 +240,9 @@ class Application(tornado.web.Application):
             (r"/codegen/datagen?", mpcGenerator.Redirect),
             (r"/codegen/execute?", mpcGenerator.FileExecution),
             (r"/datagen/?", dataGenerator.codeGen),
+            (r"/datagen/save?", dataGenerator.Save),
+            (r"/datagen/load?", dataGenerator.Load),
+            (r"/datagen/execute?", dataGenerator.FileExecution),
             (r"/test?", mpcGenerator.codeGen)
         ]
         settings = {

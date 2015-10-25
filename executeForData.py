@@ -13,8 +13,8 @@ def mainS():
     mpc.generate_mpc_data(filePath) # + 'regmpc.dat')
 
 def main():
-    codePath = sys.argv[1]
-    datfname = sys.argv[2]
+    codePath = sys.argv[1] #should be the absolute /path/to/downloads/code
+    datfname = sys.argv[2] #should be path/to/datfile being executed
     
     codegendir = codePath
     sys.path.append(codegendir)
