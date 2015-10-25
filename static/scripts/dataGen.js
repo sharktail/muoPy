@@ -59,13 +59,13 @@ $(document).ready(
 				$("#executeButtonId").click(
 					function()
 					{
-						if(currentFile=="")
+						if(currentDatFile=="")
 						    	{
 						    		alert("Set current file by clicking on the list");
 						    	}
 						else
 						{
-    						$.get("/datagen/execute", { fileName: currentFile, action: "executeForCode"},
+    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").html(result);

@@ -14,6 +14,8 @@ user = "root"
 passwd = "narayan"
 db = "test"#"muoPy"
 
+muoPrefix = "_bcg"
+
 #Logger info
 loggerPath = "loggers/"
 mainLogger = "mainLogger.log"

@@ -3,6 +3,7 @@ import tornado.httpserver
 
 import subprocess
 import json
+import os
 
 import Settings
 import fileHandler
@@ -53,23 +54,27 @@ class FileExecution(BaseHandler):
     def get(self):
         fileName = self.get_argument('fileName')
         action = self.get_argument('action')
-        destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
-        path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
+        #destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
+        path = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        codePath = os.getcwd() + Settings.DOWNLOAD_LOCATION + self.current_user + '/' + self.get_prbfilename() + Settings.muoPrefix +  "/"
+        dataPath = os.getcwd() + "/" + Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION +\
+                    self.get_prbfilename() + "/" 
+
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
-        if action == "executeForCode":
-            msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
+        if action == "executeForData":
+            msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
             f.close()
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
                 f = open(path + "resultantFile", 'a')
                 folderName = fileName.split(".")[0] + "_bcg"
                 msg = subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
-                if msg == 0:
-                    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
+                #if msg == 0:
+                #    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
                 f.close()
 
-        elif action == "executeForData":
+        elif action == "executeForCode":
             self.write("wrong instruction received, probably a javascript error !")
         
         f.close()
