@@ -66,9 +66,10 @@ class FileExecution(BaseHandler):
             msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
             f.close()
             if msg == 0:
-                zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
+                zipPath = codePath + "data" + "/" #fileName.split(".")[0]
+                #zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/" #some problem here
                 f = open(path + "resultantFile", 'a')
-                folderName = fileName.split(".")[0] + "_bcg"
+                folderName = fileName.split(".")[0]
                 msg = subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
                 #if msg == 0:
                 #    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
