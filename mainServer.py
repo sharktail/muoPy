@@ -152,6 +152,15 @@ class Upload(BaseHandler):
         flist = json.dumps(flist)
         self.render("upload.html", arg = var, arg2 = flist)
 
+class logoutHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.clear_cookie("username")
+        #var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
+        #v = json.dumps(var)
+        #self.render("home.html", arg=v)
+        self.render("home.html")
+
 class loginHandler(BaseHandler):
     # Need to define a logout method
     def get(self):
@@ -216,9 +225,10 @@ class makeUser(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if not self.current_user:
-            var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
-            v = json.dumps(var)
-            self.render("home.html", arg=v)
+            #var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
+            #v = json.dumps(var)
+            #self.render("home.html", arg=v)
+            self.render("home.html")
         else:
             self.redirect('/codegen/')
             
@@ -228,6 +238,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r"/?", MainHandler),
             (r"/login/?", MainHandler),
+            (r"/logout/?", logoutHandler),
             (r"/signin/?", loginHandler),
             (r"/signup/?", makeUser),
             (r"/upload/?", Upload),
