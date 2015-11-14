@@ -35,7 +35,7 @@ class Load(BaseHandler):
 class Save(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("You are not supposed to be here")
+        self.write("Get Request received instead of Post")
         
     def post(self):
         #Meant for saving a file from the editor

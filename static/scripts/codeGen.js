@@ -35,25 +35,25 @@ $(document).ready(
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
                 
-				$("#saveButtonId").click( saveFile);
-//					function()
-//						{
-//						    if(currentFile!="")
-//						    	{
-//						    		$.post("/codegen/save",
-//	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
-//	    				       			function(result)
-//		    				       			{
-//		    				       				$("#consoleAreaId").html(result);
-//		    				       			} 
-//	    				      			);    	
-//						    	}
-//						    else
-//						    {
-//						    	alert("Set current file by clicking on the list");
-//    				      	}
-//						}
-//				);
+				$("#saveButtonId").click( //saveFile);
+					function()
+						{
+						    if(currentFile!="")
+						    	{
+						    		$.post("/codegen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			} 
+	    				      			);    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
 				$("#executeButtonId").click(
 					function()
 					{
@@ -145,7 +145,8 @@ function post(path, params, method) {
 function saveFile()
 	{
 		//post("/codegen/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
-		post("/codegen/save", { Data: $("#textAreaId").val(), fileName: currentFile})
+		post("/codegen/save", { Data: $("#textAreaId").val(), fileName: currentFile} 
+		);
 	}
 
 function loadTextArea() 

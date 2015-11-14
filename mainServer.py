@@ -234,6 +234,7 @@ class MainHandler(BaseHandler):
             
 
 class Application(tornado.web.Application):
+    # Creating the URLs for the server
     def __init__(self):
         handlers = [
             (r"/?", MainHandler),
