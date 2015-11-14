@@ -7,6 +7,7 @@ class FileHandler(object):
     def __init__(self, username):
         self.username = username;
         self.listOfFiles = []
+        self.pathToDownloadDir = Settings.DOWNLOAD_LOCATION + self.username + "/"
         self.filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
         
     def createFolder(self):
@@ -52,5 +53,11 @@ class FileHandler(object):
     def zipFolder(self, sourceList, destination):
         print "Here the folders will be zipped"
 
+    def findDownloadLink(self, filename):
+        if os.path.isfile(self.pathToDownloadDir[1:] + filename):
+            return self.pathToDownloadDir + filename
+        else:
+            return None
+        
 if __name__ == "__main__":
     pass

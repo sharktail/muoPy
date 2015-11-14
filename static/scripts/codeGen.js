@@ -180,6 +180,21 @@ function prbFileListOnclick()
 											$("#textAreaId").html(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
+    
+    $.get("/codegen/downloadlink", {fileName: currentFile}, 
+    		function(result)
+    		{
+    			dwnld = document.getElementById("downloadZIPLink");
+    			dwnld.href = result;
+    			if (result==null)
+    				{
+    					dwnld.style.visibility = "hidden";
+    				}
+    			else
+    				{
+    					dwnld.style.visibility = "visible";
+    				}
+    		}, "json");
 }
 
 function datFileListOnclick()

@@ -11,6 +11,15 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("username")
 
+class Downloader(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        fileName = self.get_argument("fileName")
+        fileName = fileName.split(".")[0] + Settings.muoPrefix + ".zip"
+        fH = fileHandler.FileHandler(self.current_user)
+        path = fH.findDownloadLink(fileName)
+        self.write(json.dumps(path))
+
 class Redirect(BaseHandler):
     @tornado.web.authenticated
     def get(self):

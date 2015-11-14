@@ -146,6 +146,7 @@ function post(path, params, method) {
 function saveFile()
 	{
 		//post("/codegen/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
+		//next time try with $.post().. only post() is invoking get request 
 		post("/datagen/save", { Data: $("#textAreaId").val(), fileName: currentDatFile})
 	}
 
