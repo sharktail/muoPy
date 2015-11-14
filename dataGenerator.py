@@ -20,6 +20,15 @@ class BaseHandler(tornado.web.RequestHandler):
         except:
             return
 
+class Downloader(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        fileName = self.get_argument("fileName")
+        fileName = fileName.split(".")[0]
+        fH = fileHandler.FileHandler(self.current_user)
+        path = fH.findDataDownloadLink(fileName = fileName, prbFilename = self.get_prbfilename())
+        self.write(json.dumps(path))
+
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):

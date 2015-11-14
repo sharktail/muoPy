@@ -256,6 +256,7 @@ class Application(tornado.web.Application):
             (r"/datagen/save/?", dataGenerator.Save),
             (r"/datagen/load/?", dataGenerator.Load),
             (r"/datagen/execute/?", dataGenerator.FileExecution),
+            (r"/datagen/downloadlink/?", dataGenerator.Downloader),
             (r"/test?", mpcGenerator.codeGen)
         ]
         settings = {

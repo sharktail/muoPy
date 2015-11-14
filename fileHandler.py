@@ -51,13 +51,34 @@ class FileHandler(object):
             directory = self.filePathtoUserDirectory + fName + '/'
         
     def zipFolder(self, sourceList, destination):
-        print "Here the folders will be zipped"
+        path = Settings.UPLOAD_LOCATION + self.username + '/' 
+        f = open(path + "resultantFile", 'w')
+        msg = subprocess.call(["zip", '-r', destination + ".zip", sourceList], stderr=f, stdout=f)
+        if msg == 0:
+            return destination + ".zip"
+        else:
+            return -1
 
     def findDownloadLink(self, filename):
         if os.path.isfile(self.pathToDownloadDir[1:] + filename):
             return self.pathToDownloadDir + filename
         else:
             return None
+
+    def findDataDownloadLink(self, fileName, prbFilename):
+        path = self.pathToDownloadDir[1:] + prbFilename + Settings.muoPrefix + "/" + "data" + "/"
+        print path
+        if os.path.isdir(path + fileName):
+            if os.path.isfile(path + fileName + ".zip"):
+                return path + fileName + ".zip"
+            else:
+                result = self.zipFolder(path + fileName, path + fileName)
+                if result == -1:
+                    return None
+                else:
+                    return result
+        print "path not found"
+        return None
         
 if __name__ == "__main__":
     pass

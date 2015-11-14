@@ -194,6 +194,20 @@ function datFileListOnclick()
 											$("#textAreaId").html(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
+    $.get("/datagen/downloadlink", {fileName: currentDatFile}, 
+    		function(result)
+    		{
+    			dwnld = document.getElementById("downloadLink");
+    			dwnld.href = result;
+    			if (result==null)
+    				{
+    					dwnld.style.visibility = "hidden";
+    				}
+    			else
+    				{
+    					dwnld.style.visibility = "visible";
+    				}
+    		}, "json");
 }
 
 function loadListOfFiles()
