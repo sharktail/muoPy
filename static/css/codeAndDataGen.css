@@ -74,6 +74,14 @@ body
 	left: -23px; 
 }
 
+.fileTree
+{
+	position: relative;
+	display: list;
+	left: 20px;
+	color: red;
+}
+
 .listItems
 {
 	cursor:pointer;

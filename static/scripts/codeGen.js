@@ -175,16 +175,35 @@ function prbFileListOnclick()
     var a = document.getElementById("currentFileName");
     
     //this is to add the sub division of dat files in tree structure
-    var each = document.createElement("div");
-    //item.setAttribute("class", "listItems");
-    
-    for(var i=0; i <fileTree[this.fileName].length; i++)
+    if(this.showDat == 0)
     	{
-    	    var dd = document.createElement("dd");
-    	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
-    	    each.appendChild(dd);
+	        var each = document.createElement("div");
+	        //each.setAttribute("style", "position: relative; left:20px;"); 
+	        each.setAttribute("class", "fileTree");
+	        
+	        for(var i=0; i <fileTree[this.fileName].length; i++)
+	        	{
+	        	    var dd = document.createElement("dd");
+	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
+	        	    each.appendChild(dd);
+	        	}
+	        this.appendChild(each);
+	        this.showDat = 1;
     	}
-    this.appendChild(each);
+    else if(this.showDat == 1)
+    	{
+    	    //this.find(".fileTree") //Using Jquery
+    	    var fileTree = this.getElementsByClassName("fileTree")[0]; //getElementByClassName returns a list
+    	    fileTree.style.display = "none";
+    	    this.showDat = 2;
+    	}
+    
+    else if(this.showDat == 2)
+    	{
+    	    var fileTree = this.getElementsByClassName("fileTree")[0] //getElementByClassName returns a list
+    	    fileTree.style.display = "block";
+	        this.showDat = 1;
+    	}
     
     currentFile = this.fileName;
     a.innerHTML = "Current File Set to:" + currentFile;
@@ -233,6 +252,7 @@ function loadListOfFiles()
         for(var i=0; i<names.length; i++)
             { 
 	          var item = document.createElement('dt');
+	          item.showDat = 0;
 	          item.fileName = names[i]; //just to carry some data to the onclick function
 	          
         	  if (names[i].split(".").pop()=="prb")
