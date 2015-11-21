@@ -156,9 +156,6 @@ class logoutHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.clear_cookie("username")
-        #var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
-        #v = json.dumps(var)
-        #self.render("home.html", arg=v)
         self.render("home.html")
 
 class loginHandler(BaseHandler):

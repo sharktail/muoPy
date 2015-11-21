@@ -171,7 +171,21 @@ function fileValidate()
 
 function prbFileListOnclick()
 {
+	var fileTree = fnamelist.fileTree;
     var a = document.getElementById("currentFileName");
+    
+    //this is to add the sub division of dat files in tree structure
+    var each = document.createElement("div");
+    //item.setAttribute("class", "listItems");
+    
+    for(var i=0; i <fileTree[this.fileName].length; i++)
+    	{
+    	    var dd = document.createElement("dd");
+    	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
+    	    each.appendChild(dd);
+    	}
+    this.appendChild(each);
+    
     currentFile = this.fileName;
     a.innerHTML = "Current File Set to:" + currentFile;
     $.post("/codegen/load", { Data: currentFile},
@@ -218,13 +232,13 @@ function loadListOfFiles()
         
         for(var i=0; i<names.length; i++)
             { 
-	          var item = document.createElement('li');
-	          item.fileName = names[i];
+	          var item = document.createElement('dt');
+	          item.fileName = names[i]; //just to carry some data to the onclick function
 	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
         		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-        		  	item.setAttribute("class", "listItems");
+        		  	//item.setAttribute("class", "listItems");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	prbFileList.appendChild(item);
         		  }

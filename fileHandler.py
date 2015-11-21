@@ -14,17 +14,36 @@ class FileHandler(object):
         path = Settings.UPLOAD_LOCATION + "/" + self.username
         subprocess.call(["mkdir", path])
     
-    def someFiles(self, fileTypes, additionalPath="", absolutePath=""):
+    def fileTree(self, fileTypes, additionalPath="", branchFileTypes=["*"], branchPath = ""):
+        self.someFiles(fileTypes, additionalPath)
+        datFileLoc = self.filePathtoUserDirectory + branchPath
+        res = {}
+        for each in self.listOfFiles:
+            if os.path.isdir(datFileLoc + each.split(".")[0]) :
+                d = self.someFiles(branchFileTypes, branchPath + each.split(".")[0] + "/", "", response=True)
+                res[each] = d
+            else:
+                res[each] = []
+        return res
+    
+    def someFiles(self, fileTypes, additionalPath="", absolutePath="", response=False):
         #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
         if absolutePath != "":
             path = absolutePath
         else:
             path = self.filePathtoUserDirectory + additionalPath
         
+        res = []
         for name in fileTypes:
             files = glob.glob(path + name)
             for each in files:
-                self.listOfFiles.append(each.split('/')[-1])
+                #self.listOfFiles.append(each.split('/')[-1])
+                res.append(each.split('/')[-1])
+        if response:
+            print res
+            return res
+        else:
+            self.listOfFiles = res
     
     def allFileFolders(self):
         #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'

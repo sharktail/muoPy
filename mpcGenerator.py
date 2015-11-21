@@ -119,16 +119,17 @@ class codeGen(BaseHandler):
         
 #         listOfFiles = []
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
-#         
+     
         if not fileName:
             data = 'No files selected.'
         else:
             fileReader = open(filePathtoUserDirectory + fileName,"r")
             data = fileReader.read()
             
-             
+        fileTree = f.fileTree(["*.prb"], Settings.PRB_FILE_LOCATION, ["*.dat"], Settings.DAT_FILE_LOCATION)
+        
         var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        flist = { "fileTree": fileTree,"fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("codeGen.html", arg = var, arg2 = flist)
