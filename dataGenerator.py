@@ -111,7 +111,7 @@ class codeGen(BaseHandler):
             data = fileReader.read()
                 
         var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentDatFile": ""}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        flist = { "fileNames" : f.listOfFiles, "currentDatFile": "", "currentFile": self.get_prbfilename()}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("dataGen.html", arg = var, arg2 = flist)
@@ -132,7 +132,7 @@ class codeGen(BaseHandler):
         f.someFiles(["*.dat"], absolutePath=datPath)
                  
         var = {"data" : ""}
-        flist = { "fileNames" : f.listOfFiles, "currentDatFile": fname}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        flist = { "fileNames" : f.listOfFiles, "currentDatFile": fname, "currentFile": self.get_prbfilename()}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("dataGen.html", arg = var, arg2 = flist)

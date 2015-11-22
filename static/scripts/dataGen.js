@@ -19,7 +19,7 @@ var currentDatFile = "";
 
 try
 {
-    //currentFile = fnamelist.currentFile;
+    currentFile = fnamelist.currentFile;
 	currentDatFile = fnamelist.currentDatFile;
 }
 catch(err)
