@@ -31,10 +31,16 @@ $(document).ready(
 			{
 			    var a = document.getElementById("currentFileName");
                 a.innerHTML = "Current PRB File Set to:" + currentFile;
-                $("#dataGenPage").slideUp("slow");
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
-                
+                if(currentFile != "")
+                	{
+	                    $.post("/codegen/load", { Data: currentFile},
+		       	 				function(result)
+		       	 				{
+									$("#textAreaId").html(result);
+								}, "json");
+                	}
 				$("#saveButtonId").click( //saveFile);
 					function()
 						{

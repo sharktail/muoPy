@@ -40,7 +40,6 @@ class FileHandler(object):
                 #self.listOfFiles.append(each.split('/')[-1])
                 res.append(each.split('/')[-1])
         if response:
-            print res
             return res
         else:
             self.listOfFiles = res

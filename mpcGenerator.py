@@ -121,7 +121,7 @@ class codeGen(BaseHandler):
         filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
      
         if not fileName:
-            data = 'No files selected.'
+            data = 'No file selected.'
         else:
             fileReader = open(filePathtoUserDirectory + fileName,"r")
             data = fileReader.read()
@@ -129,12 +129,13 @@ class codeGen(BaseHandler):
         fileTree = f.fileTree(["*.prb"], Settings.PRB_FILE_LOCATION, ["*.dat"], Settings.DAT_FILE_LOCATION)
         
         var = {"data" : data}
-        flist = { "fileTree": fileTree,"fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        flist = { "fileTree": fileTree, "fileNames" : f.listOfFiles, "currentFile": ""}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("codeGen.html", arg = var, arg2 = flist)
 
     def post(self):
+        #Method to handle the request when a file is uploaded
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         
@@ -143,14 +144,15 @@ class codeGen(BaseHandler):
         fh.write(fileinfo['body'])
         fh.close()
         
-        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'r').read()
-        data = json.dumps(data)
+        #data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'r').read()
+        #data = json.dumps(data)
         
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.prb"], Settings.PRB_FILE_LOCATION)
-                 
-        var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        fileTree = f.fileTree(["*.prb"], Settings.PRB_FILE_LOCATION, ["*.dat"], Settings.DAT_FILE_LOCATION)
+        
+        var = {"data" : ""}
+        flist = {"fileTree": fileTree, "fileNames" : f.listOfFiles, "currentFile": fname}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("codeGen.html", arg = var, arg2 = flist)

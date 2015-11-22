@@ -19,7 +19,8 @@ var currentDatFile = "";
 
 try
 {
-    currentFile = fnamelist.currentFile;
+    //currentFile = fnamelist.currentFile;
+	currentDatFile = fnamelist.currentDatFile;
 }
 catch(err)
     {
@@ -34,7 +35,14 @@ $(document).ready(
                 $("#dataGenPage").slideUp("slow");
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
-                
+                if(currentDatFile != "")
+            	{
+                    $.post("/datagen/load", { Data: currentDatFile},
+	       	 				function(result)
+	       	 				{
+								$("#textAreaId").html(result);
+							}, "json");
+            	}
 				//$("#saveButtonId").click( saveFile);
 				$("#saveButtonId").click(
 					function()
@@ -90,27 +98,27 @@ $(document).ready(
 //	    					}
 //						}
 //					);
-				$("#previousButtonId").click(
-						function()
-						{
-							if(currentFile=="")
-							    	{
-							    		alert("Set current file by clicking on the list");
-							    	}
-							else
-							{
-	    						$.get("/datagen", { fileName: currentFile, action: "executeForData"},
-	    				       	 				function(result)
-	    				       	 				{
-	    											$("#consoleAreaId").html(result);
-	    											//$("#dataGenPage").html(result);
-	    											$("#codeGenPage").slideDown("slow");
-	    											$("#dataGenPage").slideDown("slow");
-	    											
-	    										}, "json");
-	    					}
-						}
-					);
+//				$("#previousButtonId").click(
+//						function()
+//						{
+//							if(currentFile=="")
+//							    	{
+//							    		alert("Set current file by clicking on the list");
+//							    	}
+//							else
+//							{
+//	    						$.get("/datagen", { fileName: currentFile, action: "executeForData"},
+//	    				       	 				function(result)
+//	    				       	 				{
+//	    											$("#consoleAreaId").html(result);
+//	    											//$("#dataGenPage").html(result);
+//	    											$("#codeGenPage").slideDown("slow");
+//	    											$("#dataGenPage").slideDown("slow");
+//	    											
+//	    										}, "json");
+//	    					}
+//						}
+//					);
 	   		}
 	   		);
 
