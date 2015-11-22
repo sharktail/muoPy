@@ -111,6 +111,7 @@ $(document).ready(
 								$form = $('<form></form>');
 								$form.attr('action', '/codegen/datagen');
 								$form.attr('method', 'get');
+								$form.attr('style', 'visibility:hidden');
 								$form.append('<input name="fileName" value="' + currentFile.split(".")[0] + '">');
 								$form.appendTo('body').submit();
 	    					}
