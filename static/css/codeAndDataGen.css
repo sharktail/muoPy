@@ -82,6 +82,17 @@ body
 	color: red;
 }
 
+.prbList
+{
+	cursor:pointer;
+}
+
+.datList
+{
+	color: #65a9d7;
+	cursor:pointer;
+}
+
 .listItems
 {
 	cursor:pointer;

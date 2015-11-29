@@ -232,6 +232,12 @@ function prbFileListOnclick()
     	}
     
     currentFile = this.fileName;
+    child = document.getElementById("prbFileList").children;
+    for (var i=0; i<child.length; i++)
+    	{
+    	    child[i].className = "prbList";
+    	}
+    this.setAttribute("class", "datList");
     a.innerHTML = "Current File Set to:" + currentFile;
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
@@ -279,6 +285,7 @@ function loadListOfFiles()
             { 
 	          var item = document.createElement('dt');
 	          item.showDat = 0;
+	          item.setAttribute("class", "prbList");
 	          item.fileName = names[i]; //just to carry some data to the onclick function
 	          
         	  if (names[i].split(".").pop()=="prb")
