@@ -125,6 +125,23 @@ $(document).ready(
 //	get("/codegen/datagen", {fileName : currentFile})
 //	}
 
+function redirectToDat()
+{
+	if(currentFile=="")
+	{
+		alert("Set current file by clicking on the list");
+	}
+	else
+	{
+		$form = $('<form></form>');
+		$form.attr('action', '/codegen/datagen');
+		$form.attr('method', 'get');
+		$form.attr('style', 'visibility:hidden');
+		$form.append('<input name="fileName" value="' + currentFile.split(".")[0] + '">');
+		$form.appendTo('body').submit();
+	}
+}
+
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.
 
@@ -191,6 +208,8 @@ function prbFileListOnclick()
 	        for(var i=0; i <fileTree[this.fileName].length; i++)
 	        	{
 	        	    var dd = document.createElement("dd");
+	        	    dd.setAttribute("onclick", "redirectToDat()");
+	        	    dd.setAttribute("class", "datList");
 	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
 	        	    each.appendChild(dd);
 	        	}
