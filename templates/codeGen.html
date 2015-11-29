@@ -18,12 +18,12 @@
 
 <body>
 	
-	 <div id="currentFileName"></div>
+	 <!-- <div id="currentFileName"/> -->
 	 <div id="currentDatFileName"></div>
 	 
 	 <div class="infoContainer">
 	     <div>
-			<form enctype="multipart/form-data" action="/codegen" method="post" onsubmit="return fileValidate()">
+			<form id="fileUploadId" enctype="multipart/form-data" action="/codegen" method="post" onsubmit="return fileValidate()">
 				<span class="btn btn-info active btn-file">
 					<input id="fileInput" type="file" name="filearg"/>
 				</span><br/>

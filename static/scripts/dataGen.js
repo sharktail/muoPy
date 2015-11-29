@@ -31,7 +31,8 @@ $(document).ready(
 		function()
 			{
 			    var a = document.getElementById("currentFileName");
-                a.innerHTML = "Current PRB File Set to:" + currentFile;
+                a.innerHTML = "PRB: " + currentFile;
+                a.style = "color: green";
                 $("#dataGenPage").slideUp("slow");
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
@@ -43,6 +44,14 @@ $(document).ready(
 								$("#textAreaId").html(result);
 							}, "json");
             	}
+                
+                $("#fileUploadId").change(
+                		function()
+                		{
+                			this.submit();
+                		}
+                	);
+                
 				//$("#saveButtonId").click( saveFile);
 				$("#saveButtonId").click(
 					function()
@@ -193,9 +202,15 @@ function prbFileListOnclick()
 
 function datFileListOnclick()
 {
-	var a = document.getElementById("currentDatFileName");
+	//var a = document.getElementById("currentDatFileName");
 	currentDatFile = this.fileName;
-    a.innerHTML = "Current Data File Set to:" + currentDatFile;
+	child = document.getElementById("datFileList").children;
+    for (var i=0; i<child.length; i++)
+	{
+	    child[i].className = "datList";
+	}
+    this.setAttribute("class", "selectedFile");
+    //a.innerHTML = "Current Data File Set to:" + currentDatFile;
     $.post("/datagen/load", { Data: currentDatFile},
 				       	 				function(result)
 				       	 				{
@@ -239,7 +254,7 @@ function loadListOfFiles()
         	  else
         		  {
         		  	item.onclick = datFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-        		  	item.setAttribute("class", "listItems");
+        		  	item.setAttribute("class", "datList");
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	list.appendChild(item);
         		  }
@@ -247,6 +262,18 @@ function loadListOfFiles()
               
             }
     }
+
+function setCSS()
+{
+	child = document.getElementById("datFileList").children;
+	for(var i=0; i<child.length; i++)
+		{
+		    if(child[i].innerHTML==currentDatFile)
+		    	{
+		    	    child[i].className = "selectedFile";
+		    	}
+		}
+}
 
 function toggle_visibility(showId, hideId)
 {
@@ -256,4 +283,5 @@ function toggle_visibility(showId, hideId)
 window.onload = function(){
 loadTextArea();
 loadListOfFiles();
+setCSS();
 }

@@ -29,8 +29,8 @@ catch(err)
 $(document).ready(
 		function()
 			{
-			    var a = document.getElementById("currentFileName");
-                a.innerHTML = "Current PRB File Set to:" + currentFile;
+			    //var a = document.getElementById("currentFileName");
+                //a.innerHTML = "Current PRB File Set to:" + currentFile;
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
                 if(currentFile != "")
@@ -41,6 +41,12 @@ $(document).ready(
 									$("#textAreaId").html(result);
 								}, "json");
                 	}
+                $("#fileUploadId").change(
+                		function()
+                		{
+                			this.submit();
+                		}
+                		);
 				$("#saveButtonId").click( //saveFile);
 					function()
 						{
@@ -196,7 +202,7 @@ function fileValidate()
 function prbFileListOnclick()
 {
 	var fileTree = fnamelist.fileTree;
-    var a = document.getElementById("currentFileName");
+    //var a = document.getElementById("currentFileName");
     
     //this is to add the sub division of dat files in tree structure
     if(this.showDat == 0)
@@ -237,8 +243,8 @@ function prbFileListOnclick()
     	{
     	    child[i].className = "prbList";
     	}
-    this.setAttribute("class", "datList");
-    a.innerHTML = "Current File Set to:" + currentFile;
+    this.setAttribute("class", "selectedFile");
+    //a.innerHTML = "Current File Set to:" + currentFile;
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
@@ -307,6 +313,18 @@ function loadListOfFiles()
             }
     }
 
+function setCSS()
+{
+	child = document.getElementById("prbFileList").children;
+	for(var i=0; i<child.length; i++)
+		{
+		    if(child[i].innerHTML==currentFile)
+		    	{
+		    	    child[i].className = "selectedFile";
+		    	}
+		}
+}
+
 function toggle_visibility(showId, hideId)
 {
     alert("I do nothing right now !!!");
@@ -315,4 +333,5 @@ function toggle_visibility(showId, hideId)
 window.onload = function(){
 loadTextArea();
 loadListOfFiles();
+setCSS();
 }

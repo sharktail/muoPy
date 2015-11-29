@@ -70,7 +70,7 @@ body
 
 .fileList
 {
-	position:relative; 
+	position: relative;
 
 }
 
@@ -82,15 +82,29 @@ body
 	color: red;
 }
 
+.selectedFile
+{
+	cursor:pointer;
+	color: #4e9a06;
+}
+
 .prbList
 {
 	cursor:pointer;
+	color: #204a87;
+}
+.prbList:hover {
+    background: white;
 }
 
 .datList
 {
 	color: #65a9d7;
 	cursor:pointer;
+}
+
+.datList:hover {
+    background: white;
 }
 
 .listItems
