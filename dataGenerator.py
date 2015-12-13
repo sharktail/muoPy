@@ -24,18 +24,24 @@ class Downloader(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         fileName = self.get_argument("fileName")
+        prbfileName = self.get_argument("PRB")
         fileName = fileName.split(".")[0]
         fH = fileHandler.FileHandler(self.current_user)
-        path = fH.findDataDownloadLink(fileName = fileName, prbFilename = self.get_prbfilename())
+        #path = fH.findDataDownloadLink(fileName = fileName, prbFilename = self.get_prbfilename())
+        path = fH.findDataDownloadLink(fileName = fileName, prbFilename = prbfileName)
         self.write(json.dumps(path))
 
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
+        prbfileName = self.get_argument("PRB")
+        self.set_secure_cookie("prbFileName", prbfileName)
         fileName = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'r')
+        #f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
+        #         Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'r')
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
         data = f.read()
+        print data
         data = json.dumps(data)
         self.write(data)
         

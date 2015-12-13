@@ -201,9 +201,9 @@ function fileValidate()
 
 function prbFileListOnclick()
 {
+	currentFile = this.fileName;
 	var fileTree = fnamelist.fileTree;
     //var a = document.getElementById("currentFileName");
-    
     //this is to add the sub division of dat files in tree structure
     if(this.showDat == 0)
     	{
@@ -214,7 +214,11 @@ function prbFileListOnclick()
 	        for(var i=0; i <fileTree[this.fileName].length; i++)
 	        	{
 	        	    var dd = document.createElement("dd");
-	        	    dd.setAttribute("onclick", "redirectToDat()");
+	        	    //Sdd.fileName = fileTree[this.fileName][i];
+	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
+	        	    dd.setAttribute("parentFile", this.fileName);
+	        	    //dd.setAttribute("onclick", "redirectToDat()");
+	        	    dd.setAttribute("onclick", "datFileListOnclick(event, this)");
 	        	    dd.setAttribute("class", "datList");
 	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
 	        	    each.appendChild(dd);
@@ -237,11 +241,22 @@ function prbFileListOnclick()
 	        this.showDat = 1;
     	}
     
-    currentFile = this.fileName;
-    child = document.getElementById("prbFileList").children;
-    for (var i=0; i<child.length; i++)
+//    child = document.getElementById("prbFileList").children;
+//    for (var i=0; i<child.length; i++)
+//    	{
+//    	    child[i].className = "prbList";
+//    	}
+    deselect = document.getElementsByClassName("selectedFile");
+    for(var i=0; i<deselect.length; i++)
     	{
-    	    child[i].className = "prbList";
+    	    if(deselect[i].tagName == "DD")
+    	    	{
+    	    		deselect[i].className = "datList";
+    	    	}
+    	    else if (deselect[i].tagName == "DT")
+    	    	{
+    	    		deselect[i].className = "prbList";
+    	    	}
     	}
     this.setAttribute("class", "selectedFile");
     //a.innerHTML = "Current File Set to:" + currentFile;
@@ -268,17 +283,79 @@ function prbFileListOnclick()
     		}, "json");
 }
 
-function datFileListOnclick()
+//function datFileListOnclick()
+//{
+//	var a = document.getElementById("currentDatFileName");
+//	currentDatFile = this.fileName;
+//    a.innerHTML = "Current Data File Set to:" + currentDatFile;
+//    $.post("/codegen/load", { Data: currentDatFile},
+//				       	 				function(result)
+//				       	 				{
+//											$("#textAreaId").html(result);
+//    										//document.getElementById("textAreaId").innerHTML = result;
+//										}, "json");
+//}
+
+function datFileListOnclick(event, obj)
 {
-	var a = document.getElementById("currentDatFileName");
-	currentDatFile = this.fileName;
-    a.innerHTML = "Current Data File Set to:" + currentDatFile;
-    $.post("/codegen/load", { Data: currentDatFile},
+	//var a = document.getElementById("currentDatFileName");
+	currentDatFile = obj.getAttribute('fileName');
+	currentFile = obj.getAttribute('parentFile');
+	//event.stopPropagation();  //stop event propagation for Mozilla or Chrome
+	
+	if (event.stopPropagation) 
+		{
+	      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+		} 
+	else 
+		{
+	      event.cancelBubble = true; // IE model
+		}
+//	child = document.getElementById("datFileList").children;
+//    for (var i=0; i<child.length; i++)
+//	{
+//	    child[i].className = "datList";
+//	}
+//    this.setAttribute("class", "selectedFile");
+    //a.innerHTML = "Current Data File Set to:" + currentDatFile;
+    deselect = document.getElementsByClassName("selectedFile");
+    for(var i=0; i<deselect.length; i++)
+    	{
+    	    if(deselect[i].tagName == "DD")
+    	    	{
+    	    		deselect[i].className = "datList";
+    	    	}
+    	    else if (deselect[i].tagName == "DT")
+    	    	{
+    	    		deselect[i].className = "prbList";
+    	    	}
+    	}
+	obj.setAttribute("class", "selectedFile");
+	
+	if(currentFile == "")
+		{
+			alert("Prb file not selected");
+		}
+    $.post("/datagen/load", { Data: currentDatFile, PRB: currentFile.split(".")[0]},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").html(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
+    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
+    		function(result)
+    		{
+    			dwnld = document.getElementById("downloadLink");
+    			dwnld.href = result;
+    			if (result==null)
+    				{
+    					dwnld.style.visibility = "hidden";
+    				}
+    			else
+    				{
+    					dwnld.style.visibility = "visible";
+    				}
+    		}, "json");
 }
 
 function loadListOfFiles()
@@ -308,8 +385,6 @@ function loadListOfFiles()
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	list.appendChild(item);
         		  }
-              
-              
             }
     }
 

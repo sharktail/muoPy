@@ -9,8 +9,10 @@ import dbCon
 import fileHandler
 import mpcGenerator
 import dataGenerator
+import loggerHandler
 
 myDb = dbCon.datacon()
+log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
