@@ -350,6 +350,7 @@ function prbFileListOnclick()
     $.get("/codegen/downloadlink", {fileName: currentFile}, 
     		function(result)
     		{
+    			document.getElementById("downloadLink").style.visibility = "hidden";
     			dwnld = document.getElementById("downloadZIPLink");
     			dwnld.href = result;
     			if (result==null)
