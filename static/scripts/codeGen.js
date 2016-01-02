@@ -83,6 +83,45 @@ $(document).ready(
     					}
 					}
 				);
+				
+				//$("#saveButtonId").click( saveFile);
+				$("#saveButtonId").click(
+					function()
+						{
+						    if(currentDatFile!="")
+						    	{
+						    		$.post("/datagen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			} 
+	    				      			);    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
+				
+				$("#executeButtonId").click(
+					function()
+					{
+						if(currentDatFile=="")
+						    	{
+						    		alert("Set current file by clicking on the list");
+						    	}
+						else
+						{
+    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
+    				       	 				function(result)
+    				       	 				{
+    											$("#consoleAreaId").html(result);
+    										}, "json");
+    					}
+					}
+				);
 //				$("#executeDataButtonId").click(
 //						function()
 //						{
@@ -100,6 +139,47 @@ $(document).ready(
 //	    					}
 //						}
 //					);
+				
+				//data btn section
+				//$("#saveButtonId").click( saveFile);
+				$("#dataSaveButtonId").click(
+					function()
+						{
+						    if(currentDatFile!="")
+						    	{
+						    		$.post("/datagen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			} 
+	    				      			);    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
+				
+				$("#dataExecuteButtonId").click(
+					function()
+					{
+						if(currentDatFile=="")
+						    	{
+						    		alert("Set current file by clicking on the list");
+						    	}
+						else
+						{
+    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
+    				       	 				function(result)
+    				       	 				{
+    											$("#consoleAreaId").html(result);
+    										}, "json");
+    					}
+					}
+				);
+				
 				$("#nextButtonId").click(
 						function()
 						{
@@ -281,6 +361,9 @@ function prbFileListOnclick()
     					dwnld.style.visibility = "visible";
     				}
     		}, "json");
+    
+    document.getElementById("executeBtnAreaId").style.display = "block";
+    document.getElementById("dataBtnAreaId").style.display = "None";
 }
 
 //function datFileListOnclick()
@@ -356,6 +439,10 @@ function datFileListOnclick(event, obj)
     					dwnld.style.visibility = "visible";
     				}
     		}, "json");
+    
+    document.getElementById("executeBtnAreaId").style.display = "None";
+    document.getElementById("dataBtnAreaId").style.display = "block";
+    
 }
 
 function loadListOfFiles()
