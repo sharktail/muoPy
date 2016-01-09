@@ -88,15 +88,14 @@ $(document).ready(
 				$("#saveButtonId").click(
 					function()
 						{
-						    if(currentDatFile!="")
+						    if(currentDatFile != "")
 						    	{
 						    		$.post("/datagen/save",
 	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").html(result);
-		    				       			} 
-	    				      			);    	
+		    				       			}, "json");    	
 						    	}
 						    else
 						    {
@@ -152,8 +151,7 @@ $(document).ready(
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").html(result);
-		    				       			} 
-	    				      			);    	
+		    				       			}, "json");    	
 						    	}
 						    else
 						    {
@@ -167,7 +165,7 @@ $(document).ready(
 					{
 						if(currentDatFile=="")
 						    	{
-						    		alert("Set current file by clicking on the list");
+						    		alert("Set current file5 by clicking on the list");
 						    	}
 						else
 						{
@@ -392,7 +390,7 @@ function prbFileListOnclick()
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").html(result);
+											$("#textAreaId").val(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     
@@ -412,8 +410,10 @@ function prbFileListOnclick()
     				}
     		}, "json");
     
-    document.getElementById("executeBtnAreaId").style.display = "block";
-    document.getElementById("dataBtnAreaId").style.display = "None";
+    //document.getElementById("executeBtnAreaId").style.display = "block";
+    //document.getElementById("dataBtnAreaId").style.display = "None";
+    document.getElementById("executeBtnAreaId").style.visibility = "visible";
+    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }
 
 //function datFileListOnclick()
@@ -472,7 +472,7 @@ function datFileListOnclick(event, obj)
     $.post("/datagen/load", { Data: currentDatFile, PRB: currentFile.split(".")[0]},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").html(result);
+											$("#textAreaId").val(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
@@ -490,8 +490,10 @@ function datFileListOnclick(event, obj)
     				}
     		}, "json");
     
-    document.getElementById("executeBtnAreaId").style.display = "None";
-    document.getElementById("dataBtnAreaId").style.display = "block";
+//    document.getElementById("executeBtnAreaId").style.display = "None";
+//    document.getElementById("dataBtnAreaId").style.display = "block";
+    document.getElementById("executeBtnAreaId").style.visibility = "hidden";
+    document.getElementById("dataBtnAreaId").style.visibility = "visible";
     
 }
 

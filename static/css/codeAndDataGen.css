@@ -51,7 +51,7 @@ body
 
 .dataBtnArea
 {
-	display: None;
+	display: block;
 	position: relative;
 	top: 5px;
 }
