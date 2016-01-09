@@ -31,7 +31,12 @@ class Redirect(BaseHandler):
 class createNewFile(BaseHandler):
     @tornado.web.authenticated
     def post(self):
-        name = self.get_argument("fileName")
+        fileName = self.get_argument("fileName")
+        fileName = fileName + '.prb'
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
+                 Settings.PRB_FILE_LOCATION + fileName, 'w')
+        f.close()
+        self.redirect('/codegen/')
 
 class Load(BaseHandler):
     @tornado.web.authenticated
