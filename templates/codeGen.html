@@ -34,7 +34,7 @@
 	    <hr class="line"/>
 	    <div id="newPrbId" class="newPrb" onclick="createNewPrb()">
 		    <form id="createNewPRBId" class="newPRBForm" action="/createNewPRB" method="post" onsubmit="return createFileFormValidation()">
-		    	<input type="text" class="newPRBForm-input" name="fileName" placeholder="File Name">
+		    	<input type="text" class="newPRBForm-input" name="fileName" onclick="propagationStopper(event)" placeholder="File Name">
 		    </form>
 	    </div>
 	    <dl class="fileList" id="prbFileList"> </dl>

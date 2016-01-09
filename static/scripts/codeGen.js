@@ -225,15 +225,39 @@ function createFileFormValidation()
     }
 }
 
+function propagationStopper(event)
+{
+	if (event.stopPropagation) 
+	{
+      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+	} 
+	else 
+	{
+      event.cancelBubble = true; // IE model
+	}
+}
+
 function createNewPrb()
 {
-	createNewPRBId = $("#createNewPRBId");
-	createNewPRBId.css("display", "block");
-	createNewPRBId.animate({ 
-		left: '50px',
-        height: '50px',
-        width: '150px'
-    });
+	var createNewPRBId = $("#createNewPRBId");
+	if (createNewPRBId.css("display") == "none")
+	{
+		createNewPRBId.css("display", "block");
+		createNewPRBId.animate({ 
+			left: '50px',
+	        height: '50px',
+	        width: '150px'
+	    });
+	}
+	else if(createNewPRBId.css("display") == "block")
+	{
+		createNewPRBId.animate({ 
+			left: '0px',
+	        height: '50px',
+	        width: '15px'
+	    });
+		createNewPRBId.css("display", "none");
+	}
 }
 
 function redirectToDat()
