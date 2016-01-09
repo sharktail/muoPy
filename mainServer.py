@@ -245,6 +245,7 @@ class Application(tornado.web.Application):
             (r"/upload/save/?", Save),
             (r"/upload/load/?", Load),
             (r"/upload/execute/?", FileExecution),
+            (r"/createNewPRB/?", mpcGenerator.createNewFile),
             (r"/codegen/?", mpcGenerator.codeGen),
             (r"/codegen/save/?", mpcGenerator.Save),
             (r"/codegen/load/?", mpcGenerator.Load),

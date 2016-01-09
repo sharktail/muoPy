@@ -85,6 +85,30 @@ body
 	position: relative;
 
 }
+.newPrb
+{
+	position: relative;
+	top: -5px;
+	width:30px;
+	height:30px;
+	background-image: url("/static/img/createFile.jpg");
+	background-size: 30px 30px;
+}
+.newPrb:hover
+{
+	box-shadow: 0px 0px 10px #888888;
+}
+
+.newPRBForm
+{
+	display:none;
+	position: relative;
+}
+.newPRBForm-input
+{
+	width:120px;
+	height:30px;
+}
 
 .fileTree
 {

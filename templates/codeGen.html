@@ -32,6 +32,11 @@
 		</div >
 	    <ul class="fileList" id="datFileList"> </ul>
 	    <hr class="line"/>
+	    <div id="newPrbId" class="newPrb" onclick="createNewPrb()">
+		    <form id="createNewPRBId" class="newPRBForm" action="/createNewPRB" method="post" onsubmit="return createFileFormValidation()">
+		    	<input type="text" class="newPRBForm-input" name="fileName" placeholder="File Name">
+		    </form>
+	    </div>
 	    <dl class="fileList" id="prbFileList"> </dl>
 	    <button class="commandBtn btn btn-info active" type="button" id="nextButtonId">Next</button>
 	 </div>

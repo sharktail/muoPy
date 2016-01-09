@@ -28,6 +28,11 @@ class Redirect(BaseHandler):
         self.redirect("/datagen")
         #self.write("success")
 
+class createNewFile(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):
+        name = self.get_argument("fileName")
+
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):

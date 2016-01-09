@@ -211,6 +211,31 @@ $(document).ready(
 //	get("/codegen/datagen", {fileName : currentFile})
 //	}
 
+function createFileFormValidation() 
+{
+    var x = document.forms["createNewPRBId"]["fileName"].value;
+    if (x == null || x == "") 
+    {
+        alert("Name must be filled out");
+        return false;
+    }
+    else
+    {
+        return true;	
+    }
+}
+
+function createNewPrb()
+{
+	createNewPRBId = $("#createNewPRBId");
+	createNewPRBId.css("display", "block");
+	createNewPRBId.animate({ 
+		left: '50px',
+        height: '50px',
+        width: '150px'
+    });
+}
+
 function redirectToDat()
 {
 	if(currentFile=="")
