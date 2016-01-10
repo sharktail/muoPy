@@ -31,6 +31,16 @@ class Downloader(BaseHandler):
         path = fH.findDataDownloadLink(fileName = fileName, prbFilename = prbfileName)
         self.write(json.dumps(path))
 
+class createNewFile(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):
+        fileName = self.get_argument("fileName") + ".dat"
+        prbFileName = self.get_argument("prbFileName")
+        subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName])
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName + "/" + fileName, "w")
+        f.close()
+        self.redirect("/codegen/")
+    
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):

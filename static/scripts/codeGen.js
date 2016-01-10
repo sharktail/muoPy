@@ -258,6 +258,48 @@ function createNewPrb()
 	}
 }
 
+function newDatFile(event, thisObj, prbFileName)
+{
+	if (event.stopPropagation) 
+	{
+      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+	} 
+	else 
+	{
+      event.cancelBubble = true; // IE model
+	}
+	
+	if(thisObj.hasChildNodes())
+	{
+		while( thisObj.hasChildNodes() )
+			{
+				thisObj.removeChild(thisObj.children[0])
+			}
+	}
+	else
+	{
+		$form = $('<form></form>');
+		$form.attr('action', '/datagen/createNewFile');
+		$form.attr('method', 'post');
+		$form.attr('class','newDatFileCreator-form');
+		$form.append('<input style="display:none" name="prbFileName"  value ="' + prbFileName + '">');
+		$form.append('<input class="newDatFileCreator-input" name="fileName" onclick="propagationStopper(event)" placeholder="filename">');
+		$form.keypress(function (e) {
+			  if (e.which == 13) {
+			    $form.submit();
+			    return false;    //<---- Add this line
+			  }
+			});
+		//var obj = document.getElementById("newDatFile" + prbFileName + "Id");
+		//obj.appendChild($form);
+		$(thisObj).append($form);
+		$form.animate({ 
+			left: '-90px'
+	    });
+	}
+	
+}
+
 function redirectToDat()
 {
 	if(currentFile=="")
@@ -510,12 +552,20 @@ function loadListOfFiles()
 	          item.setAttribute("class", "prbList");
 	          item.fileName = names[i]; //just to carry some data to the onclick function
 	          
+	          
+	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-        		  	//item.setAttribute("class", "listItems");
-        		  	item.appendChild(document.createTextNode(names[i]));
-        		  	prbFileList.appendChild(item);
+        		      var newDatFileCreator = document.createElement("div");
+    	              newDatFileCreator.setAttribute("id","newDatFile" + names[i].split(".")[0] + "Id");
+    	              newDatFileCreator.setAttribute("class","newDatFileCreator");
+    	              newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'"+names[i].split(".")[0]+"')");
+    	              
+    	              item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
+    	              //item.setAttribute("class", "listItems");
+    	              item.appendChild(newDatFileCreator);
+    	              item.appendChild(document.createTextNode(names[i]));
+    	              prbFileList.appendChild(item);
         		  }
         	  else
         		  {
