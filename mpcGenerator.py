@@ -28,6 +28,16 @@ class Redirect(BaseHandler):
         self.redirect("/datagen")
         #self.write("success")
 
+class createNewFile(BaseHandler):
+    @tornado.web.authenticated
+    def post(self):
+        fileName = self.get_argument("fileName")
+        fileName = fileName + '.prb'
+        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
+                 Settings.PRB_FILE_LOCATION + fileName, 'w')
+        f.close()
+        self.redirect('/codegen/')
+
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
@@ -54,7 +64,7 @@ class Save(BaseHandler):
                  Settings.PRB_FILE_LOCATION + fileName, 'w')
         f.write(data)
         f.close()
-        self.write("File Saved")
+        self.write(json.dumps("File Saved"))
         #self.redirect('/upload/?fileName=' + fileName)
 
 class FileExecution(BaseHandler):

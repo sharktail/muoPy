@@ -83,6 +83,44 @@ $(document).ready(
     					}
 					}
 				);
+				
+				//$("#saveButtonId").click( saveFile);
+				$("#saveButtonId").click(
+					function()
+						{
+						    if(currentDatFile != "")
+						    	{
+						    		$.post("/datagen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			}, "json");    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
+				
+				$("#executeButtonId").click(
+					function()
+					{
+						if(currentDatFile=="")
+						    	{
+						    		alert("Set current file by clicking on the list");
+						    	}
+						else
+						{
+    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
+    				       	 				function(result)
+    				       	 				{
+    											$("#consoleAreaId").html(result);
+    										}, "json");
+    					}
+					}
+				);
 //				$("#executeDataButtonId").click(
 //						function()
 //						{
@@ -100,6 +138,46 @@ $(document).ready(
 //	    					}
 //						}
 //					);
+				
+				//data btn section
+				//$("#saveButtonId").click( saveFile);
+				$("#dataSaveButtonId").click(
+					function()
+						{
+						    if(currentDatFile!="")
+						    	{
+						    		$.post("/datagen/save",
+	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			function(result)
+		    				       			{
+		    				       				$("#consoleAreaId").html(result);
+		    				       			}, "json");    	
+						    	}
+						    else
+						    {
+						    	alert("Set current file by clicking on the list");
+    				      	}
+						}
+				);
+				
+				$("#dataExecuteButtonId").click(
+					function()
+					{
+						if(currentDatFile=="")
+						    	{
+						    		alert("Set current file5 by clicking on the list");
+						    	}
+						else
+						{
+    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
+    				       	 				function(result)
+    				       	 				{
+    											$("#consoleAreaId").html(result);
+    										}, "json");
+    					}
+					}
+				);
+				
 				$("#nextButtonId").click(
 						function()
 						{
@@ -130,6 +208,97 @@ $(document).ready(
 //{
 //	get("/codegen/datagen", {fileName : currentFile})
 //	}
+
+function createFileFormValidation() 
+{
+    var x = document.forms["createNewPRBId"]["fileName"].value;
+    if (x == null || x == "") 
+    {
+        alert("Name must be filled out");
+        return false;
+    }
+    else
+    {
+        return true;	
+    }
+}
+
+function propagationStopper(event)
+{
+	if (event.stopPropagation) 
+	{
+      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+	} 
+	else 
+	{
+      event.cancelBubble = true; // IE model
+	}
+}
+
+function createNewPrb()
+{
+	var createNewPRBId = $("#createNewPRBId");
+	if (createNewPRBId.css("display") == "none")
+	{
+		createNewPRBId.css("display", "block");
+		createNewPRBId.animate({ 
+			left: '50px',
+	        height: '50px',
+	        width: '150px'
+	    });
+	}
+	else if(createNewPRBId.css("display") == "block")
+	{
+		createNewPRBId.animate({ 
+			left: '0px',
+	        height: '50px',
+	        width: '15px'
+	    });
+		createNewPRBId.css("display", "none");
+	}
+}
+
+function newDatFile(event, thisObj, prbFileName)
+{
+	if (event.stopPropagation) 
+	{
+      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+	} 
+	else 
+	{
+      event.cancelBubble = true; // IE model
+	}
+	
+	if(thisObj.hasChildNodes())
+	{
+		while( thisObj.hasChildNodes() )
+			{
+				thisObj.removeChild(thisObj.children[0])
+			}
+	}
+	else
+	{
+		$form = $('<form></form>');
+		$form.attr('action', '/datagen/createNewFile');
+		$form.attr('method', 'post');
+		$form.attr('class','newDatFileCreator-form');
+		$form.append('<input style="display:none" name="prbFileName"  value ="' + prbFileName + '">');
+		$form.append('<input class="newDatFileCreator-input" name="fileName" onclick="propagationStopper(event)" placeholder="filename">');
+		$form.keypress(function (e) {
+			  if (e.which == 13) {
+			    $form.submit();
+			    return false;    //<---- Add this line
+			  }
+			});
+		//var obj = document.getElementById("newDatFile" + prbFileName + "Id");
+		//obj.appendChild($form);
+		$(thisObj).append($form);
+		$form.animate({ 
+			left: '-90px'
+	    });
+	}
+	
+}
 
 function redirectToDat()
 {
@@ -201,9 +370,9 @@ function fileValidate()
 
 function prbFileListOnclick()
 {
+	currentFile = this.fileName;
 	var fileTree = fnamelist.fileTree;
     //var a = document.getElementById("currentFileName");
-    
     //this is to add the sub division of dat files in tree structure
     if(this.showDat == 0)
     	{
@@ -214,7 +383,11 @@ function prbFileListOnclick()
 	        for(var i=0; i <fileTree[this.fileName].length; i++)
 	        	{
 	        	    var dd = document.createElement("dd");
-	        	    dd.setAttribute("onclick", "redirectToDat()");
+	        	    //Sdd.fileName = fileTree[this.fileName][i];
+	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
+	        	    dd.setAttribute("parentFile", this.fileName);
+	        	    //dd.setAttribute("onclick", "redirectToDat()");
+	        	    dd.setAttribute("onclick", "datFileListOnclick(event, this)");
 	        	    dd.setAttribute("class", "datList");
 	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
 	        	    each.appendChild(dd);
@@ -237,24 +410,36 @@ function prbFileListOnclick()
 	        this.showDat = 1;
     	}
     
-    currentFile = this.fileName;
-    child = document.getElementById("prbFileList").children;
-    for (var i=0; i<child.length; i++)
+//    child = document.getElementById("prbFileList").children;
+//    for (var i=0; i<child.length; i++)
+//    	{
+//    	    child[i].className = "prbList";
+//    	}
+    deselect = document.getElementsByClassName("selectedFile");
+    for(var i=0; i<deselect.length; i++)
     	{
-    	    child[i].className = "prbList";
+    	    if(deselect[i].tagName == "DD")
+    	    	{
+    	    		deselect[i].className = "datList";
+    	    	}
+    	    else if (deselect[i].tagName == "DT")
+    	    	{
+    	    		deselect[i].className = "prbList";
+    	    	}
     	}
     this.setAttribute("class", "selectedFile");
     //a.innerHTML = "Current File Set to:" + currentFile;
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").html(result);
+											$("#textAreaId").val(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     
     $.get("/codegen/downloadlink", {fileName: currentFile}, 
     		function(result)
     		{
+    			document.getElementById("downloadLink").style.visibility = "hidden";
     			dwnld = document.getElementById("downloadZIPLink");
     			dwnld.href = result;
     			if (result==null)
@@ -266,19 +451,92 @@ function prbFileListOnclick()
     					dwnld.style.visibility = "visible";
     				}
     		}, "json");
+    
+    //document.getElementById("executeBtnAreaId").style.display = "block";
+    //document.getElementById("dataBtnAreaId").style.display = "None";
+    document.getElementById("executeBtnAreaId").style.visibility = "visible";
+    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }
 
-function datFileListOnclick()
+//function datFileListOnclick()
+//{
+//	var a = document.getElementById("currentDatFileName");
+//	currentDatFile = this.fileName;
+//    a.innerHTML = "Current Data File Set to:" + currentDatFile;
+//    $.post("/codegen/load", { Data: currentDatFile},
+//				       	 				function(result)
+//				       	 				{
+//											$("#textAreaId").html(result);
+//    										//document.getElementById("textAreaId").innerHTML = result;
+//										}, "json");
+//}
+
+function datFileListOnclick(event, obj)
 {
-	var a = document.getElementById("currentDatFileName");
-	currentDatFile = this.fileName;
-    a.innerHTML = "Current Data File Set to:" + currentDatFile;
-    $.post("/codegen/load", { Data: currentDatFile},
+	//var a = document.getElementById("currentDatFileName");
+	currentDatFile = obj.getAttribute('fileName');
+	currentFile = obj.getAttribute('parentFile');
+	//event.stopPropagation();  //stop event propagation for Mozilla or Chrome
+	
+	if (event.stopPropagation) 
+		{
+	      event.stopPropagation();   //stop event propagation for Mozilla or Chrome
+		} 
+	else 
+		{
+	      event.cancelBubble = true; // IE model
+		}
+//	child = document.getElementById("datFileList").children;
+//    for (var i=0; i<child.length; i++)
+//	{
+//	    child[i].className = "datList";
+//	}
+//    this.setAttribute("class", "selectedFile");
+    //a.innerHTML = "Current Data File Set to:" + currentDatFile;
+    deselect = document.getElementsByClassName("selectedFile");
+    for(var i=0; i<deselect.length; i++)
+    	{
+    	    if(deselect[i].tagName == "DD")
+    	    	{
+    	    		deselect[i].className = "datList";
+    	    	}
+    	    else if (deselect[i].tagName == "DT")
+    	    	{
+    	    		deselect[i].className = "prbList";
+    	    	}
+    	}
+	obj.setAttribute("class", "selectedFile");
+	
+	if(currentFile == "")
+		{
+			alert("Prb file not selected");
+		}
+    $.post("/datagen/load", { Data: currentDatFile, PRB: currentFile.split(".")[0]},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").html(result);
+											$("#textAreaId").val(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
+    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
+    		function(result)
+    		{
+    			dwnld = document.getElementById("downloadLink");
+    			dwnld.href = result;
+    			if (result==null)
+    				{
+    					dwnld.style.visibility = "hidden";
+    				}
+    			else
+    				{
+    					dwnld.style.visibility = "visible";
+    				}
+    		}, "json");
+    
+//    document.getElementById("executeBtnAreaId").style.display = "None";
+//    document.getElementById("dataBtnAreaId").style.display = "block";
+    document.getElementById("executeBtnAreaId").style.visibility = "hidden";
+    document.getElementById("dataBtnAreaId").style.visibility = "visible";
+    
 }
 
 function loadListOfFiles()
@@ -294,12 +552,20 @@ function loadListOfFiles()
 	          item.setAttribute("class", "prbList");
 	          item.fileName = names[i]; //just to carry some data to the onclick function
 	          
+	          
+	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		  	item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-        		  	//item.setAttribute("class", "listItems");
-        		  	item.appendChild(document.createTextNode(names[i]));
-        		  	prbFileList.appendChild(item);
+        		      var newDatFileCreator = document.createElement("div");
+    	              newDatFileCreator.setAttribute("id","newDatFile" + names[i].split(".")[0] + "Id");
+    	              newDatFileCreator.setAttribute("class","newDatFileCreator");
+    	              newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'"+names[i].split(".")[0]+"')");
+    	              
+    	              item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
+    	              //item.setAttribute("class", "listItems");
+    	              item.appendChild(newDatFileCreator);
+    	              item.appendChild(document.createTextNode(names[i]));
+    	              prbFileList.appendChild(item);
         		  }
         	  else
         		  {
@@ -308,8 +574,6 @@ function loadListOfFiles()
         		  	item.appendChild(document.createTextNode(names[i]));
         		  	list.appendChild(item);
         		  }
-              
-              
             }
     }
 

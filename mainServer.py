@@ -9,8 +9,10 @@ import dbCon
 import fileHandler
 import mpcGenerator
 import dataGenerator
+import loggerHandler
 
 myDb = dbCon.datacon()
+log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -243,12 +245,14 @@ class Application(tornado.web.Application):
             (r"/upload/save/?", Save),
             (r"/upload/load/?", Load),
             (r"/upload/execute/?", FileExecution),
+            (r"/createNewPRB/?", mpcGenerator.createNewFile),
             (r"/codegen/?", mpcGenerator.codeGen),
             (r"/codegen/save/?", mpcGenerator.Save),
             (r"/codegen/load/?", mpcGenerator.Load),
             (r"/codegen/datagen/?", mpcGenerator.Redirect),
             (r"/codegen/execute/?", mpcGenerator.FileExecution),
             (r"/codegen/downloadlink/?", mpcGenerator.Downloader),
+            (r"/datagen/createNewFile/?", dataGenerator.createNewFile),
             (r"/datagen/?", dataGenerator.codeGen),
             (r"/datagen/save/?", dataGenerator.Save),
             (r"/datagen/load/?", dataGenerator.Load),
