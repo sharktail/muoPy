@@ -33,6 +33,7 @@
 	    <ul class="fileList" id="datFileList"> </ul>
 	    <hr class="line"/>
 	    <div id="newPrbId" class="newPrb" onclick="createNewPrb()">
+	        +create new prb file
 		    <form id="createNewPRBId" class="newPRBForm" action="/createNewPRB" method="post" onsubmit="return createFileFormValidation()">
 		    	<input type="text" class="newPRBForm-input" name="fileName" onclick="propagationStopper(event)" placeholder="File Name">
 		    </form>

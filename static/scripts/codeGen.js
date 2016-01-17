@@ -243,8 +243,8 @@ function createNewPrb()
 		createNewPRBId.css("display", "block");
 		createNewPRBId.animate({ 
 			left: '50px',
-	        height: '50px',
-	        width: '150px'
+	        height: '30px',
+	        width: '120px'
 	    });
 	}
 	else if(createNewPRBId.css("display") == "block")
