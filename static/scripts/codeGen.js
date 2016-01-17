@@ -269,10 +269,13 @@ function newDatFile(event, thisObj, prbFileName)
       event.cancelBubble = true; // IE model
 	}
 	
-	if(thisObj.hasChildNodes())
+	if(thisObj.childElementCount>0)
 	{
-		while( thisObj.hasChildNodes() )
+		console.log(thisObj);
+		while( thisObj.childElementCount>0 )
 			{
+				console.log(thisObj.firstChild);
+			    console.log(thisObj.lastChild);
 				thisObj.removeChild(thisObj.children[0])
 			}
 	}
@@ -294,7 +297,7 @@ function newDatFile(event, thisObj, prbFileName)
 		//obj.appendChild($form);
 		$(thisObj).append($form);
 		$form.animate({ 
-			left: '-90px'
+			left: '90px'
 	    });
 	}
 	
@@ -380,7 +383,14 @@ function prbFileListOnclick()
 	        //each.setAttribute("style", "position: relative; left:20px;"); 
 	        each.setAttribute("class", "fileTree");
 	        
-	        for(var i=0; i <fileTree[this.fileName].length; i++)
+	        var newDatFileCreator = document.createElement("div");
+            newDatFileCreator.setAttribute("id","newDatFile" + currentFile.split(".")[0] + "Id");
+            newDatFileCreator.innerHTML = "+new .dat file"; //newDatFileCreator
+            newDatFileCreator.setAttribute("class","newDatFileCreator");
+            newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'" + currentFile.split(".")[0] + "')");
+	        each.appendChild(newDatFileCreator);
+	        
+            for(var i=0; i <fileTree[this.fileName].length; i++)
 	        	{
 	        	    var dd = document.createElement("dd");
 	        	    //Sdd.fileName = fileTree[this.fileName][i];
@@ -556,14 +566,15 @@ function loadListOfFiles()
 	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		      var newDatFileCreator = document.createElement("div");
-    	              newDatFileCreator.setAttribute("id","newDatFile" + names[i].split(".")[0] + "Id");
-    	              newDatFileCreator.setAttribute("class","newDatFileCreator");
-    	              newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'"+names[i].split(".")[0]+"')");
+        		      //remove this section once the other way of dat file creation is tested
+//        		      var newDatFileCreator = document.createElement("div");
+//    	              newDatFileCreator.setAttribute("id","newDatFile" + names[i].split(".")[0] + "Id");
+//    	              newDatFileCreator.setAttribute("class","newDatFileCreator");
+//    	              newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'"+names[i].split(".")[0]+"')");
     	              
     	              item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
     	              //item.setAttribute("class", "listItems");
-    	              item.appendChild(newDatFileCreator);
+ //   	              item.appendChild(newDatFileCreator);
     	              item.appendChild(document.createTextNode(names[i]));
     	              prbFileList.appendChild(item);
         		  }
