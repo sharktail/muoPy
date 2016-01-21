@@ -12,7 +12,7 @@ DOWNLOAD_LOCATION = "/static/downloads/"
 host = "localhost"
 user = "root"
 passwd = "narayan"
-db = "test"#"muoPy"
+db = "muoPy"#"muoPy"
 
 muoPrefix = "_bcg"
 
