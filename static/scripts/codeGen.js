@@ -38,7 +38,7 @@ $(document).ready(
 	                    $.post("/codegen/load", { Data: currentFile},
 		       	 				function(result)
 		       	 				{
-									$("#textAreaId").html(result);
+									$("#textAreaId").val(result);
 								}, "json");
                 	}
                 $("#fileUploadId").change(
@@ -56,7 +56,7 @@ $(document).ready(
 	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
 	    				       			function(result)
 		    				       			{
-		    				       				$("#consoleAreaId").html(result);
+		    				       				$("#consoleAreaId").val(result);
 		    				       			} 
 	    				      			);    	
 						    	}
@@ -78,7 +78,7 @@ $(document).ready(
     						$.get("/codegen/execute", { fileName: currentFile, action: "executeForCode"},
     				       	 				function(result)
     				       	 				{
-    											$("#consoleAreaId").html(result);
+    											$("#consoleAreaId").val(result);
     										}, "json");
     					}
 					}
@@ -94,7 +94,7 @@ $(document).ready(
 	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
 	    				       			function(result)
 		    				       			{
-		    				       				$("#consoleAreaId").html(result);
+		    				       				$("#consoleAreaId").val(result);
 		    				       			}, "json");    	
 						    	}
 						    else
@@ -116,7 +116,7 @@ $(document).ready(
     						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
     				       	 				function(result)
     				       	 				{
-    											$("#consoleAreaId").html(result);
+    											$("#consoleAreaId").val(result);
     										}, "json");
     					}
 					}
@@ -150,7 +150,7 @@ $(document).ready(
 	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
 	    				       			function(result)
 		    				       			{
-		    				       				$("#consoleAreaId").html(result);
+		    				       				$("#consoleAreaId").val(result);
 		    				       			}, "json");    	
 						    	}
 						    else
@@ -172,7 +172,7 @@ $(document).ready(
     						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
     				       	 				function(result)
     				       	 				{
-    											$("#consoleAreaId").html(result);
+    											$("#consoleAreaId").val(result);
     										}, "json");
     					}
 					}
