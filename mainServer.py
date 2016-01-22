@@ -11,7 +11,7 @@ import mpcGenerator
 import dataGenerator
 import loggerHandler
 
-myDb = dbCon.datacon()
+
 log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -169,11 +169,12 @@ class loginHandler(BaseHandler):
             self.redirect('/codegen/')
         
     def post(self):
+        myDb = dbCon.datacon()
         username = self.get_argument('username')
         password = md5.md5( self.get_argument('password')).digest()
         #querry = 'Select Password from Users where UserName = %s;'
         querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
-        resp = myDb.fetchOne(querry, (username))
+        resp = myDb.fetchOne(querry, (username,))
         if not resp:
             self.write("Username not found. Forgot username? Ask the admin")
         else:
@@ -188,17 +189,25 @@ class loginHandler(BaseHandler):
 
 class makeUser(BaseHandler):
     def createUser(self):
+        myDb = dbCon.datacon()
+        querry = 'select Password from Users where UserName = %s;'
+        resp = myDb.fetchOne(querry, (self.username,))
+        
+        if resp != None:
+            self.write("Username already exists.")
+            self.finish()
+        
         querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
                      values(%s, %s, %s, %s, %s, %s, %s);'
         resp = myDb.run(querry, (self.username, self.password, self.lastname, self.firstname, self.email, "OVGU", "Magdeburg"))
         if resp:
             try:
-                subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username])
-                subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username + "/datFiles"])
-                subprocess.call(["mkdir", Settings.UPLOAD_LOCATION + self.username + "/prbFiles"])
-                subprocess.call(["mkdir", "."+Settings.DOWNLOAD_LOCATION + self.username])
+                subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.username])
+                subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.username + "/datFiles"])
+                subprocess.call(["mkdir", "-p",Settings.UPLOAD_LOCATION + self.username + "/prbFiles"])
+                subprocess.call(["mkdir", "-p", "."+Settings.DOWNLOAD_LOCATION + self.username])
                 querry = 'select Id from Users where UserName = %s;'
-                resp = myDb.fetchOne(querry, (self.username) )
+                resp = myDb.fetchOne(querry, (self.username,) )
                 UserId = resp[0]
                 querry = 'Insert into AccountInfo(User_Id, Path) Values(%s, %s);'
                 resp = myDb.run(querry, (UserId, Settings.UPLOAD_LOCATION + self.username))

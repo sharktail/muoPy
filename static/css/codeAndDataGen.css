@@ -89,14 +89,13 @@ body
 {
 	position: relative;
 	top: -5px;
-	width:30px;
-	height:30px;
-	background-image: url("/static/img/createFile.jpg");
 	background-size: 30px 30px;
 }
 .newPrb:hover
 {
-	box-shadow: 0px 0px 10px #888888;
+	text-decoration: underline;
+	cursor:pointer;
+	/* box-shadow: 0px 0px 10px #888888; */
 }
 
 .newPRBForm
@@ -113,11 +112,19 @@ body
 .newDatFileCreator
 {
 	position: relative;
-	float: right;
+	color: #204a87;
+	font-weight: normal;
+	/*float: right;
 	width: 20px;
 	height:23px;
-	background-color: red;
+	background-color: red;*/
 }
+.newDatFileCreator:hover
+{
+	text-decoration: underline;
+	cursor:pointer;
+}
+
 
 .newDatFileCreator-form
 {
@@ -132,7 +139,7 @@ body
 	left: -10px;
 	z-index: 2;
 	width:100px;
-	height:20px;
+	height:30px;
 }
 
 .fileTree
@@ -140,7 +147,7 @@ body
 	position: relative;
 	display: list;
 	left: 20px;
-	color: red;
+	/*color: red;*/
 }
 
 .selectedFile

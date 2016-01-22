@@ -1,33 +1,40 @@
 import MySQLdb as sql
 import Settings
-
+from loggerHandler import logger
+log = logger()
 class datacon(object):
     def __init__(self):
         self.db = sql.connect(host = Settings.host, user = Settings.user, passwd = Settings.passwd, db = Settings.db)
-        self.cur = self.db.cursor()
+        #self.cur = self.db.cursor()
         
     def run(self, querry, tup):
         try:
-            self.cur.execute(querry, tup)
+            cur = self.db.cursor()
+            cur.execute(querry, tup)
             self.save()
-        except:
+        except Exception as e:
+            log.writeDebug("Error at dbCon run: " + e.__str__()) 
             self.db.rollback()
             return False
         return True
     
     def fetchAll(self, querry, tup):
         try:
-            self.cur.execute(querry, tup)
-            rows = self.cur.fetchall()
+            cur = self.db.cursor()
+            cur.execute(querry, tup)
+            rows = cur.fetchall()
             return rows
-        except:
+        except Exception as e:
+            log.writeDebug("Error at dbCon fetchAll: " + e.__str__()) 
             return False
     
     def fetchOne(self, querry, tup):
         try:
-            self.cur.execute(querry, tup)
-            return self.cur.fetchone()
-        except:
+            cur = self.db.cursor()
+            cur.execute(querry, tup)
+            return cur.fetchone()
+        except Exception as e:
+            log.writeDebug("Error at dbCon fetchOne: " + e.__str__()) 
             return False
         
     def save(self):
