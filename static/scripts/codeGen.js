@@ -113,7 +113,7 @@ $(document).ready(
 						    	}
 						else
 						{
-    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
+    						$.get("/codegen/execute", { fileName: currentDatFile, action: "executeForData"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").val(result);
