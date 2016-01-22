@@ -11,7 +11,7 @@ import mpcGenerator
 import dataGenerator
 import loggerHandler
 
-myDb = dbCon.datacon()
+
 log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -169,11 +169,12 @@ class loginHandler(BaseHandler):
             self.redirect('/codegen/')
         
     def post(self):
+        myDb = dbCon.datacon()
         username = self.get_argument('username')
         password = md5.md5( self.get_argument('password')).digest()
         #querry = 'Select Password from Users where UserName = %s;'
         querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
-        resp = myDb.fetchOne(querry, (username))
+        resp = myDb.fetchOne(querry, (username,))
         if not resp:
             self.write("Username not found. Forgot username? Ask the admin")
         else:
@@ -188,6 +189,7 @@ class loginHandler(BaseHandler):
 
 class makeUser(BaseHandler):
     def createUser(self):
+        myDb = dbCon.datacon()
         querry = 'select Password from Users where UserName = %s;'
         resp = myDb.fetchOne(querry, (self.username,))
         
