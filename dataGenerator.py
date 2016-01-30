@@ -51,7 +51,6 @@ class Load(BaseHandler):
         #         Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'r')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
         data = f.read()
-        print data
         data = json.dumps(data)
         self.write(data)
         

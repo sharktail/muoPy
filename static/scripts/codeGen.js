@@ -309,116 +309,6 @@ function fileValidate()
 	    		}
 		}
 
-function prbFileListOnclick()
-{
-	currentFile = this.fileName;
-	var fileTree = fnamelist.fileTree;
-    //var a = document.getElementById("currentFileName");
-    //this is to add the sub division of dat files in tree structure
-    if(this.showDat == 0)
-    	{
-	        var each = document.createElement("div");
-	        //each.setAttribute("style", "position: relative; left:20px;"); 
-	        each.setAttribute("class", "fileTree");
-	        
-	        var newDatFileCreator = document.createElement("div");
-            newDatFileCreator.setAttribute("id","newDatFile" + currentFile.split(".")[0] + "Id");
-            newDatFileCreator.innerHTML = "+new .dat file"; //newDatFileCreator
-            newDatFileCreator.setAttribute("class","newDatFileCreator");
-            newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'" + currentFile.split(".")[0] + "')");
-	        each.appendChild(newDatFileCreator);
-	        
-            for(var i=0; i <fileTree[this.fileName].length; i++)
-	        	{
-	        	    var dd = document.createElement("dd");
-	        	    //Sdd.fileName = fileTree[this.fileName][i];
-	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
-	        	    dd.setAttribute("parentFile", this.fileName);
-	        	    //dd.setAttribute("onclick", "redirectToDat()");
-	        	    dd.setAttribute("onclick", "datFileListOnclick(event, this)");
-	        	    dd.setAttribute("class", "datList");
-	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
-	        	    each.appendChild(dd);
-	        	}
-	        this.appendChild(each);
-	        this.showDat = 1;
-    	}
-    else if(this.showDat == 1)
-    	{
-    	    //this.find(".fileTree") //Using Jquery
-    	    var fileTree = this.getElementsByClassName("fileTree")[0]; //getElementByClassName returns a list
-    	    fileTree.style.display = "none";
-    	    this.showDat = 2;
-    	}
-    
-    else if(this.showDat == 2)
-    	{
-    	    var fileTree = this.getElementsByClassName("fileTree")[0] //getElementByClassName returns a list
-    	    fileTree.style.display = "block";
-	        this.showDat = 1;
-    	}
-    
-//    child = document.getElementById("prbFileList").children;
-//    for (var i=0; i<child.length; i++)
-//    	{
-//    	    child[i].className = "prbList";
-//    	}
-    deselect = document.getElementsByClassName("selectedFile");
-    for(var i=0; i<deselect.length; i++)
-    	{
-    	    if(deselect[i].tagName == "DD")
-    	    	{
-    	    		deselect[i].className = "datList";
-    	    	}
-    	    else if (deselect[i].tagName == "DT")
-    	    	{
-    	    		deselect[i].className = "prbList";
-    	    	}
-    	}
-    this.setAttribute("class", "selectedFile");
-    //a.innerHTML = "Current File Set to:" + currentFile;
-    $.post("/codegen/load", { Data: currentFile},
-				       	 				function(result)
-				       	 				{
-											$("#textAreaId").val(result);
-    										//document.getElementById("textAreaId").innerHTML = result;
-										}, "json");
-    
-    $.get("/codegen/downloadlink", {fileName: currentFile}, 
-    		function(result)
-    		{
-    			document.getElementById("downloadLink").style.visibility = "hidden";
-    			dwnld = document.getElementById("downloadZIPLink");
-    			dwnld.href = result;
-    			if (result==null)
-    				{
-    					dwnld.style.visibility = "hidden";
-    				}
-    			else
-    				{
-    					dwnld.style.visibility = "visible";
-    				}
-    		}, "json");
-    
-    //document.getElementById("executeBtnAreaId").style.display = "block";
-    //document.getElementById("dataBtnAreaId").style.display = "None";
-    document.getElementById("executeBtnAreaId").style.visibility = "visible";
-    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
-}
-
-//function datFileListOnclick()
-//{
-//	var a = document.getElementById("currentDatFileName");
-//	currentDatFile = this.fileName;
-//    a.innerHTML = "Current Data File Set to:" + currentDatFile;
-//    $.post("/codegen/load", { Data: currentDatFile},
-//				       	 				function(result)
-//				       	 				{
-//											$("#textAreaId").html(result);
-//    										//document.getElementById("textAreaId").innerHTML = result;
-//										}, "json");
-//}
-
 function datFileListOnclick(event, obj)
 {
 	//var a = document.getElementById("currentDatFileName");
@@ -434,13 +324,7 @@ function datFileListOnclick(event, obj)
 		{
 	      event.cancelBubble = true; // IE model
 		}
-//	child = document.getElementById("datFileList").children;
-//    for (var i=0; i<child.length; i++)
-//	{
-//	    child[i].className = "datList";
-//	}
-//    this.setAttribute("class", "selectedFile");
-    //a.innerHTML = "Current Data File Set to:" + currentDatFile;
+ 
     deselect = document.getElementsByClassName("selectedFile");
     for(var i=0; i<deselect.length; i++)
     	{
@@ -480,11 +364,122 @@ function datFileListOnclick(event, obj)
     				}
     		}, "json");
     
-//    document.getElementById("executeBtnAreaId").style.display = "None";
-//    document.getElementById("dataBtnAreaId").style.display = "block";
     document.getElementById("executeBtnAreaId").style.visibility = "hidden";
     document.getElementById("dataBtnAreaId").style.visibility = "visible";
     
+}
+
+function addDownloadBtn(obj, link)
+{
+	var dwnld = document.createElement("div");
+	if(link == null)
+	{
+		dwnld.setAttribute("class", "noDownload");
+	}
+	else
+	{
+		dwnld.setAttribute("onclick", "location.href='" + link + "'");
+		dwnld.setAttribute("class", "downloadSign");
+	}
+	obj.appendChild(dwnld);
+}
+
+function getDataDownloadLink(currentFile, currentDatFile, obj)
+{
+	var addBtn = function(result){ addDownloadBtn(obj, result);}
+    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
+    		function(result){ addBtn(result);}	
+    		, "json");
+}
+
+function prbFileListOnclick()
+{
+	currentFile = this.fileName;
+	var fileTree = fnamelist.fileTree;
+    //var a = document.getElementById("currentFileName");
+    //this is to add the sub division of dat files in tree structure
+    if(this.showDat == 0)
+    	{
+	        var each = document.createElement("div");
+	        //each.setAttribute("style", "position: relative; left:20px;"); 
+	        each.setAttribute("class", "fileTree");
+	        
+	        var newDatFileCreator = document.createElement("div");
+            newDatFileCreator.setAttribute("id","newDatFile" + currentFile.split(".")[0] + "Id");
+            newDatFileCreator.innerHTML = "+new .dat file"; //newDatFileCreator
+            newDatFileCreator.setAttribute("class","newDatFileCreator");
+            newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'" + currentFile.split(".")[0] + "')");
+	        each.appendChild(newDatFileCreator);
+	        
+            for(var i=0; i <fileTree[this.fileName].length; i++)
+	        	{
+	        	    var dd = document.createElement("dd");
+	        	    getDataDownloadLink(this.fileName, fileTree[this.fileName][i], dd);
+	        	    //Sdd.fileName = fileTree[this.fileName][i];
+	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
+	        	    dd.setAttribute("parentFile", this.fileName);
+	        	    //dd.setAttribute("onclick", "redirectToDat()");
+	        	    dd.setAttribute("onclick", "datFileListOnclick(event, this)");
+	        	    dd.setAttribute("class", "datList");
+	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
+	        	    each.appendChild(dd);
+	        	}
+	        this.appendChild(each);
+	        this.showDat = 1;
+    	}
+    else if(this.showDat == 1)
+    	{
+    	    var fileTree = this.getElementsByClassName("fileTree")[0]; //getElementByClassName returns a list
+    	    fileTree.style.display = "none";
+    	    this.showDat = 2;
+    	}
+    
+    else if(this.showDat == 2)
+    	{
+    	    var fileTree = this.getElementsByClassName("fileTree")[0] //getElementByClassName returns a list
+    	    fileTree.style.display = "block";
+	        this.showDat = 1;
+    	}
+    
+    deselect = document.getElementsByClassName("selectedFile");
+    for(var i=0; i<deselect.length; i++)
+    	{
+    	    if(deselect[i].tagName == "DD")
+    	    	{
+    	    		deselect[i].className = "datList";
+    	    	}
+    	    else if (deselect[i].tagName == "DT")
+    	    	{
+    	    		deselect[i].className = "prbList";
+    	    	}
+    	}
+    this.setAttribute("class", "selectedFile");
+    //a.innerHTML = "Current File Set to:" + currentFile;
+    $.post("/codegen/load", { Data: currentFile},
+				       	 				function(result)
+				       	 				{
+											$("#textAreaId").val(result);
+    										//document.getElementById("textAreaId").innerHTML = result;
+										}, "json");
+    
+    $.get("/codegen/downloadlink", {fileName: currentFile}, 
+    		function(result)
+    		{
+    			document.getElementById("downloadLink").style.visibility = "hidden";
+    			dwnld = document.getElementById("downloadZIPLink");
+    			dwnld.href = result;
+    			if (result==null)
+    				{
+    					dwnld.style.visibility = "hidden";
+    				}
+    			else
+    				{
+    					dwnld.style.visibility = "visible";
+    				}
+    		}, "json");
+    
+    document.getElementById("executeBtnAreaId").style.visibility = "visible";
+    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }
 
 function loadListOfFiles()
@@ -504,15 +499,7 @@ function loadListOfFiles()
 	          
         	  if (names[i].split(".").pop()=="prb")
         		  {
-        		      //remove this section once the other way of dat file creation is tested
-//        		      var newDatFileCreator = document.createElement("div");
-//    	              newDatFileCreator.setAttribute("id","newDatFile" + names[i].split(".")[0] + "Id");
-//    	              newDatFileCreator.setAttribute("class","newDatFileCreator");
-//    	              newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'"+names[i].split(".")[0]+"')");
-    	              
     	              item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-    	              //item.setAttribute("class", "listItems");
- //   	              item.appendChild(newDatFileCreator);
     	              item.appendChild(document.createTextNode(names[i]));
     	              prbFileList.appendChild(item);
         		  }
@@ -536,6 +523,8 @@ function setCSS()
 		    	    child[i].className = "selectedFile";
 		    	}
 		}
+    document.getElementById("executeBtnAreaId").style.visibility = "visible";
+    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }
 
 function toggle_visibility(showId, hideId)
