@@ -171,9 +171,9 @@ body
 	float: right;
 	height: 24px;
 	width: 24px;
-	background-color: red;
-	/*background-image: url("/static/img/download.jpg");
-	background-size: 100% 100%;*/
+	/*background-color: red;*/
+	background-image: url("/static/img/delete.jpg");
+	background-size: 100% 100%;	
 }
 
 .noDownload
