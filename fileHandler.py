@@ -88,13 +88,13 @@ class FileHandler(object):
         print path
         if os.path.isdir(path + fileName):
             if os.path.isfile(path + fileName + ".zip"):
-                return path + fileName + ".zip"
+                return "/" + path + fileName + ".zip"
             else:
                 result = self.zipFolder(path + fileName, path + fileName)
                 if result == -1:
                     return None
                 else:
-                    return result
+                    return "/" + result
         print "path not found"
         return None
         
