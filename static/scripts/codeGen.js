@@ -144,8 +144,8 @@ $(document).ready(
 //	    					}
 //						}
 //					);
-//	   		}
-//	   		);
+	   		}
+	   		);
 
 function createFileFormValidation() 
 {
