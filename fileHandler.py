@@ -35,7 +35,9 @@ class FileHandler(object):
         
         res = []
         for name in fileTypes:
-            files = glob.glob(path + name)
+            #files = glob.glob(path + name)
+            files = sorted(glob.glob(path + name), key=os.path.getmtime, reverse=True)
+
             for each in files:
                 #self.listOfFiles.append(each.split('/')[-1])
                 res.append(each.split('/')[-1])
