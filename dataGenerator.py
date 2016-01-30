@@ -84,7 +84,7 @@ class Save(BaseHandler):
                  Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'w')
         f.write(data)
         f.close()
-        self.write("File Saved")
+        self.write(json.dumps("File Saved"))
         #self.redirect('/upload/?fileName=' + fileName)
 
 class FileExecution(BaseHandler):
