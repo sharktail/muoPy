@@ -83,64 +83,7 @@ $(document).ready(
     					}
 					}
 				);
-				
-				//$("#saveButtonId").click( saveFile);
-				$("#saveButtonId").click(
-					function()
-						{
-						    if(currentDatFile != "")
-						    	{
-						    		$.post("/datagen/save",
-	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
-	    				       			function(result)
-		    				       			{
-		    				       				$("#consoleAreaId").val(result);
-		    				       			}, "json");    	
-						    	}
-						    else
-						    {
-						    	alert("Set current file by clicking on the list");
-    				      	}
-						}
-				);
-				
-				$("#executeButtonId").click(
-					function()
-					{
-						if(currentDatFile=="")
-						    	{
-						    		alert("Set current file by clicking on the list");
-						    	}
-						else
-						{
-    						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
-    				       	 				function(result)
-    				       	 				{
-    											$("#consoleAreaId").val(result);
-    										}, "json");
-    					}
-					}
-				);
-//				$("#executeDataButtonId").click(
-//						function()
-//						{
-//							if(currentFile=="")
-//							    	{
-//							    		alert("Set current file by clicking on the list");
-//							    	}
-//							else
-//							{
-//	    						$.get("/codegen/execute", { fileName: currentDatFile, action: "executeForData"},
-//	    				       	 				function(result)
-//	    				       	 				{
-//	    											$("#consoleAreaId").html(result);
-//	    										}, "json");
-//	    					}
-//						}
-//					);
-				
-				//data btn section
-				//$("#saveButtonId").click( saveFile);
+
 				$("#dataSaveButtonId").click(
 					function()
 						{
@@ -178,36 +121,31 @@ $(document).ready(
 					}
 				);
 				
-				$("#nextButtonId").click(
-						function()
-						{
-							if(currentFile=="")
-							    	{
-							    		alert("Set current file by clicking on the list");
-							    	}
-							else
-							{
-//	    						$.get("/codegen/datagen", { fileName: currentFile, action: "redirect"},
-//	    								function(result)
-//	    								{
-//	    									alert("hello");
-//	    								}, "json");
-								$form = $('<form></form>');
-								$form.attr('action', '/codegen/datagen');
-								$form.attr('method', 'get');
-								$form.attr('style', 'visibility:hidden');
-								$form.append('<input name="fileName" value="' + currentFile.split(".")[0] + '">');
-								$form.appendTo('body').submit();
-	    					}
-						}
-					);
-	   		}
-	   		);
-
-//function prbToDat()
-//{
-//	get("/codegen/datagen", {fileName : currentFile})
-//	}
+//				$("#nextButtonId").click(
+//						function()
+//						{
+//							if(currentFile=="")
+//							    	{
+//							    		alert("Set current file by clicking on the list");
+//							    	}
+//							else
+//							{
+////	    						$.get("/codegen/datagen", { fileName: currentFile, action: "redirect"},
+////	    								function(result)
+////	    								{
+////	    									alert("hello");
+////	    								}, "json");
+//								$form = $('<form></form>');
+//								$form.attr('action', '/codegen/datagen');
+//								$form.attr('method', 'get');
+//								$form.attr('style', 'visibility:hidden');
+//								$form.append('<input name="fileName" value="' + currentFile.split(".")[0] + '">');
+//								$form.appendTo('body').submit();
+//	    					}
+//						}
+//					);
+//	   		}
+//	   		);
 
 function createFileFormValidation() 
 {
