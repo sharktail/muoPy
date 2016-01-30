@@ -349,20 +349,20 @@ function datFileListOnclick(event, obj)
 											$("#textAreaId").val(result);
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
-    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
-    		function(result)
-    		{
-    			dwnld = document.getElementById("downloadLink");
-    			dwnld.href = result;
-    			if (result==null)
-    				{
-    					dwnld.style.visibility = "hidden";
-    				}
-    			else
-    				{
-    					dwnld.style.visibility = "visible";
-    				}
-    		}, "json");
+//    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
+//    		function(result)
+//    		{
+//    			dwnld = document.getElementById("downloadLink");
+//    			dwnld.href = result;
+//    			if (result==null)
+//    				{
+//    					dwnld.style.visibility = "hidden";
+//    				}
+//    			else
+//    				{
+//    					dwnld.style.visibility = "visible";
+//    				}
+//    		}, "json");
     
     document.getElementById("executeBtnAreaId").style.visibility = "hidden";
     document.getElementById("dataBtnAreaId").style.visibility = "visible";
