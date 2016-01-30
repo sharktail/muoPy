@@ -97,6 +97,10 @@ class FileHandler(object):
                     return "/" + result
         print "path not found"
         return None
-        
+     
+    def returnPRBLoc(self, prbFileName):
+        path = os.path.join( Settings.UPLOAD_LOCATION, self.username, Settings.DAT_FILE_LOCATION, prbFileName)
+        return path  
+         
 if __name__ == "__main__":
     pass

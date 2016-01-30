@@ -369,6 +369,31 @@ function datFileListOnclick(event, obj)
     
 }
 
+function deleteBtn(event, currentFile, currentDatFile)
+{
+	propagationStopper(event);
+	$.get("/datagen/delete", {fileName: currentDatFile, prbFileName: currentFile.split(".")[0]},
+			function(result)
+			{ 
+				console.log("res: " + result);
+				if(result == "success")
+				{
+					console.log("suc: " + result);
+					window.location.reload();
+				}
+			});
+}
+
+function addDatfileDeleteBtn(currentFile, currentDatFile, obj)
+{
+	var del = document.createElement("div");
+	del.setAttribute("onclick", "deleteBtn(event, '" + currentFile + "', '" + currentDatFile + "')"); 
+    		
+	del.setAttribute("class", "deleteSign");
+	obj.appendChild(del);
+	
+}
+
 function addDownloadBtn(obj, link)
 {
 	var dwnld = document.createElement("div");
@@ -415,6 +440,7 @@ function prbFileListOnclick()
 	        	{
 	        	    var dd = document.createElement("dd");
 	        	    getDataDownloadLink(this.fileName, fileTree[this.fileName][i], dd);
+	        	    addDatfileDeleteBtn(this.fileName, fileTree[this.fileName][i], dd);
 	        	    //Sdd.fileName = fileTree[this.fileName][i];
 	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
 	        	    dd.setAttribute("parentFile", this.fileName);
