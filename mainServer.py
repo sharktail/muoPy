@@ -261,11 +261,12 @@ class Application(tornado.web.Application):
             (r"/codegen/datagen/?", mpcGenerator.Redirect),
             (r"/codegen/execute/?", mpcGenerator.FileExecution),
             (r"/codegen/downloadlink/?", mpcGenerator.Downloader),
-            (r"/datagen/createNewFile/?", dataGenerator.createNewFile),
+            (r"/datagen/createNewFile/?", dataGenerator.createOrDeleteFile),
             (r"/datagen/?", dataGenerator.codeGen),
             (r"/datagen/save/?", dataGenerator.Save),
             (r"/datagen/load/?", dataGenerator.Load),
             (r"/datagen/execute/?", dataGenerator.FileExecution),
+            (r"/datagen/delete/?", dataGenerator.createOrDeleteFile),
             (r"/datagen/downloadlink/?", dataGenerator.Downloader),
             (r"/test?", mpcGenerator.codeGen)
         ]

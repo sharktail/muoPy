@@ -125,7 +125,6 @@ body
 	cursor:pointer;
 }
 
-
 .newDatFileCreator-form
 {
 	position: relative;
@@ -163,6 +162,42 @@ body
 }
 .prbList:hover {
     background: white;
+}
+
+.deleteSign
+{
+	position: relative;
+	display: inline;
+	float: right;
+	height: 24px;
+	width: 24px;
+	/*background-color: red;*/
+	background-image: url("/static/img/delete.jpg");
+	background-size: 100% 100%;	
+}
+
+.noDownload
+{
+	position: relative;
+	display: inline;
+	float: right;
+	height: 24px;
+	width: 24px;
+	/*background-color: red;*/
+	background-image: url("/static/img/nodownload.png");
+	background-size: 100% 100%;	
+}
+
+.downloadSign
+{
+	position: relative;
+	display: inline;
+	float: right;
+	height: 24px;
+	width: 24px;
+	/*background-color: red;*/
+	background-image: url("/static/img/download.jpg");
+	background-size: 100% 100%;
 }
 
 .datList

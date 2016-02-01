@@ -35,7 +35,9 @@ class FileHandler(object):
         
         res = []
         for name in fileTypes:
-            files = glob.glob(path + name)
+            #files = glob.glob(path + name)
+            files = sorted(glob.glob(path + name), key=os.path.getmtime, reverse=True)
+
             for each in files:
                 #self.listOfFiles.append(each.split('/')[-1])
                 res.append(each.split('/')[-1])
@@ -88,15 +90,19 @@ class FileHandler(object):
         print path
         if os.path.isdir(path + fileName):
             if os.path.isfile(path + fileName + ".zip"):
-                return path + fileName + ".zip"
+                return "/" + path + fileName + ".zip"
             else:
                 result = self.zipFolder(path + fileName, path + fileName)
                 if result == -1:
                     return None
                 else:
-                    return result
+                    return "/" + result
         print "path not found"
         return None
-        
+     
+    def returnPRBLoc(self, prbFileName):
+        path = os.path.join( Settings.UPLOAD_LOCATION, self.username, Settings.DAT_FILE_LOCATION, prbFileName)
+        return path  
+         
 if __name__ == "__main__":
     pass

@@ -31,7 +31,7 @@ class Downloader(BaseHandler):
         path = fH.findDataDownloadLink(fileName = fileName, prbFilename = prbfileName)
         self.write(json.dumps(path))
 
-class createNewFile(BaseHandler):
+class createOrDeleteFile(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         fileName = self.get_argument("fileName") + ".dat"
@@ -40,6 +40,20 @@ class createNewFile(BaseHandler):
         f = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName + "/" + fileName, "w")
         f.close()
         self.redirect("/codegen/")
+    
+    @tornado.web.authenticated
+    def get(self):
+        fileName = self.get_argument("fileName")
+        prbFileName = self.get_argument("prbFileName")
+        fH = fileHandler.FileHandler(self.current_user)
+        path = fH.returnPRBLoc(prbFileName)
+        datPath = os.path.join(path, fileName)
+        print datPath
+        msg = subprocess.call(["rm", datPath])
+        if msg==0:
+            self.write("success")
+        else:
+            self.write("failed")
     
 class Load(BaseHandler):
     @tornado.web.authenticated
@@ -51,7 +65,6 @@ class Load(BaseHandler):
         #         Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'r')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
         data = f.read()
-        print data
         data = json.dumps(data)
         self.write(data)
         
@@ -71,7 +84,7 @@ class Save(BaseHandler):
                  Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'w')
         f.write(data)
         f.close()
-        self.write("File Saved")
+        self.write(json.dumps("File Saved"))
         #self.redirect('/upload/?fileName=' + fileName)
 
 class FileExecution(BaseHandler):
