@@ -122,10 +122,12 @@ $(document).ready(
 						    	}
 						else
 						{
+							var obj = document.getElementsByClassName("selectedFile")[0];
     						$.get("/datagen/execute", { fileName: currentDatFile, action: "executeForData"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").val(result);
+    											getDataDownloadLink(currentFile, currentDatFile, obj);
     										}, "json");
     					}
 					}
@@ -463,6 +465,13 @@ function addDownloadBtn(obj, link)
 	}
 	else
 	{
+		for(var i=0; i<obj.childElementCount; i++)
+		{
+			if(obj.children[i].className == 'noDownload')
+			{
+				obj.removeChild(obj.children[i]);
+			}
+		}
 		dwnld.setAttribute("onclick", "location.href='" + link + "'");
 		dwnld.setAttribute("class", "downloadSign");
 	}
@@ -617,10 +626,7 @@ function loadListOfFiles()
 		  }
 	  else
 		  {
-		  	item.onclick = datFileListOnclick; 
-		  	item.setAttribute("class", "listItems");
-		  	item.appendChild(document.createTextNode(names[i]));
-		  	list.appendChild(item);
+		  	console.log("Non Prb file type received");
 		  }
     }
     setAlreadySelectedFiles()
