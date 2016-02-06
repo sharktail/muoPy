@@ -159,17 +159,31 @@ $(document).ready(
 
 function createFileFormValidation() 
 {
-    var x = document.forms["createNewPRBId"]["fileName"].value;
-    if (x == null || x == "") 
-    {
-        alert("Name must be filled out");
-        return false;
-    }
-    else
-    {
-        return true;	
-    }
+	var x = document.forms["createNewPRBId"]["fileName"].value;
+	if (x == null || x == "") 
+	{
+	    alert("Name must be filled out");
+	    return false;
+	}
+	else
+	{
+	    return true;	
+	}
 }
+
+//function createDatFileFormValidation() 
+//{
+//    var x = document.forms["createNewPRBId"]["fileName"].value;
+//    if (x == null || x == "") 
+//    {
+//        alert("Name must be filled out");
+//        return false;
+//    }
+//    else
+//    {
+//        return true;	
+//    }
+//}
 
 function propagationStopper(event)
 {
@@ -183,23 +197,44 @@ function propagationStopper(event)
 	}
 }
 
-function setCurrentPrbForForm()
+function setFormPrbAndDat(id)
 {
-	var createNewPRBId = document.getElementById("createNewPRBId");
+	var createNewDatId = document.getElementById(id);
 	var inp1 = document.createElement("input");
 	inp1.name = "currentFile";
 	inp1.value = currentFile;
 	inp1.setAttribute("class", "displayNone");
 	
-	var inp2 = document.createElement("input");
-	inp2.name = "currentDatFile";
-	inp2.value = currentDatFile;
-	inp2.setAttribute("class", "displayNone");
-	
-	createNewPRBId.appendChild(inp1);
-	createNewPRBId.appendChild(inp2);
-	return createFileFormValidation();
+	createNewDatId.appendChild(inp1);
+	var x = document.forms[id]["fileName"].value;
+    if (x == null || x == "") 
+    {
+        alert("Name must be filled out");
+        return false;
+    }
+    else
+    {
+        return true;	
+    }
 }
+
+//function setCurrentPrbForForm()
+//{
+//	var createNewPRBId = document.getElementById("createNewPRBId");
+//	var inp1 = document.createElement("input");
+//	inp1.name = "currentFile";
+//	inp1.value = currentFile;
+//	inp1.setAttribute("class", "displayNone");
+//	
+//	var inp2 = document.createElement("input");
+//	inp2.name = "currentDatFile";
+//	inp2.value = currentDatFile;
+//	inp2.setAttribute("class", "displayNone");
+//	
+//	createNewPRBId.appendChild(inp1);
+//	createNewPRBId.appendChild(inp2);
+//	return createFileFormValidation();
+//}
 
 function createNewPrb()
 {
@@ -237,11 +272,8 @@ function newDatFile(event, thisObj, prbFileName)
 	
 	if(thisObj.childElementCount>0)
 	{
-		console.log(thisObj);
 		while( thisObj.childElementCount>0 )
 			{
-				console.log(thisObj.firstChild);
-			    console.log(thisObj.lastChild);
 				thisObj.removeChild(thisObj.children[0])
 			}
 	}
@@ -445,7 +477,7 @@ function getDataDownloadLink(currentFile, currentDatFile, obj)
     		, "json");
 }
 
-function prbFileListOnclick(callback)
+function prbFileListOnclick()
 {
 	currentFile = this.fileName;
 	
@@ -462,7 +494,7 @@ function prbFileListOnclick(callback)
             newDatFileCreator.setAttribute("id","newDatFile" + currentFile.split(".")[0] + "Id");
             newDatFileCreator.innerHTML = "+new .dat file"; //newDatFileCreator
             newDatFileCreator.setAttribute("class","newDatFileCreator");
-            newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'" + currentFile.split(".")[0] + "')");
+            newDatFileCreator.setAttribute("onclick","newDatFile(event, this,'" + currentFile + "')");
 	        each.appendChild(newDatFileCreator);
 	        
             for(var i=0; i <fileTree[this.fileName].length; i++)
@@ -535,12 +567,7 @@ function prbFileListOnclick(callback)
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
-    
-    if(typeof(callback) != "undefined")
-    {
-    	
-    	
-    }
+
 }
 
 function setAlreadySelectedFiles()

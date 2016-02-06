@@ -35,11 +35,13 @@ class createOrDeleteFile(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         fileName = self.get_argument("fileName") + ".dat"
-        prbFileName = self.get_argument("prbFileName")
+        currentFileName = self.get_argument("prbFileName")
+        prbFileName = currentFileName.split(".")[0]
         subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName])
         f = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName + "/" + fileName, "w")
         f.close()
-        self.redirect("/codegen/")
+        self.redirect("/codegen/?currentFile=" + currentFileName \
+                      + "&currentDatFile=" + fileName)
     
     @tornado.web.authenticated
     def get(self):
