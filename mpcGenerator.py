@@ -32,11 +32,13 @@ class createNewFile(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         fileName = self.get_argument("fileName")
+        #currentFile = self.get_argument("currentFile")
+        #currentDatFile = self.get_argument("currentDatFile")
         fileName = fileName + '.prb'
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
                  Settings.PRB_FILE_LOCATION + fileName, 'w')
         f.close()
-        self.redirect('/codegen/')
+        self.redirect('/codegen/?currentFile=' + fileName)
 
 class Load(BaseHandler):
     @tornado.web.authenticated
@@ -139,7 +141,17 @@ class codeGen(BaseHandler):
         fileTree = f.fileTree(["*.prb"], Settings.PRB_FILE_LOCATION, ["*.dat"], Settings.DAT_FILE_LOCATION)
         
         var = {"data" : data}
-        flist = { "fileTree": fileTree, "fileNames" : f.listOfFiles, "currentFile": ""}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        currentFile = ""
+        currentDatFile = ""
+        try:
+            currentFile = self.get_argument("currentFile")
+            try:
+                currentDatFile = self.get_argument("currentDatFile")
+            except:
+                pass
+        except:
+            pass
+        flist = { "fileTree": fileTree, "fileNames" : f.listOfFiles, "currentFile": currentFile, "currentDatFile": currentDatFile}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("codeGen.html", arg = var, arg2 = flist)

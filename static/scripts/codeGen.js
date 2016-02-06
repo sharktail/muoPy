@@ -22,9 +22,18 @@ try
     currentFile = fnamelist.currentFile;
 }
 catch(err)
-    {
+{
         alert("Current File Error: "+ err.message); 
-    }
+}
+
+try
+{
+	currentDatFile = fnamelist.currentDatFile;
+}
+catch(err)
+{
+        alert("Current File Error: "+ err.message); 
+}
 
 $(document).ready(
 		function()
@@ -33,6 +42,7 @@ $(document).ready(
                 //a.innerHTML = "Current PRB File Set to:" + currentFile;
                 //document.getElementById("downloadLink").href = fnamelist.downloadLink;
                 //document.getElementById("downloadJSONLink").href = ;
+				
                 if(currentFile != "")
                 	{
 	                    $.post("/codegen/load", { Data: currentFile},
@@ -171,6 +181,24 @@ function propagationStopper(event)
 	{
       event.cancelBubble = true; // IE model
 	}
+}
+
+function setCurrentPrbForForm()
+{
+	var createNewPRBId = document.getElementById("createNewPRBId");
+	var inp1 = document.createElement("input");
+	inp1.name = "currentFile";
+	inp1.value = currentFile;
+	inp1.setAttribute("class", "displayNone");
+	
+	var inp2 = document.createElement("input");
+	inp2.name = "currentDatFile";
+	inp2.value = currentDatFile;
+	inp2.setAttribute("class", "displayNone");
+	
+	createNewPRBId.appendChild(inp1);
+	createNewPRBId.appendChild(inp2);
+	return createFileFormValidation();
 }
 
 function createNewPrb()
@@ -417,9 +445,10 @@ function getDataDownloadLink(currentFile, currentDatFile, obj)
     		, "json");
 }
 
-function prbFileListOnclick()
+function prbFileListOnclick(callback)
 {
 	currentFile = this.fileName;
+	
 	var fileTree = fnamelist.fileTree;
     //var a = document.getElementById("currentFileName");
     //this is to add the sub division of dat files in tree structure
@@ -506,38 +535,69 @@ function prbFileListOnclick()
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
+    
+    if(typeof(callback) != "undefined")
+    {
+    	
+    	
+    }
+}
+
+function setAlreadySelectedFiles()
+{
+	if(currentFile!=null | currentFile.length>0)
+	{
+		var w = document.getElementsByClassName("prbList");
+		for(var i=0; i<w.length; i++)
+		{
+			if(w[i].fileName == currentFile)
+			{
+				w[i].click();
+				if(currentDatFile!=null | currentDatFile.length>0)
+				{
+					v = document.getElementsByClassName("datList");
+					for(var j=0; j<v.length; j++)
+					{
+						if($(v[j]).attr("fileName") == currentDatFile)
+						{
+							v[j].click();
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 function loadListOfFiles()
-    {
-        var names = fnamelist.fileNames;
-        var list = document.getElementById("datFileList");
-        var prbFileList = document.getElementById("prbFileList");
-        
-        for(var i=0; i<names.length; i++)
-            { 
-	          var item = document.createElement('dt');
-	          item.showDat = 0;
-	          item.setAttribute("class", "prbList");
-	          item.fileName = names[i]; //just to carry some data to the onclick function
-	          
-	          
-	          
-        	  if (names[i].split(".").pop()=="prb")
-        		  {
-    	              item.onclick = prbFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-    	              item.appendChild(document.createTextNode(names[i]));
-    	              prbFileList.appendChild(item);
-        		  }
-        	  else
-        		  {
-        		  	item.onclick = datFileListOnclick; //this function is to make it a method and prevents it from calling the fileListOnclick function itself
-        		  	item.setAttribute("class", "listItems");
-        		  	item.appendChild(document.createTextNode(names[i]));
-        		  	list.appendChild(item);
-        		  }
-            }
+{
+    var names = fnamelist.fileNames;
+    var list = document.getElementById("datFileList");
+    var prbFileList = document.getElementById("prbFileList");
+    
+    for(var i=0; i<names.length; i++)
+    { 
+      var item = document.createElement('dt');
+      item.showDat = 0;
+      item.setAttribute("class", "prbList");
+      item.fileName = names[i];         
+      
+	  if (names[i].split(".").pop()=="prb")
+		  {
+              item.onclick = prbFileListOnclick; 
+              item.appendChild(document.createTextNode(names[i]));
+              prbFileList.appendChild(item);
+		  }
+	  else
+		  {
+		  	item.onclick = datFileListOnclick; 
+		  	item.setAttribute("class", "listItems");
+		  	item.appendChild(document.createTextNode(names[i]));
+		  	list.appendChild(item);
+		  }
     }
+    setAlreadySelectedFiles()
+}
 
 function setCSS()
 {

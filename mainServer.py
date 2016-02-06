@@ -281,7 +281,7 @@ class Application(tornado.web.Application):
 def main():
     applicaton = Application()
     http_server = tornado.httpserver.HTTPServer(applicaton)
-    http_server.listen(80)
+    http_server.listen(8888)
 
     tornado.ioloop.IOLoop.instance().start()
 

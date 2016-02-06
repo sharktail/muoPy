@@ -85,6 +85,12 @@ body
 	position: relative;
 
 }
+
+.displayNone
+{
+	display: none;
+}
+
 .newPrb
 {
 	position: relative;
