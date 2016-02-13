@@ -96,7 +96,7 @@ class FileExecution(BaseHandler):
         action = self.get_argument('action')
         #destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
         path = Settings.UPLOAD_LOCATION + self.current_user + '/'
-        codePath = os.getcwd() + Settings.DOWNLOAD_LOCATION + self.current_user + '/' + self.get_prbfilename() + Settings.muoPrefix +  "/"
+        codePath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/' + self.get_prbfilename() + Settings.muoPrefix +  "/"
         dataPath = os.getcwd() + "/" + Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION +\
                     self.get_prbfilename() + "/" 
 

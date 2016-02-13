@@ -458,23 +458,26 @@ function addDatfileDeleteBtn(currentFile, currentDatFile, obj)
 function addDownloadBtn(obj, link)
 {
 	var dwnld = document.createElement("div");
+	
+	for(var i=0; i<obj.childElementCount; i++)
+	{
+		if(obj.children[i].className == 'noDownload' | obj.children[i].className == 'downloadSign')
+		{
+			obj.removeChild(obj.children[i]);
+		}
+	}
+	
 	if(link == null)
 	{
 		dwnld.setAttribute("class", "noDownload");
 	}
 	else
 	{
-		for(var i=0; i<obj.childElementCount; i++)
-		{
-			if(obj.children[i].className == 'noDownload')
-			{
-				obj.removeChild(obj.children[i]);
-			}
-		}
 		dwnld.setAttribute("onclick", "location.href='" + link + "'");
 		dwnld.setAttribute("class", "downloadSign");
 	}
-	obj.appendChild(dwnld);
+	$(obj).prepend(dwnld);
+	//obj.appendChild(dwnld);
 }
 
 function getDataDownloadLink(currentFile, currentDatFile, obj)
@@ -626,9 +629,34 @@ function addPrbfileDeleteBtn(Filename, obj)
 	obj.appendChild(del);
 }
 
+function addPrbDownloadBtn(obj, link)
+{
+	var dwnld = document.createElement("div");
+	
+	for(var i=0; i<obj.childElementCount; i++)
+	{
+		if(obj.children[i].className == 'noDownload' | obj.children[i].className == 'downloadSign')
+		{
+			obj.removeChild(obj.children[i]);
+		}
+	}
+	
+	if(link == null)
+	{
+		dwnld.setAttribute("class", "noDownload");
+	}
+	else
+	{
+		dwnld.setAttribute("onclick", "location.href='" + link + "'");
+		dwnld.setAttribute("class", "downloadSign");
+	}
+	$(obj).prepend(dwnld);
+	//obj.appendChild(dwnld);
+}
+
 function getPrbDownloadLink(Filename, obj)
 {
-	var addBtn = function(result){ addDownloadBtn(obj, result);}
+	var addBtn = function(result){ addPrbDownloadBtn(obj, result);}
     $.get("/codegen/downloadlink", {fileName: Filename}, 
     		function(result){ addBtn(result);}	
     		, "json");
@@ -649,9 +677,9 @@ function loadListOfFiles()
       
 	  if (names[i].split(".").pop()=="prb")
 	  {
-			getPrbDownloadLink(names[i], item);
-			addPrbfileDeleteBtn(names[i], item);
-			item.onclick = prbFileListOnclick; 
+		  	getPrbDownloadLink(names[i], item);
+		  	addPrbfileDeleteBtn(names[i], item);
+			item.onclick = prbFileListOnclick;
 			item.appendChild(document.createTextNode(names[i]));
 			prbFileList.appendChild(item);
 	  }
@@ -665,14 +693,14 @@ function loadListOfFiles()
 
 function setCSS()
 {
-	child = document.getElementById("prbFileList").children;
-	for(var i=0; i<child.length; i++)
-		{
-		    if(child[i].innerHTML==currentFile)
-		    	{
-		    	    child[i].className = "selectedFile";
-		    	}
-		}
+//	child = document.getElementById("prbFileList").children;
+//	for(var i=0; i<child.length; i++)
+//		{
+//		    if(child[i].innerHTML==currentFile)
+//		    	{
+//		    	    child[i].className = "selectedFile";
+//		    	}
+//		}
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }

@@ -97,7 +97,7 @@ class FileExecution(BaseHandler):
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
                 f = open(path + "resultantFile", 'a')
-                folderName = fileName.split(".")[0] + "_bcg"
+                folderName = fileName.split(".")[0] + Settings.muoPrefix
                 msg = subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
                 if msg == 0:
                     subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
