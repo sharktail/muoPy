@@ -558,21 +558,21 @@ function prbFileListOnclick()
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     
-    $.get("/codegen/downloadlink", {fileName: currentFile}, 
-    		function(result)
-    		{
-    			document.getElementById("downloadLink").style.visibility = "hidden";
-    			dwnld = document.getElementById("downloadZIPLink");
-    			dwnld.href = result;
-    			if (result==null)
-    				{
-    					dwnld.style.visibility = "hidden";
-    				}
-    			else
-    				{
-    					dwnld.style.visibility = "visible";
-    				}
-    		}, "json");
+//    $.get("/codegen/downloadlink", {fileName: currentFile}, 
+//    		function(result)
+//    		{
+//    			document.getElementById("downloadLink").style.visibility = "hidden";
+//    			dwnld = document.getElementById("downloadZIPLink");
+//    			dwnld.href = result;
+//    			if (result==null)
+//    				{
+//    					dwnld.style.visibility = "hidden";
+//    				}
+//    			else
+//    				{
+//    					dwnld.style.visibility = "visible";
+//    				}
+//    		}, "json");
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
@@ -605,6 +605,14 @@ function setAlreadySelectedFiles()
 	}
 }
 
+function getPrbDownloadLink(Filename, obj)
+{
+	var addBtn = function(result){ addDownloadBtn(obj, result);}
+    $.get("/codegen/downloadlink", {fileName: Filename}, 
+    		function(result){ addBtn(result);}	
+    		, "json");
+}
+
 function loadListOfFiles()
 {
     var names = fnamelist.fileNames;
@@ -620,6 +628,7 @@ function loadListOfFiles()
       
 	  if (names[i].split(".").pop()=="prb")
 		  {
+		  	  getPrbDownloadLink(names[i], item);
               item.onclick = prbFileListOnclick; 
               item.appendChild(document.createTextNode(names[i]));
               prbFileList.appendChild(item);
