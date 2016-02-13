@@ -99,7 +99,20 @@ class FileHandler(object):
                     return "/" + result
         print "path not found"
         return None
-     
+    
+    def deletePrbAndDat(self, prbFileName=None):
+        if not prbFileName:
+            return
+        prbFilePath = prbFileName.split(".")[0]
+        path = os.path.join( Settings.UPLOAD_LOCATION, self.username, Settings.DAT_FILE_LOCATION, prbFilePath)
+        prbFile = os.path.join(self.filePathtoUserDirectory, Settings.PRB_FILE_LOCATION, prbFileName)
+        try:
+            subprocess.call(["rm", "-rf", path])
+            subprocess.call(["rm",  prbFile])
+            return 0
+        except:
+            return -1
+    
     def returnPRBLoc(self, prbFileName):
         path = os.path.join( Settings.UPLOAD_LOCATION, self.username, Settings.DAT_FILE_LOCATION, prbFileName)
         return path  

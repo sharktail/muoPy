@@ -28,7 +28,20 @@ class Redirect(BaseHandler):
         self.redirect("/datagen")
         #self.write("success")
 
-class createNewFile(BaseHandler):
+class createOrDeleteFile(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        fileName = self.get_argument("fileName")
+        if fileName.split(".").__len__()==1:
+            fileName = fileName + ".prb"
+        fH = fileHandler.FileHandler(self.current_user)
+        msg = fH.deletePrbAndDat(fileName)
+            
+        if msg==0:
+            self.write("success")
+        else:
+            self.write("failed")
+    
     @tornado.web.authenticated
     def post(self):
         fileName = self.get_argument("fileName")

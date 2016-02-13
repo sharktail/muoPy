@@ -437,7 +437,6 @@ function deleteBtn(event, currentFile, currentDatFile)
 	$.get("/datagen/delete", {fileName: currentDatFile, prbFileName: currentFile.split(".")[0]},
 			function(result)
 			{ 
-				console.log("res: " + result);
 				if(result == "success")
 				{
 					console.log("suc: " + result);
@@ -489,7 +488,6 @@ function getDataDownloadLink(currentFile, currentDatFile, obj)
 function prbFileListOnclick()
 {
 	currentFile = this.fileName;
-	
 	var fileTree = fnamelist.fileTree;
     //var a = document.getElementById("currentFileName");
     //this is to add the sub division of dat files in tree structure
@@ -605,6 +603,29 @@ function setAlreadySelectedFiles()
 	}
 }
 
+function deletePrbBtn(event, Filename)
+{
+	propagationStopper(event);
+	$.get("/codegen/delete", {fileName: Filename},
+			function(result)
+			{ 
+				console.log("res: " + result);
+				if(result == "success")
+				{
+					console.log("suc: " + result);
+					window.location.replace("/codegen/");
+				}
+			});
+}
+
+function addPrbfileDeleteBtn(Filename, obj)
+{
+	var del = document.createElement("div");
+	del.setAttribute("onclick", "deletePrbBtn(event, '" + Filename + "')"); 
+	del.setAttribute("class", "deleteSign");
+	obj.appendChild(del);
+}
+
 function getPrbDownloadLink(Filename, obj)
 {
 	var addBtn = function(result){ addDownloadBtn(obj, result);}
@@ -627,16 +648,17 @@ function loadListOfFiles()
       item.fileName = names[i];         
       
 	  if (names[i].split(".").pop()=="prb")
-		  {
-		  	  getPrbDownloadLink(names[i], item);
-              item.onclick = prbFileListOnclick; 
-              item.appendChild(document.createTextNode(names[i]));
-              prbFileList.appendChild(item);
-		  }
+	  {
+			getPrbDownloadLink(names[i], item);
+			addPrbfileDeleteBtn(names[i], item);
+			item.onclick = prbFileListOnclick; 
+			item.appendChild(document.createTextNode(names[i]));
+			prbFileList.appendChild(item);
+	  }
 	  else
-		  {
+	  {
 		  	console.log("Non Prb file type received");
-		  }
+	  }
     }
     setAlreadySelectedFiles()
 }
