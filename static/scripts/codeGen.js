@@ -656,7 +656,7 @@ function addPrbDownloadBtn(obj, link)
 
 function getPrbDownloadLink(Filename, obj)
 {
-	var addBtn = function(result){ addPrbDownloadBtn(obj, result);}
+	var addBtn = function(result){ addDownloadBtn(obj, result);}
     $.get("/codegen/downloadlink", {fileName: Filename}, 
     		function(result){ addBtn(result);}	
     		, "json");

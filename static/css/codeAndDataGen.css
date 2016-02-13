@@ -40,9 +40,19 @@ body
 
 .editor 
 {
+	position: relative;
 	float: right;
+	top: -80px;
 	padding-right: 20px;
 	width: 75%;
+}
+
+.buttons
+{
+	position: relative;
+	left: -535px;
+	float: left;
+	width: 100%;
 }
 
 .executeBtnArea
@@ -54,7 +64,6 @@ body
 {
 	display: block;
 	position: relative;
-	top: 5px;
 }
 
 .textContainer 
@@ -62,7 +71,7 @@ body
 	position: relative;
 	padding-right: 10px;
 	float: left; 
-	top: 20px;
+	top: 40px;
 	height: 500px;
 	width: 400px;
 	border-top: none;
@@ -75,7 +84,7 @@ body
 {
 	display: block;
 	position:relative;
-	float: left;
+	float: right;
 	top: 20px;
 	left:20px;
 	margin-right:3px;
