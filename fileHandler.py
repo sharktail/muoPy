@@ -1,6 +1,7 @@
 import Settings
 import glob
 import subprocess
+import shutil 
 import os
 
 class FileHandler(object):
@@ -73,11 +74,12 @@ class FileHandler(object):
     def zipFolder(self, sourceList, destination):
         path = Settings.UPLOAD_LOCATION + self.username + '/' 
         f = open(path + "resultantFile", 'w')
-        msg = subprocess.call(["zip", '-r', destination + ".zip", sourceList], stderr=f, stdout=f)
-        if msg == 0:
-            return destination + ".zip"
-        else:
+        try:
+	    msg = shutil.make_archive(destination, 'zip', root_dir=sourceList, base_dir='.')
+        except OSError:
             return -1
+        else:
+            return destination + ".zip"
 
     def findDownloadLink(self, filename):
         if os.path.isfile(self.pathToDownloadDir[1:] + filename):

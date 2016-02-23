@@ -2,6 +2,7 @@ import tornado.web
 import tornado.httpserver
 
 import subprocess
+import shutil
 import json
 
 import Settings
@@ -98,8 +99,11 @@ class FileExecution(BaseHandler):
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
                 f = open(path + "resultantFile", 'a')
                 folderName = fileName.split(".")[0] + Settings.muoPrefix
-                msg = subprocess.call(["zip", '-r', zipPath + folderName + ".zip", zipPath + folderName], stderr=f, stdout=f)
-                if msg == 0:
+                try:
+                    zipfile = shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
+                except OSError:
+                    raise OSError  # FIXME: raise your own error
+                else:
                     subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
                 f.close()
 
