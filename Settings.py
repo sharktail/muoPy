@@ -11,7 +11,7 @@ PRB_FILE_LOCATION = "prbFiles/"
 DOWNLOAD_LOCATION = "/static/downloads/"
 host = "localhost"
 user = "root"
-passwd = "narayan"
+passwd = ""
 db = "muoPy"#"muoPy"
 
 muoPrefix = "_bcg"
@@ -19,3 +19,5 @@ muoPrefix = "_bcg"
 #Logger info
 loggerPath = "loggers/"
 mainLogger = "mainLogger.log"
+
+portNumber = 80
