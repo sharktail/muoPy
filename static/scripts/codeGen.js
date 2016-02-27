@@ -85,10 +85,12 @@ $(document).ready(
 						    	}
 						else
 						{
+							var obj = document.getElementsByClassName("selectedFile")[0];
     						$.get("/codegen/execute", { fileName: currentFile, action: "executeForCode"},
     				       	 				function(result)
     				       	 				{
     											$("#consoleAreaId").val(result);
+    											getPrbDownloadLink(currentFile, obj);
     										}, "json");
     					}
 					}

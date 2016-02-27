@@ -7,6 +7,9 @@ import json
 
 import Settings
 import fileHandler
+import loggerHandler
+
+log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -90,26 +93,28 @@ class FileExecution(BaseHandler):
         action = self.get_argument('action')
         destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
         path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
-        f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForCode":
+            f = open(path + "resultantFile", 'w')
             msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
             f.close()
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
-                f = open(path + "resultantFile", 'a')
+                #f = open(path + "resultantFile", 'a')
                 folderName = fileName.split(".")[0] + Settings.muoPrefix
                 try:
                     zipfile = shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
                 except OSError:
-                    raise OSError  # FIXME: raise your own error
-                else:
-                    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
-                f.close()
+                    log.writeDebug("Error in zipping file")
+            else:
+                subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
+            #f.close()
 
         elif action == "executeForData":
             self.write("wrong instruction received, probably a javascript error !")
         
+        f = open(path + "resultantFile", 'a')
+        f.write("\n End of Prb File " + fileName + " Execution")
         f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()
