@@ -176,7 +176,8 @@ class loginHandler(BaseHandler):
         querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
         resp = myDb.fetchOne(querry, (username,))
         if not resp:
-            self.write("Username not found. Forgot username? Ask the admin")
+            self.render("home.html", arg = {"msg":"Username not found. Forgot username? Ask the admin"})
+            #self.write("Username not found. Forgot username? Ask the admin")
         else:
             dBpass = resp[0]
             #dBPathToDirectory = resp[1]
@@ -185,7 +186,7 @@ class loginHandler(BaseHandler):
                 self.redirect('/codegen/')
                 #self.render("index.html", username = username)
             else:
-                self.write("Wrong Password. Forgot password? Ask the admin")
+                self.render("home.html", arg = {"msg":"Wrong Password"})
 
 class makeUser(BaseHandler):
     def createUser(self):
@@ -236,7 +237,7 @@ class MainHandler(BaseHandler):
             #var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
             #v = json.dumps(var)
             #self.render("home.html", arg=v)
-            self.render("home.html")
+            self.render("home.html", arg=None)
         else:
             self.redirect('/codegen/')
             

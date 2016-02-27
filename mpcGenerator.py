@@ -107,6 +107,7 @@ class FileExecution(BaseHandler):
                 except OSError:
                     log.writeDebug("Error in zipping file")
             else:
+                log.writeDebug("Prb File exucation caused error in shell")
                 subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
             #f.close()
 
@@ -114,7 +115,7 @@ class FileExecution(BaseHandler):
             self.write("wrong instruction received, probably a javascript error !")
         
         f = open(path + "resultantFile", 'a')
-        f.write("\n End of Prb File " + fileName + " Execution")
+        f.write("End of Prb File " + fileName + " Execution")
         f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()

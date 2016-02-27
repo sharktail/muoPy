@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
-
+	{% autoescape None %}
+    <script>
+		var arg = {{arg}};
+		if (arg.msg != null)
+			{
+				alert(arg.msg);
+			}
+	</script>
 	<meta charset="utf-8">
 	<script src="/static/scripts/homePage.js" type="application/javascript"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
