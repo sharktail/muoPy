@@ -401,7 +401,7 @@ function datFileListOnclick(event, obj)
     	    		deselect[i].className = "prbList";
     	    	}
     	}
-	obj.setAttribute("class", "selectedFile");
+	obj.setAttribute("class", "selectedFile datEmWidth");
 	
 	if(currentFile == "")
 		{
@@ -679,10 +679,15 @@ function loadListOfFiles()
       
 	  if (names[i].split(".").pop()=="prb")
 	  {
+		  	var prbText = document.createElement("span");
+			prbText.setAttribute("class", "prbList-filename");
+			prbText.innerHTML = names[i];
 		  	getPrbDownloadLink(names[i], item);
 		  	addPrbfileDeleteBtn(names[i], item);
 			item.onclick = prbFileListOnclick;
-			item.appendChild(document.createTextNode(names[i]));
+			
+			//item.appendChild(document.createTextNode(names[i]));
+			item.appendChild(prbText);
 			prbFileList.appendChild(item);
 	  }
 	  else
@@ -695,14 +700,6 @@ function loadListOfFiles()
 
 function setCSS()
 {
-//	child = document.getElementById("prbFileList").children;
-//	for(var i=0; i<child.length; i++)
-//		{
-//		    if(child[i].innerHTML==currentFile)
-//		    	{
-//		    	    child[i].className = "selectedFile";
-//		    	}
-//		}
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 }
