@@ -3,7 +3,7 @@
 install_*/*
 
 # Local configuration files
-Settings.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
