@@ -407,30 +407,13 @@ function datFileListOnclick(event, obj)
 		{
 			alert("Prb file not selected");
 		}
+	document.getElementById("executeBtnAreaId").style.visibility = "hidden";
+    document.getElementById("dataBtnAreaId").style.visibility = "visible";
     $.post("/datagen/load", { Data: currentDatFile, PRB: currentFile.split(".")[0]},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").val(result);
-    										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
-//    $.get("/datagen/downloadlink", {fileName: currentDatFile, PRB: currentFile.split(".")[0]}, 
-//    		function(result)
-//    		{
-//    			dwnld = document.getElementById("downloadLink");
-//    			dwnld.href = result;
-//    			if (result==null)
-//    				{
-//    					dwnld.style.visibility = "hidden";
-//    				}
-//    			else
-//    				{
-//    					dwnld.style.visibility = "visible";
-//    				}
-//    		}, "json");
-    
-    document.getElementById("executeBtnAreaId").style.visibility = "hidden";
-    document.getElementById("dataBtnAreaId").style.visibility = "visible";
-    
 }
 
 function deleteBtn(event, currentFile, currentDatFile)
@@ -441,7 +424,6 @@ function deleteBtn(event, currentFile, currentDatFile)
 			{ 
 				if(result == "success")
 				{
-					console.log("suc: " + result);
 					window.location.reload();
 				}
 			});
@@ -561,22 +543,6 @@ function prbFileListOnclick()
     										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     
-//    $.get("/codegen/downloadlink", {fileName: currentFile}, 
-//    		function(result)
-//    		{
-//    			document.getElementById("downloadLink").style.visibility = "hidden";
-//    			dwnld = document.getElementById("downloadZIPLink");
-//    			dwnld.href = result;
-//    			if (result==null)
-//    				{
-//    					dwnld.style.visibility = "hidden";
-//    				}
-//    			else
-//    				{
-//    					dwnld.style.visibility = "visible";
-//    				}
-//    		}, "json");
-    
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
     document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 
@@ -695,13 +661,17 @@ function loadListOfFiles()
 		  	console.log("Non Prb file type received");
 	  }
     }
-    setAlreadySelectedFiles()
+    setAlreadySelectedFiles();
 }
 
 function setCSS()
 {
-    document.getElementById("executeBtnAreaId").style.visibility = "visible";
-    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
+	if (document.getElementsByClassName("selectedFile").length == 0)
+	{
+		document.getElementById("executeBtnAreaId").style.visibility = "visible";
+	    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
+	}
+    
 }
 
 function toggle_visibility(showId, hideId)
