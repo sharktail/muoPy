@@ -123,23 +123,6 @@ class FileExecution(BaseHandler):
         self.write(data)
         
     def post(self):
-#         fileName = self.get_argument('fileName')
-#         path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
-#         #f = open(path, 'w')
-#         #f.write(data)
-#         #f.close()
-#         
-#         f = open(path + "resultantFile", 'w')
-#         msg = subprocess.call(["python", path + fileName], stderr=f, stdout=f)
-#         f.close()
-#         if msg == 0:
-#             f = open(path + "resultantFile", 'a')
-#             subprocess.call(["zip", '-r', Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip","install_bcg"], stderr=f, stdout=f)
-#             f.close()
-#         f = open(path + "resultantFile", 'r')
-#         data = f.read()
-#         data = json.dumps(data)
-#        self.write(data)
         self.write("Expecting a get request") 
 
 

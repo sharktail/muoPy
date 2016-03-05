@@ -64,7 +64,7 @@ class FileHandler(object):
         
         return newList
     
-    def findDataFiles(self, prbFileName="", prefix="_bcg"):
+    def findDataFiles(self, prbFileName="", prefix=Settings.muoPrefix):
         if prbFileName=="":
             return 0
         else:

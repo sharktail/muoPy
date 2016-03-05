@@ -134,30 +134,6 @@ $(document).ready(
     					}
 					}
 				);
-				
-//				$("#nextButtonId").click(
-//						function()
-//						{
-//							if(currentFile=="")
-//							    	{
-//							    		alert("Set current file by clicking on the list");
-//							    	}
-//							else
-//							{
-////	    						$.get("/codegen/datagen", { fileName: currentFile, action: "redirect"},
-////	    								function(result)
-////	    								{
-////	    									alert("hello");
-////	    								}, "json");
-//								$form = $('<form></form>');
-//								$form.attr('action', '/codegen/datagen');
-//								$form.attr('method', 'get');
-//								$form.attr('style', 'visibility:hidden');
-//								$form.append('<input name="fileName" value="' + currentFile.split(".")[0] + '">');
-//								$form.appendTo('body').submit();
-//	    					}
-//						}
-//					);
 	   		}
 	   		);
 
@@ -652,7 +628,6 @@ function loadListOfFiles()
 		  	addPrbfileDeleteBtn(names[i], item);
 			item.onclick = prbFileListOnclick;
 			
-			//item.appendChild(document.createTextNode(names[i]));
 			item.appendChild(prbText);
 			prbFileList.appendChild(item);
 	  }
@@ -671,7 +646,6 @@ function setCSS()
 		document.getElementById("executeBtnAreaId").style.visibility = "visible";
 	    document.getElementById("dataBtnAreaId").style.visibility = "hidden";
 	}
-    
 }
 
 function toggle_visibility(showId, hideId)

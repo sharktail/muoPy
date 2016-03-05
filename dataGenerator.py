@@ -94,8 +94,7 @@ class FileExecution(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         fileName = self.get_argument('fileName')
-        action = self.get_argument('action')
-        #destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
+        
         path = Settings.UPLOAD_LOCATION + self.current_user + '/'
         codePath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/' + self.get_prbfilename() + Settings.muoPrefix +  "/"
         dataPath = os.getcwd() + "/" + Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION +\
@@ -103,23 +102,17 @@ class FileExecution(BaseHandler):
 
         f = open(path + "resultantFile", 'w')
         #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
-        if action == "executeForData":
-            msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
-            f.close()
-            if msg == 0:
-                zipPath = codePath + "data" + "/" #fileName.split(".")[0]
-                #zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/" #some problem here
-                f = open(path + "resultantFile", 'a')
-                folderName = fileName.split(".")[0]
-                try:
-                    shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
-                except OSError:
-                    raise OSError  # FIXME: raise your own error
-                f.close()
-
-        elif action == "executeForCode":
-            self.write("wrong instruction received, probably a javascript error !")
+        msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
+        if msg == 0:
+            zipPath = codePath + "data" + "/" #fileName.split(".")[0]
+            #zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/" #some problem here
+            folderName = fileName.split(".")[0]
+            try:
+                shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
+            except OSError:
+                raise OSError  # FIXME: raise your own error
         
+        f.write("End of dat File " + fileName + " Execution")
         f.close()
         f = open(path + "resultantFile", 'r')
         data = f.read()
@@ -144,7 +137,7 @@ class codeGen(BaseHandler):
             data = fileReader.read()
                 
         var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentDatFile": "", "currentFile": self.get_prbfilename()}#, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
+        flist = { "fileNames" : f.listOfFiles, "currentDatFile": "", "currentFile": self.get_prbfilename()}
         var = json.dumps(var)
         flist = json.dumps(flist)
         self.render("dataGen.html", arg = var, arg2 = flist)

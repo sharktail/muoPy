@@ -3,9 +3,10 @@ import sys
 from importlib import import_module
 
 from muaompc import ldt
+import Settings
 
 def mainS():
-    prefix='bcg'
+    prefix = Settings.Prefix
     filePath = sys.argv[1]
     destdir = sys.argv[2]
     sys.path.append(os.path.join(destdir, 'install_'+prefix))
