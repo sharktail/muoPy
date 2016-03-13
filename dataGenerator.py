@@ -8,6 +8,9 @@ import os
 
 import Settings
 import fileHandler
+import loggerHandler
+
+log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -24,17 +27,18 @@ class BaseHandler(tornado.web.RequestHandler):
 class Downloader(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #Sends the download location of data
         fileName = self.get_argument("fileName")
         prbfileName = self.get_argument("PRB")
         fileName = fileName.split(".")[0]
         fH = fileHandler.FileHandler(self.current_user)
-        #path = fH.findDataDownloadLink(fileName = fileName, prbFilename = self.get_prbfilename())
         path = fH.findDataDownloadLink(fileName = fileName, prbFilename = prbfileName)
         self.write(json.dumps(path))
 
 class createOrDeleteFile(BaseHandler):
     @tornado.web.authenticated
     def post(self):
+        #Creates new dat file
         fileName = self.get_argument("fileName") + ".dat"
         currentFileName = self.get_argument("prbFileName")
         prbFileName = currentFileName.split(".")[0]
@@ -46,12 +50,12 @@ class createOrDeleteFile(BaseHandler):
     
     @tornado.web.authenticated
     def get(self):
+        # Removes a dat file
         fileName = self.get_argument("fileName")
         prbFileName = self.get_argument("prbFileName")
         fH = fileHandler.FileHandler(self.current_user)
         path = fH.returnPRBLoc(prbFileName)
         datPath = os.path.join(path, fileName)
-        print datPath
         msg = subprocess.call(["rm", datPath])
         if msg==0:
             self.write("success")
@@ -61,23 +65,22 @@ class createOrDeleteFile(BaseHandler):
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
+        #Reads a dat file and send the content
         prbfileName = self.get_argument("PRB")
         self.set_secure_cookie("prbFileName", prbfileName)
         fileName = self.get_argument('Data')
-        #f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-        #         Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'r')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)
         
     def get(self):
-        self.write("You are not supposed to be here")
-
+        self.redirect("/codegen/")
+        
 class Save(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("You are not supposed to be here")
+        self.redirect("/codegen/")
         
     def post(self):
         #Meant for saving a file from the editor
@@ -88,11 +91,11 @@ class Save(BaseHandler):
         f.write(data)
         f.close()
         self.write(json.dumps("File Saved"))
-        #self.redirect('/upload/?fileName=' + fileName)
 
 class FileExecution(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #Executes the data and generates the zip file
         fileName = self.get_argument('fileName')
         
         path = Settings.UPLOAD_LOCATION + self.current_user + '/'
@@ -101,16 +104,14 @@ class FileExecution(BaseHandler):
                     self.get_prbfilename() + "/" 
 
         f = open(path + "resultantFile", 'w')
-        #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
         if msg == 0:
             zipPath = codePath + "data" + "/" #fileName.split(".")[0]
-            #zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/" #some problem here
             folderName = fileName.split(".")[0]
             try:
                 shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
             except OSError:
-                raise OSError  # FIXME: raise your own error
+                log.writeDebug("Error in zipping file")
         
         f.write("End of dat File " + fileName + " Execution")
         f.close()
@@ -122,6 +123,7 @@ class FileExecution(BaseHandler):
 class codeGen(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #Upon redirection sends the datagen html
         fileName = self.getLasDatFileName()
         self.prbLoc = self.get_prbfilename()
         f = fileHandler.FileHandler(self.current_user)
@@ -150,9 +152,6 @@ class codeGen(BaseHandler):
         fh = open( datPath + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
-        
-        #data = open(datPath + cname, 'r').read()
-        #data = json.dumps(data)
         
         f = fileHandler.FileHandler(self.current_user)
         f.someFiles(["*.dat"], absolutePath=datPath)
