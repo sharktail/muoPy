@@ -65,7 +65,6 @@ class makeUser(BaseHandler):
             self.render("home.html", arg = {"msg":"Username already exists."})
         
         else:
-
             querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
                          values(%s, %s, %s, %s, %s, %s, %s);'
             resp = myDb.run(querry, (self.username, self.password, self.lastname, self.firstname, self.email, "OVGU", "Magdeburg"))
