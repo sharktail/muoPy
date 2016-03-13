@@ -24,14 +24,6 @@ class Downloader(BaseHandler):
         path = fH.findDownloadLink(fileName)
         self.write(json.dumps(path))
 
-class Redirect(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        fileName = self.get_argument("fileName")
-        self.set_secure_cookie("prbFileName", fileName)
-        self.redirect("/datagen")
-        #self.write("success")
-
 class createOrDeleteFile(BaseHandler):
     @tornado.web.authenticated
     def get(self):
@@ -67,7 +59,8 @@ class Load(BaseHandler):
         data = f.read()
         data = json.dumps(data)
         self.write(data)
-        
+    
+    @tornado.web.authenticated    
     def get(self):
         self.redirect("/codegen/")
 
