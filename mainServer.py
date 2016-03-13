@@ -131,17 +131,11 @@ class Upload(BaseHandler):
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         
-        #extn = os.path.splitext(fname)[1]
-        #cname = str("lastfile") + extn
         cname = str(fname)
         fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
         
-        #data= fileinfo['body']
-        #data = data.replace('\n', '&#13;&#10;')
-        #data = data.replace('"', '\u0022')
-        #data = data.replace("'", '\u0027')
         data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'r').read()
         data = json.dumps(data)
         

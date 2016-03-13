@@ -40,40 +40,51 @@ body
 .editor 
 {
 	position: relative;
-	float: right;
-	width: 33em;
-	top: -5em;
+	float: left;
+	left: 7em;
+	width: 55em;
 	padding-right: 2em;
-	width: 75%;
 }
 
 .buttons
 {
 	position: relative;
-	width: 33em;
-	left: -55%;
+	display: inline;
+	top: 0.2em;
 	float: left;
-	width: 100%;
+	width: 60%;
 }
 
 .executeBtnArea
 {
 	position: relative;
+	float: left;
 }
 
+.customBtn
+{
+	display: inline;
+	width: 7em;
+	height: 2.5em;
+}
+.customBtn2
+{
+	display: inline;
+	width: 8em;
+	height: 2.5em;	
+}
 .dataBtnArea
 {
-	display: block;
 	position: relative;
+	float: left;
 }
 
 .textContainer 
 {
 	position: relative;
-	padding-right: 10px;
 	float: left; 
-	top: 3em;
-	height: 50em;
+	top: 1.5em;
+	height: 40em;
 	width: 30em;
 	border-top: none;
 	border-left: none;
@@ -84,10 +95,9 @@ body
 .consoleContainer
 {
 	position: relative;
-	padding-right: 10px;
 	float: left; 
-	top: 3em;
-	height: 50em;
+	top: 1.5em;
+	height: 40em;
 	width: 20em;
 	border-top: none;
 	border-left: none;
