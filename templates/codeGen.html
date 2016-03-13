@@ -18,19 +18,9 @@
 
 <body>
 	
-	 <!-- <div id="currentFileName"/> 
-	 <div id="currentDatFileName"></div> -->
 	 
 	 <span class="infoContainer">
-	     <!-- <div>
-			<form id="fileUploadId" enctype="multipart/form-data" action="/codegen" method="post" onsubmit="return fileValidate()">
-				<span class="btn btn-info active btn-file">
-					<input id="fileInput" type="file" name="filearg"/>
-				</span><br/>
-			</form>
-		</div > -->
 	    <ul class="fileList" id="datFileList"> </ul>
-	    <!-- <hr class="line"/> -->
 	    <div id="newPrbId" class="newPrb" onclick="createNewPrb()">
 	        +create new prb file
 		    <form id="createNewPRBId" class="newPRBForm" action="/createNewPRB" method="post" onsubmit="return createFileFormValidation()">
@@ -38,25 +28,16 @@
 		    </form>
 	    </div>
 	    <dl class="fileList" id="prbFileList"> </dl>
-	    <!-- <button class="commandBtn btn btn-info active" type="button" id="nextButtonId">Next</button> -->
 	 </span>
 	
-	<!--<br/>
-	 <a id="downloadZIPLink"  href="" style="visibility: hidden;"> Download Current Code </a><br>
-	<a id="downloadLink"  href="" style="visibility: hidden;"> Download Current Data </a>
-	 -->
 	 <span class = "editor" id="prbAreaId" >
 	    <div class="buttons">
 		 	<div id="executeBtnAreaId" class="executeBtnArea">
-			 	<!-- <button class="commandBtn btn btn-success" type="button" id="saveButtonId">Save Code</button> -->
-			 	<!-- <button class="commandBtn btn btn-info active" type="button" id="executeButtonId">Execute Code</button> -->
 			 	 <button class="customBtn" type="button" id="saveButtonId">Save Code</button>
 			 	 <button class="customBtn2" type="button" id="executeButtonId">Execute Code</button>
 		 	</div>
 		 	
 		 	<div id="dataBtnAreaId" class="dataBtnArea">
-		 		<!-- <button class="allBtn commandBtn btn btn-success" type="button" id="dataSaveButtonId">Save Data</button>
-		 		<button class="allBtn commandBtn btn btn-info active" type="button" id="dataExecuteButtonId">Generate Data</button> -->
 		 		<button class="customBtn" type="button" id="dataSaveButtonId">Save Data</button>
 		 		<button class="customBtn2" type="button" id="dataExecuteButtonId">Generate Data</button>
 		 	</div>
