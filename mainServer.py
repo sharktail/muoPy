@@ -128,7 +128,6 @@ class Application(tornado.web.Application):
             (r"/codegen/?", mpcGenerator.codeGen),
             (r"/codegen/save/?", mpcGenerator.Save),
             (r"/codegen/load/?", mpcGenerator.Load),
-            #(r"/codegen/datagen/?", mpcGenerator.Redirect),
             (r"/codegen/execute/?", mpcGenerator.FileExecution),
             (r"/codegen/delete/?", mpcGenerator.createOrDeleteFile),
             (r"/codegen/downloadlink/?", mpcGenerator.Downloader),
