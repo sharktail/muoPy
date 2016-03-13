@@ -38,10 +38,6 @@ catch(err)
 $(document).ready(
 		function()
 			{
-			    //var a = document.getElementById("currentFileName");
-                //a.innerHTML = "Current PRB File Set to:" + currentFile;
-                //document.getElementById("downloadLink").href = fnamelist.downloadLink;
-                //document.getElementById("downloadJSONLink").href = ;
 				
                 if(currentFile != "")
                 	{
@@ -57,7 +53,7 @@ $(document).ready(
                 			this.submit();
                 		}
                 		);
-				$("#saveButtonId").click( //saveFile);
+				$("#saveButtonId").click(
 					function()
 						{
 						    if(currentFile!="")
@@ -151,20 +147,6 @@ function createFileFormValidation()
 	}
 }
 
-//function createDatFileFormValidation() 
-//{
-//    var x = document.forms["createNewPRBId"]["fileName"].value;
-//    if (x == null || x == "") 
-//    {
-//        alert("Name must be filled out");
-//        return false;
-//    }
-//    else
-//    {
-//        return true;	
-//    }
-//}
-
 function propagationStopper(event)
 {
 	if (event.stopPropagation) 
@@ -197,24 +179,6 @@ function setFormPrbAndDat(id)
         return true;	
     }
 }
-
-//function setCurrentPrbForForm()
-//{
-//	var createNewPRBId = document.getElementById("createNewPRBId");
-//	var inp1 = document.createElement("input");
-//	inp1.name = "currentFile";
-//	inp1.value = currentFile;
-//	inp1.setAttribute("class", "displayNone");
-//	
-//	var inp2 = document.createElement("input");
-//	inp2.name = "currentDatFile";
-//	inp2.value = currentDatFile;
-//	inp2.setAttribute("class", "displayNone");
-//	
-//	createNewPRBId.appendChild(inp1);
-//	createNewPRBId.appendChild(inp2);
-//	return createFileFormValidation();
-//}
 
 function createNewPrb()
 {
@@ -268,11 +232,9 @@ function newDatFile(event, thisObj, prbFileName)
 		$form.keypress(function (e) {
 			  if (e.which == 13) {
 			    $form.submit();
-			    return false;    //<---- Add this line
+			    return false;
 			  }
 			});
-		//var obj = document.getElementById("newDatFile" + prbFileName + "Id");
-		//obj.appendChild($form);
 		$(thisObj).append($form);
 		$form.animate({ 
 			left: '90px'
@@ -324,14 +286,12 @@ function post(path, params, method) {
 
 function saveFile()
 	{
-		//post("/codegen/save", { Data: document.getElementById("textAreaId").innerHTML, fileName: currentFile})
 		post("/codegen/save", { Data: $("#textAreaId").val(), fileName: currentFile} 
 		);
 	}
 
 function loadTextArea() 
 	{
-	   //document.getElementById("textAreaId").innerHTML = parsedText;
 		$("#textAreaId").html(parsedText);
 	}
 
@@ -351,10 +311,8 @@ function fileValidate()
 
 function datFileListOnclick(event, obj)
 {
-	//var a = document.getElementById("currentDatFileName");
 	currentDatFile = obj.getAttribute('fileName');
 	currentFile = obj.getAttribute('parentFile');
-	//event.stopPropagation();  //stop event propagation for Mozilla or Chrome
 	
 	if (event.stopPropagation) 
 		{
@@ -437,7 +395,6 @@ function addDownloadBtn(obj, link)
 		dwnld.setAttribute("class", "downloadSign");
 	}
 	$(obj).prepend(dwnld);
-	//obj.appendChild(dwnld);
 }
 
 function getDataDownloadLink(currentFile, currentDatFile, obj)
@@ -452,12 +409,10 @@ function prbFileListOnclick()
 {
 	currentFile = this.fileName;
 	var fileTree = fnamelist.fileTree;
-    //var a = document.getElementById("currentFileName");
     //this is to add the sub division of dat files in tree structure
     if(this.showDat == 0)
     	{
 	        var each = document.createElement("div");
-	        //each.setAttribute("style", "position: relative; left:20px;"); 
 	        each.setAttribute("class", "fileTree");
 	        
 	        var newDatFileCreator = document.createElement("div");
@@ -472,10 +427,8 @@ function prbFileListOnclick()
 	        	    var dd = document.createElement("dd");
 	        	    getDataDownloadLink(this.fileName, fileTree[this.fileName][i], dd);
 	        	    addDatfileDeleteBtn(this.fileName, fileTree[this.fileName][i], dd);
-	        	    //Sdd.fileName = fileTree[this.fileName][i];
 	        	    dd.setAttribute("fileName", fileTree[this.fileName][i]);
 	        	    dd.setAttribute("parentFile", this.fileName);
-	        	    //dd.setAttribute("onclick", "redirectToDat()");
 	        	    dd.setAttribute("onclick", "datFileListOnclick(event, this)");
 	        	    dd.setAttribute("class", "datList");
 	        	    dd.appendChild(document.createTextNode(fileTree[this.fileName][i]));
@@ -511,12 +464,10 @@ function prbFileListOnclick()
     	    	}
     	}
     this.setAttribute("class", "selectedFile");
-    //a.innerHTML = "Current File Set to:" + currentFile;
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
 											$("#textAreaId").val(result);
-    										//document.getElementById("textAreaId").innerHTML = result;
 										}, "json");
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
