@@ -138,7 +138,7 @@ function createFileFormValidation()
 	var x = document.forms["createNewPRBId"]["fileName"].value;
 	if (x == null || x == "") 
 	{
-	    alert("Name must be filled out");
+	    alert("Select a file");
 	    return false;
 	}
 	else
