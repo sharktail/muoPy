@@ -35,6 +35,7 @@ class Redirect(BaseHandler):
 class createOrDeleteFile(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #deletes prb file from disc and corresponding directory for dat files
         fileName = self.get_argument("fileName")
         if fileName.split(".").__len__()==1:
             fileName = fileName + ".prb"
@@ -48,9 +49,8 @@ class createOrDeleteFile(BaseHandler):
     
     @tornado.web.authenticated
     def post(self):
+        #creates new prb file
         fileName = self.get_argument("fileName")
-        #currentFile = self.get_argument("currentFile")
-        #currentDatFile = self.get_argument("currentDatFile")
         fileName = fileName + '.prb'
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
                  Settings.PRB_FILE_LOCATION + fileName, 'w')
@@ -60,6 +60,7 @@ class createOrDeleteFile(BaseHandler):
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
+        #reads and sends content of a prb file
         fileName = self.get_argument('Data')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
                  Settings.PRB_FILE_LOCATION + fileName, 'r')
@@ -68,12 +69,12 @@ class Load(BaseHandler):
         self.write(data)
         
     def get(self):
-        self.write("You are not supposed to be here")
+        self.redirect("/codegen/")
 
 class Save(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        self.write("Get Request received instead of Post")
+        self.redirect("/codegen/")
         
     def post(self):
         #Meant for saving a file from the editor
@@ -84,23 +85,22 @@ class Save(BaseHandler):
         f.write(data)
         f.close()
         self.write(json.dumps("File Saved"))
-        #self.redirect('/upload/?fileName=' + fileName)
 
 class FileExecution(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #executes a orb code and generates a zip file from the result
+        #sends the msg of code generation
         fileName = self.get_argument('fileName')
         action = self.get_argument('action')
         destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
         path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
-        #msg = subprocess.call(["python", path + "executeForData.py"], stderr=f, stdout=f)
         if action == "executeForCode":
             f = open(path + "resultantFile", 'w')
             msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
             f.close()
             if msg == 0:
                 zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
-                #f = open(path + "resultantFile", 'a')
                 folderName = fileName.split(".")[0] + Settings.muoPrefix
                 try:
                     zipfile = shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
@@ -109,7 +109,6 @@ class FileExecution(BaseHandler):
             else:
                 log.writeDebug("Prb File exucation caused error in shell")
                 subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
-            #f.close()
 
         elif action == "executeForData":
             self.write("wrong instruction received, probably a javascript error !")
@@ -123,13 +122,14 @@ class FileExecution(BaseHandler):
         self.write(data)
         
     def post(self):
-        self.write("Expecting a get request") 
+        self.redirect("/codegen/")
 
 
 class codeGen(BaseHandler):
     @tornado.web.authenticated
     def get(self):
-        
+        #Upon redirected codegen page it sends the codegen html along 
+        #with the file tree structure for the user
         fileName = self.get_argument("fileName", default=None)
             
         f = fileHandler.FileHandler(self.current_user)
@@ -164,6 +164,7 @@ class codeGen(BaseHandler):
 
     def post(self):
         #Method to handle the request when a file is uploaded
+        #Should be deprecated if not required afterwards
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         
