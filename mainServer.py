@@ -16,102 +16,53 @@ log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
+        #this reads the secured cookie and if username is found
+        # current_user is set which accounts for logged in users
         return self.get_secure_cookie("username")
-
-class Test(BaseHandler):
-    def get(self):
-        arg = self.get_argument("fileOptions")
-        self.render("test.html", arg = arg)
-
-class Upload(BaseHandler):
-    @tornado.web.authenticated
-    def get(self):
-        
-        fileName = self.get_argument("fileName", default=None)
-            
-        f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.dat", "*.prb"])
-        
-#         listOfFiles = []
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
-#         
-        if not fileName:
-            data = 'No files selected.'
-        else:
-            fileReader = open(filePathtoUserDirectory + fileName,"r")
-            data = fileReader.read()
-            
-             
-        var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": "", "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
-        var = json.dumps(var)
-        flist = json.dumps(flist)
-        self.render("upload.html", arg = var, arg2 = flist)
-        
-    def post(self):
-        #Need to put try except for empty filearg
-        fileinfo = self.request.files['filearg'][0]
-        fname = fileinfo['filename']
-        
-        cname = str(fname)
-        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'w')
-        fh.write(fileinfo['body'])
-        fh.close()
-        
-        data = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + cname, 'r').read()
-        data = json.dumps(data)
-        
-        f = fileHandler.FileHandler(self.current_user)
-        f.someFiles(["*.py","*.txt"])  
-                 
-        var = {"data" : data}
-        flist = { "fileNames" : f.listOfFiles, "currentFile": fname, "downloadLink": Settings.DOWNLOAD_LOCATION + self.current_user + "/" + "install_bcg.zip"}
-        var = json.dumps(var)
-        flist = json.dumps(flist)
-        self.render("upload.html", arg = var, arg2 = flist)
 
 class logoutHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
+        #it clears the cookie to log the user out
         self.clear_cookie("username")
-        self.render("home.html")
+        self.render("home.html", arg=None)
 
 class loginHandler(BaseHandler):
-    # Need to define a logout method
     def get(self):
+        #if the user cookie is found then user
+        #is redirected to the codegen page
         if not self.current_user:
             self.redirect('/')
         elif self.current_user:
             self.redirect('/codegen/')
         
     def post(self):
+        #reads username and checks password for authentication
         myDb = dbCon.datacon()
         username = self.get_argument('username')
         password = md5.md5( self.get_argument('password')).digest()
-        #querry = 'Select Password from Users where UserName = %s;'
         querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
         resp = myDb.fetchOne(querry, (username,))
         if not resp:
             self.render("home.html", arg = {"msg":"Username not found. Forgot username? Ask the admin"})
-            #self.write("Username not found. Forgot username? Ask the admin")
         else:
             dBpass = resp[0]
-            #dBPathToDirectory = resp[1]
             if dBpass == password :
                 self.set_secure_cookie("username", username)
                 self.redirect('/codegen/')
-                #self.render("index.html", username = username)
             else:
                 self.render("home.html", arg = {"msg":"Wrong Password"})
 
 class makeUser(BaseHandler):
     def createUser(self):
+        #this method handles user sign ups
+        #it creates a user login for the new users
         myDb = dbCon.datacon()
         querry = 'select Password from Users where UserName = %s;'
         resp = myDb.fetchOne(querry, (self.username,))
         
         if resp != None:
-            self.write("Username already exists.")
+            self.render("home.html", arg = {"msg":"Username already exists."})
             self.finish()
         
         querry = 'Insert into Users(Username, Password, LastName, FirstName, Email, Address, City)\
@@ -144,15 +95,19 @@ class makeUser(BaseHandler):
         self.password = md5.md5(self.get_argument('password')).digest()
         self.lastname = self.get_argument('lastname')
         self.firstname = self.get_argument('firstname')
+        
+        if self.username in [None, ""] or self.get_argument('password') in [None, ""]:
+            self.render("home.html", arg = {"msg":"Username/Password field empty."})
+            self.finish()
+        
         self.createUser()
         
          
 class MainHandler(BaseHandler):
     def get(self):
+        #if previously logged in it directly directs to codegen
+        #or redirects to login page
         if not self.current_user:
-            #var = {"firstname":"Tony", "lastname":"Stark", "path":"test", "filename":"hello.txt" } # example to be removed
-            #v = json.dumps(var)
-            #self.render("home.html", arg=v)
             self.render("home.html", arg=None)
         else:
             self.redirect('/codegen/')
@@ -167,7 +122,6 @@ class Application(tornado.web.Application):
             (r"/logout/?", logoutHandler),
             (r"/signin/?", loginHandler),
             (r"/signup/?", makeUser),
-            (r"/upload/?", Upload),
             (r"/createNewPRB/?", mpcGenerator.createOrDeleteFile),
             (r"/codegen/?", mpcGenerator.codeGen),
             (r"/codegen/save/?", mpcGenerator.Save),
