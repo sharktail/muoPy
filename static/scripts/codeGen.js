@@ -35,6 +35,9 @@ catch(err)
         alert("Current File Error: "+ err.message); 
 }
 
+var syntax = [{"error": "some things"},{"param": "N  1"},{"variables": "hahaha"}];
+var syntaxCaller;
+
 $(document).ready(
 		function()
 			{
@@ -45,6 +48,7 @@ $(document).ready(
 		       	 				function(result)
 		       	 				{
 									$("#textAreaId").val(result);
+								    $("#editableDivId").val(result);
 								}, "json");
                 	}
                 $("#fileUploadId").change(
@@ -132,6 +136,44 @@ $(document).ready(
 				);
 	   		}
 	   		);
+
+function cleanEditor()
+{
+	var container = document.getElementById("editableDivId");
+	while (container.firstChild) 
+	{
+		container.removeChild(myNode.firstChild);
+	}
+}
+
+function colorCodeGenerator(code, text)
+{
+	var sec = document.createElement("span");
+	sec.setAttribute("class", code);
+	sec.innerHTML = text;
+	return sec;
+}
+
+function syntaxPrep()
+{
+	//syntax = callToServer()
+	var container = document.getElementById("editableDivId");
+	for (count in syntax)
+	{
+		var line = syntax[count];
+		for(keys in line)
+		{
+			var sec = colorCodeGenerator(keys, line[keys]);
+			container.appendChild(sec);
+		}
+	}
+}
+
+function syntaxCall()
+{
+	clearTimeout(syntaxCaller);
+	syntaxCaller = setTimeout(syntaxPrep, 3000);
+}
 
 function createFileFormValidation() 
 {
