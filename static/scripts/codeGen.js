@@ -35,7 +35,7 @@ catch(err)
         alert("Current File Error: "+ err.message); 
 }
 
-var syntax = [{"error": "some things"},{"param": "N  1"},{"variables": "hahaha"}];
+var syntax = [{"error": "some things"},{},{"param": "N  1"},{},{"variables": "hahaha"}];
 var syntaxCaller;
 
 $(document).ready(
@@ -142,7 +142,7 @@ function cleanEditor()
 	var container = document.getElementById("editableDivId");
 	while (container.firstChild) 
 	{
-		container.removeChild(myNode.firstChild);
+		container.removeChild(container.firstChild);
 	}
 }
 
@@ -157,15 +157,25 @@ function colorCodeGenerator(code, text)
 function syntaxPrep()
 {
 	//syntax = callToServer()
+	cleanEditor();
 	var container = document.getElementById("editableDivId");
 	for (count in syntax)
 	{
 		var line = syntax[count];
-		for(keys in line)
+		if ($.isEmptyObject(line))
 		{
-			var sec = colorCodeGenerator(keys, line[keys]);
-			container.appendChild(sec);
+			var br = document.createElement("br");
+			container.appendChild(br);
 		}
+		else
+		{
+			for(keys in line)
+			{
+				var sec = colorCodeGenerator(keys, line[keys]);
+				container.appendChild(sec);
+			}
+		}
+		
 	}
 }
 
