@@ -53,7 +53,7 @@ class createOrDeleteFile(BaseHandler):
 class Load(BaseHandler):
     @tornado.web.authenticated
     def post(self):
-        #reads and sends content of a prb file
+        #reads the content of a prb file and sends the syntax of it
         fileName = self.get_argument('Data')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
                  Settings.PRB_FILE_LOCATION + fileName, 'r')
@@ -64,7 +64,11 @@ class Load(BaseHandler):
     
     @tornado.web.authenticated    
     def get(self):
-        self.redirect("/codegen/")
+        #reads the data and provides the syntax information
+        code = self.get_argument('Code')
+        data = prbdsl.get_syntax_highlight(code)
+        data = json.dumps(data)
+        self.write(data)
 
 class Save(BaseHandler):
     @tornado.web.authenticated

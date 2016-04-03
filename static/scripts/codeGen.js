@@ -35,7 +35,7 @@ catch(err)
         alert("Current File Error: "+ err.message); 
 }
 
-var syntax = [{"error": "some things"},{"newline": ""}, {"param": "N  1"},{},{"variables": "hahaha"}];
+//var syntax = [{"error": "some things"},{"newline": ""}, {"param": "N  1"},{},{"variables": "hahaha"}];
 var syntaxCaller;
 
 $(document).ready(
@@ -63,7 +63,8 @@ $(document).ready(
 						    if(currentFile!="")
 						    	{
 						    		$.post("/codegen/save",
-	    				       			{ Data: $("#textAreaId").val(), fileName: currentFile},
+	    				       			//{ Data: $("#textAreaId").val(), fileName: currentFile},codeRegenerator()
+						    			{ Data: codeRegenerator(), fileName: currentFile},
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").val(result);
@@ -185,9 +186,8 @@ function colorCodeGenerator(code, text)
 	return sec;
 }
 
-function syntaxPrep()
+function syntaxPrep(syntax)
 {
-	//syntax = callToServer()
 	cleanEditor();
 	var container = document.getElementById("editableDivId");
 	for (count in syntax)
@@ -202,10 +202,19 @@ function syntaxPrep()
 	}
 }
 
+function syntaxFetch()
+{
+	$.get("/codegen/load", { Code: codeRegenerator()},
+				function(result)
+				{
+					syntaxPrep(result);
+				}, "json");
+}
+
 function syntaxCall()
 {
 	clearTimeout(syntaxCaller);
-	syntaxCaller = setTimeout(syntaxPrep, 3000);
+	syntaxCaller = setTimeout(syntaxFetch, 3000);
 }
 
 function createFileFormValidation() 
@@ -542,9 +551,7 @@ function prbFileListOnclick()
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
-    										syntax = result;
-    										syntaxPrep();
-											//$("#textAreaId").val(result);
+    										syntaxPrep(result);
 										}, "json");
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";
