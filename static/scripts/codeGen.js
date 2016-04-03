@@ -137,6 +137,27 @@ $(document).ready(
 	   		}
 	   		);
 
+function codeRegenerator()
+{
+	var area = document.getElementById("editableDivId");
+	var node;
+	var code = "";
+	for(var i=0; i<area.childElementCount; i++)
+	{
+		node = area.childNodes[i];
+		switch(node.tagName)
+		{
+			case "SPAN":
+				code = code + node.innerHTML;
+				break;
+			case "BR":
+				code = code + "\n";
+				break;
+		}
+	}
+	return code;
+}
+
 function cleanEditor()
 {
 	var container = document.getElementById("editableDivId");
