@@ -198,7 +198,6 @@ function syntaxPrep(syntax)
 			var sec = colorCodeGenerator(keys, line[keys]);
 			container.appendChild(sec);
 		}
-		
 	}
 }
 
