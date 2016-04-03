@@ -35,7 +35,7 @@ catch(err)
         alert("Current File Error: "+ err.message); 
 }
 
-var syntax = [{"error": "some things"},{},{"param": "N  1"},{},{"variables": "hahaha"}];
+var syntax = [{"error": "some things"},{"newline": ""}, {"param": "N  1"},{},{"variables": "hahaha"}];
 var syntaxCaller;
 
 $(document).ready(
@@ -148,9 +148,19 @@ function cleanEditor()
 
 function colorCodeGenerator(code, text)
 {
-	var sec = document.createElement("span");
-	sec.setAttribute("class", code);
-	sec.innerHTML = text;
+	switch(code)
+	{
+		case "endline":
+			var sec = document.createElement("br");
+			break;
+			
+		default:
+			var sec = document.createElement("span");
+			sec.setAttribute("class", code);
+			sec.setAttribute("spellcheck", "false");
+			sec.innerHTML = text;
+			break;
+	}
 	return sec;
 }
 
@@ -162,18 +172,10 @@ function syntaxPrep()
 	for (count in syntax)
 	{
 		var line = syntax[count];
-		if ($.isEmptyObject(line))
+		for(keys in line)
 		{
-			var br = document.createElement("br");
-			container.appendChild(br);
-		}
-		else
-		{
-			for(keys in line)
-			{
-				var sec = colorCodeGenerator(keys, line[keys]);
-				container.appendChild(sec);
-			}
+			var sec = colorCodeGenerator(keys, line[keys]);
+			container.appendChild(sec);
 		}
 		
 	}
@@ -519,7 +521,9 @@ function prbFileListOnclick()
     $.post("/codegen/load", { Data: currentFile},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").val(result);
+    										syntax = result;
+    										syntaxPrep();
+											//$("#textAreaId").val(result);
 										}, "json");
     
     document.getElementById("executeBtnAreaId").style.visibility = "visible";

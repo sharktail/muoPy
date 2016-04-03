@@ -53,6 +53,17 @@ body
 	width: 10em;
 	background-color: white;
 }*/
+
+.normal
+{
+	color: green;
+}
+
+.keyword
+{
+	color: #204a87;
+}
+
 .editableDiv
 {
 	position: relative;

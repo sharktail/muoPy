@@ -5,6 +5,7 @@ import subprocess
 import shutil
 import json
 
+from muaompc._ldt.parse import prbdsl
 import Settings
 import fileHandler
 import loggerHandler
@@ -57,6 +58,7 @@ class Load(BaseHandler):
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
                  Settings.PRB_FILE_LOCATION + fileName, 'r')
         data = f.read()
+        data = prbdsl.get_syntax_highlight(data)
         data = json.dumps(data)
         self.write(data)
     
