@@ -6,6 +6,7 @@ import shutil
 import json
 import os
 
+from muaompc._ldt.parse import prbdsl
 import Settings
 import fileHandler
 import loggerHandler
@@ -71,11 +72,16 @@ class Load(BaseHandler):
         fileName = self.get_argument('Data')
         f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
         data = f.read()
+        data = prbdsl.get_syntax_highlight(data)
         data = json.dumps(data)
         self.write(data)
         
     def get(self):
-        self.redirect("/codegen/")
+        #reads the data and provides the syntax information
+        code = self.get_argument('Code')
+        data = prbdsl.get_syntax_highlight(code)
+        data = json.dumps(data)
+        self.write(data)
         
 class Save(BaseHandler):
     @tornado.web.authenticated

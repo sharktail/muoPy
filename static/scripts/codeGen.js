@@ -103,7 +103,8 @@ $(document).ready(
 						    if(currentDatFile!="")
 						    	{
 						    		$.post("/datagen/save",
-	    				       			{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+	    				       			//{ Data: $("#textAreaId").val(), fileName: currentDatFile},
+						    			{ Data: codeRegenerator(), fileName: currentDatFile},
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").val(result);
@@ -429,7 +430,8 @@ function datFileListOnclick(event, obj)
     $.post("/datagen/load", { Data: currentDatFile, PRB: currentFile.split(".")[0]},
 				       	 				function(result)
 				       	 				{
-											$("#textAreaId").val(result);
+    										syntaxPrep(result);
+											//$("#textAreaId").val(result);
 										}, "json");
 }
 
