@@ -75,7 +75,7 @@ class FileHandler(object):
         path = Settings.UPLOAD_LOCATION + self.username + '/' 
         f = open(path + "resultantFile", 'w')
         try:
-	    msg = shutil.make_archive(destination, 'zip', root_dir=sourceList, base_dir='.')
+            msg = shutil.make_archive(destination, 'zip', root_dir=sourceList, base_dir='.')
         except OSError:
             return -1
         else:
@@ -89,7 +89,6 @@ class FileHandler(object):
 
     def findDataDownloadLink(self, fileName, prbFilename):
         path = self.pathToDownloadDir[1:] + prbFilename + Settings.muoPrefix + "/" + "data" + "/"
-        print path
         if os.path.isdir(path + fileName):
             if os.path.isfile(path + fileName + ".zip"):
                 return "/" + path + fileName + ".zip"
@@ -99,7 +98,6 @@ class FileHandler(object):
                     return None
                 else:
                     return "/" + result
-        print "path not found"
         return None
     
     def deletePrbAndDat(self, prbFileName=None):

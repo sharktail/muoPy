@@ -14,7 +14,11 @@ log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
-        return self.get_secure_cookie("username")
+        #return self.get_secure_cookie("username").decode()
+        username = self.get_secure_cookie("username")
+        if username:
+            username = username.decode()
+        return username
 
 class Downloader(BaseHandler):
     @tornado.web.authenticated

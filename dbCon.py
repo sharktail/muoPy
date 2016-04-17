@@ -1,4 +1,5 @@
-import MySQLdb as sql
+#import MySQLdb as sql
+import mysql.connector as sql
 import Settings
 from loggerHandler import logger
 log = logger()
@@ -42,5 +43,5 @@ class datacon(object):
             self.db.commit()
             return True
         except:
-            print "Fatal Error in Commiting"
+            #print "Fatal Error in Commiting"
             return False
