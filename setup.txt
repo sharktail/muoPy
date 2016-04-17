@@ -13,3 +13,33 @@ to support Pablo's new code with separate generate_code and
 problem file, we need to install python pudb (pip(3) install pudb)
 and also add the muaompc(the one inside muaompc with _init_) python to
 pythonpath
+
+
+Python 2.7 to Python 3.4 changes
+
+Tasks:
+1. MySql Database change:
+   # Login into Mysql DB using the command 
+     >> mysql -uroot -p
+     ( you will find your password in the Settings file by the keywords passwd. I guess that empty for you in which case you just press enter. ) 
+   
+   # >> show databases;
+      ( I believe there would be a database called muoPy; )
+      
+   # >> use muoPy;
+   
+   # >> Alter Table users Modify Password varchar(255);
+
+2. Install mysql connector. Help can be found at http://stackoverflow.com/questions/23376103/python-3-4-0-with-mysql-database/34558741#34558741
+   
+   #Download the package:
+     $ wget "http://cdn.mysql.com/Downloads/Connector-Python/mysql-connector-python-2.0.4.zip#md5=3df394d89300db95163f17c843ef49df"
+     In case you need, the link is "https://pypi.python.org/pypi/mysql-connector-python/2.0.4"
+   
+   # unzip the zip/gz folder you downloaded. In case you used wget, it will be the zip file where u can use:
+     $ unzip /path/to/downloads/folder/mysql-connector-python-VER.zip
+   
+   # Install using python3.4
+     $ cd mysql-connector-python-VER
+     $ python3 setup.py   
+    
