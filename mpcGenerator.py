@@ -4,6 +4,7 @@ import tornado.httpserver
 import subprocess
 import shutil
 import json
+import os
 
 from muaompc._ldt.parse import prbdsl
 import Settings
@@ -49,8 +50,9 @@ class createOrDeleteFile(BaseHandler):
         #creates new prb file
         fileName = self.get_argument("fileName")
         fileName = fileName + '.prb'
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.PRB_FILE_LOCATION + fileName, 'w')
+        filePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user, \
+                                Settings.PRB_FILE_LOCATION, fileName)
+        f = open(filePath, "w")
         f.close()
         self.redirect('/codegen/?currentFile=' + fileName)
 
@@ -59,8 +61,9 @@ class Load(BaseHandler):
     def post(self):
         #reads the content of a prb file and sends the syntax of it
         fileName = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.PRB_FILE_LOCATION + fileName, 'r')
+        filePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user,\
+                 Settings.PRB_FILE_LOCATION, fileName)
+        f = open(filePath, 'r')
         data = f.read()
         data = prbdsl.get_syntax_highlight(data)
         data = json.dumps(data)
@@ -83,8 +86,9 @@ class Save(BaseHandler):
         #Meant for saving a file from the editor
         data = self.get_argument('Data')
         fileName = self.get_argument('fileName')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.PRB_FILE_LOCATION + fileName, 'w')
+        filePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user,\
+                 Settings.PRB_FILE_LOCATION, fileName)
+        f = open(filePath, 'w')
         f.write(data)
         f.close()
         self.write(json.dumps("File Saved"))
@@ -96,30 +100,30 @@ class FileExecution(BaseHandler):
         #sends the msg of code generation
         fileName = self.get_argument('fileName')
         action = self.get_argument('action')
-        destdir = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/'
-        path = Settings.UPLOAD_LOCATION + self.current_user + '/' 
+        destdir = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.current_user)
+        path = os.path.join(Settings.UPLOAD_LOCATION, self.current_user) 
         if action == "executeForCode":
-            f = open(path + "resultantFile", 'w')
-            msg = subprocess.call(["python3", "executeForCode.py", path + Settings.PRB_FILE_LOCATION + fileName , destdir], stderr=f, stdout=f)
+            f = open(os.path.join(path, "resultantFile"), 'w')
+            msg = subprocess.call(["python3", "executeForCode.py", os.path.join(path, Settings.PRB_FILE_LOCATION, fileName) , destdir], stderr=f, stdout=f)
             f.close()
             if msg == 0:
-                zipPath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + "/"
+                zipPath = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.current_user)
                 folderName = fileName.split(".")[0] + Settings.muoPrefix
                 try:
-                    zipfile = shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
+                    zipfile = shutil.make_archive(os.path.join(zipPath, folderName), 'zip', root_dir=zipPath, base_dir=folderName)
                 except OSError:
                     log.writeDebug("Error in zipping file")
             else:
                 log.writeDebug("Prb File exucation caused error in shell")
-                subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + fileName.split(".")[0]])
+                subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.current_user, Settings.DAT_FILE_LOCATION, fileName.split(".")[0])])
 
         elif action == "executeForData":
             self.write("wrong instruction received, probably a javascript error !")
         
-        f = open(path + "resultantFile", 'a')
+        f = open(os.path.join(path, "resultantFile"), 'a')
         f.write("End of Prb File " + fileName + " Execution")
         f.close()
-        f = open(path + "resultantFile", 'r')
+        f = open(os.path.join(path, "resultantFile"), 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)
@@ -139,12 +143,12 @@ class codeGen(BaseHandler):
         f.someFiles(["*.prb"], Settings.PRB_FILE_LOCATION)
         
 #         listOfFiles = []
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        filePathtoUserDirectory = os.path.join(Settings.UPLOAD_LOCATION, self.current_user)
      
         if not fileName:
             data = 'No file selected.'
         else:
-            fileReader = open(filePathtoUserDirectory + fileName,"r")
+            fileReader = open(os.path.join(filePathtoUserDirectory, fileName),"r")
             data = fileReader.read()
             
         fileTree = f.fileTree(["*.prb"], Settings.PRB_FILE_LOCATION, ["*.dat"], Settings.DAT_FILE_LOCATION)
@@ -172,7 +176,8 @@ class codeGen(BaseHandler):
         fname = fileinfo['filename']
         
         cname = str(fname)
-        fh = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.PRB_FILE_LOCATION + cname, 'w')
+        filePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user, Settings.PRB_FILE_LOCATION)
+        fh = open(os.path.join(filePath, cname), 'w')
         fh.write(fileinfo['body'])
         fh.close()
         

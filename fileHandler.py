@@ -8,20 +8,21 @@ class FileHandler(object):
     def __init__(self, username):
         self.username = username;
         self.listOfFiles = []
-        self.pathToDownloadDir = Settings.DOWNLOAD_LOCATION + self.username + "/"
-        self.filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
+        self.pathToDownloadDir = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.username)
+        self.filePathtoUserDirectory = os.path.join(Settings.UPLOAD_LOCATION, self.username)
         
     def createFolder(self):
-        path = Settings.UPLOAD_LOCATION + "/" + self.username
+        path = os.path.join(Settings.UPLOAD_LOCATION, self.username)
         subprocess.call(["mkdir", path])
     
     def fileTree(self, fileTypes, additionalPath="", branchFileTypes=["*"], branchPath = ""):
         self.someFiles(fileTypes, additionalPath)
-        datFileLoc = self.filePathtoUserDirectory + branchPath
+        datFileLoc = os.path.join(self.filePathtoUserDirectory, branchPath)
         res = {}
         for each in self.listOfFiles:
-            if os.path.isdir(datFileLoc + each.split(".")[0]) :
-                d = self.someFiles(branchFileTypes, branchPath + each.split(".")[0] + "/", "", response=True)
+            if os.path.isdir(os.path.join(datFileLoc, each.split(".")[0])) :
+                d = self.someFiles(branchFileTypes, os.path.join(branchPath, each.split(".")[0], ""), \
+                                   "", response=True)
                 res[each] = d
             else:
                 res[each] = []
@@ -32,12 +33,12 @@ class FileHandler(object):
         if absolutePath != "":
             path = absolutePath
         else:
-            path = self.filePathtoUserDirectory + additionalPath
+            path = os.path.join(self.filePathtoUserDirectory, additionalPath)
         
         res = []
         for name in fileTypes:
             #files = glob.glob(path + name)
-            files = sorted(glob.glob(path + name), key=os.path.getmtime, reverse=True)
+            files = sorted(glob.glob(os.path.join(path, name)), key=os.path.getmtime, reverse=True)
 
             for each in files:
                 #self.listOfFiles.append(each.split('/')[-1])
@@ -49,7 +50,7 @@ class FileHandler(object):
     
     def allFileFolders(self):
         #filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.username + '/'
-        files = glob.glob(self.filePathtoUserDirectory + "*")
+        files = glob.glob(os.path.join(self.filePathtoUserDirectory, "*"))
         
         for each in files:
             self.listOfFiles.append(each.split('/')[-1])
@@ -69,11 +70,11 @@ class FileHandler(object):
             return 0
         else:
             fName = prbFileName.split(".")[0] + prefix
-            directory = self.filePathtoUserDirectory + fName + '/'
+            directory = os.path.join(self.filePathtoUserDirectory, fName)
         
     def zipFolder(self, sourceList, destination):
-        path = Settings.UPLOAD_LOCATION + self.username + '/' 
-        f = open(path + "resultantFile", 'w')
+        #path = os.path.join(Settings.UPLOAD_LOCATION, self.username) 
+        #f = open(path + "resultantFile", 'w')
         try:
             msg = shutil.make_archive(destination, 'zip', root_dir=sourceList, base_dir='.')
         except OSError:
@@ -88,7 +89,7 @@ class FileHandler(object):
             return None
 
     def findDataDownloadLink(self, fileName, prbFilename):
-        path = self.pathToDownloadDir[1:] + prbFilename + Settings.muoPrefix + "/" + "data" + "/"
+        path = os.path.join(self.pathToDownloadDir[1:], prbFilename + Settings.muoPrefix, "data")
         if os.path.isdir(path + fileName):
             if os.path.isfile(path + fileName + ".zip"):
                 return "/" + path + fileName + ".zip"

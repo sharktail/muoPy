@@ -15,12 +15,22 @@ log = loggerHandler.logger()
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
-        return self.get_secure_cookie("username")
+        username = self.get_secure_cookie("username")
+        if username:
+            username = username.decode()
+        return username
+    
     def get_prbfilename(self):
-        return self.get_secure_cookie("prbFileName")
+        prbfileName = self.get_secure_cookie("prbFileName")
+        if prbfileName:
+            prbfileName = prbfileName.decode()
+        return prbfileName
+    
     def getLasDatFileName(self):
         try:
             name = self.get_secure_cookie("lastDatFileName")
+            if name:
+                name = name.decode()
             return name
         except:
             return
@@ -43,8 +53,9 @@ class createOrDeleteFile(BaseHandler):
         fileName = self.get_argument("fileName") + ".dat"
         currentFileName = self.get_argument("prbFileName")
         prbFileName = currentFileName.split(".")[0]
-        subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName])
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + prbFileName + "/" + fileName, "w")
+        prbDatLocation = os.path.join(Settings.UPLOAD_LOCATION, self.current_user, Settings.DAT_FILE_LOCATION, prbFileName)
+        subprocess.call(["mkdir", "-p", prbDatLocation])
+        f = open(os.path.join(prbDatLocation, fileName), "w")
         f.close()
         self.redirect("/codegen/?currentFile=" + currentFileName \
                       + "&currentDatFile=" + fileName)
@@ -70,7 +81,8 @@ class Load(BaseHandler):
         prbfileName = self.get_argument("PRB")
         self.set_secure_cookie("prbFileName", prbfileName)
         fileName = self.get_argument('Data')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION + prbfileName + '/' + fileName, 'r')
+        datFilePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user, Settings.DAT_FILE_LOCATION, prbfileName)
+        f = open( os.path.join(datFilePath, fileName), 'r')
         data = f.read()
         data = prbdsl.get_syntax_highlight(data)
         data = json.dumps(data)
@@ -92,8 +104,9 @@ class Save(BaseHandler):
         #Meant for saving a file from the editor
         data = self.get_argument('Data')
         fileName = self.get_argument('fileName')
-        f = open(Settings.UPLOAD_LOCATION + self.current_user + '/' +\
-                 Settings.DAT_FILE_LOCATION + self.get_prbfilename() + '/' + fileName, 'w')
+        datFilePath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user,\
+                                   Settings.DAT_FILE_LOCATION, self.get_prbfilename())
+        f = open(os.path.join(datFilePath, fileName), 'w')
         f.write(data)
         f.close()
         self.write(json.dumps("File Saved"))
@@ -104,24 +117,25 @@ class FileExecution(BaseHandler):
         #Executes the data and generates the zip file
         fileName = self.get_argument('fileName')
         
-        path = Settings.UPLOAD_LOCATION + self.current_user + '/'
-        codePath = "." + Settings.DOWNLOAD_LOCATION + self.current_user + '/' + self.get_prbfilename() + Settings.muoPrefix +  "/"
-        dataPath = os.getcwd() + "/" + Settings.UPLOAD_LOCATION + self.current_user + '/' + Settings.DAT_FILE_LOCATION +\
-                    self.get_prbfilename() + "/" 
+        path = os.path.join(Settings.UPLOAD_LOCATION, self.current_user)
+        codePath = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.current_user, self.get_prbfilename(),\
+                                Settings.muoPrefix)
+        dataPath = os.path.join(os.getcwd(), Settings.UPLOAD_LOCATION, self.current_user,\
+                                 Settings.DAT_FILE_LOCATION, self.get_prbfilename()) 
 
-        f = open(path + "resultantFile", 'w')
-        msg = subprocess.call(["python3", "executeForData.py", codePath, dataPath + fileName], stderr=f, stdout=f)
+        f = open(os.path.join(path, "resultantFile"), 'w')
+        msg = subprocess.call(["python3", "executeForData.py", codePath, os.path.join(dataPath, fileName)], stderr=f, stdout=f)
         if msg == 0:
-            zipPath = codePath + "data" + "/" #fileName.split(".")[0]
+            zipPath = os.path.join(codePath, "data")
             folderName = fileName.split(".")[0]
             try:
-                shutil.make_archive(zipPath+folderName, 'zip', root_dir=zipPath, base_dir=folderName)
+                shutil.make_archive(os.path.join(zipPath, folderName), 'zip', root_dir=zipPath, base_dir=folderName)
             except OSError:
                 log.writeDebug("Error in zipping file")
         
         f.write("End of dat File " + fileName + " Execution")
         f.close()
-        f = open(path + "resultantFile", 'r')
+        f = open(os.path.join(path, "resultantFile"), 'r')
         data = f.read()
         data = json.dumps(data)
         self.write(data)
@@ -136,12 +150,12 @@ class codeGen(BaseHandler):
         f.someFiles(["*.dat"], Settings.DAT_FILE_LOCATION + self.prbLoc + "/")
         
 #         listOfFiles = []
-        filePathtoUserDirectory = Settings.UPLOAD_LOCATION + self.current_user + '/'
+        filePathtoUserDirectory = os.path.join(Settings.UPLOAD_LOCATION, self.current_user)
 #         
         if not fileName:
             data = 'No data file selected.'
         else:
-            fileReader = open(filePathtoUserDirectory + fileName, "r")
+            fileReader = open(os.path.join(filePathtoUserDirectory, fileName), "r")
             data = fileReader.read()
                 
         var = {"data" : data}
@@ -154,7 +168,8 @@ class codeGen(BaseHandler):
         fileinfo = self.request.files['file'][0]
         fname = fileinfo['filename']
         cname = str(fname)
-        datPath = Settings.UPLOAD_LOCATION + self.current_user + "/" + Settings.DAT_FILE_LOCATION + self.get_prbfilename() + "/"
+        datPath = os.path.join(Settings.UPLOAD_LOCATION, self.current_user,\
+                               Settings.DAT_FILE_LOCATION, self.get_prbfilename())
         fh = open( datPath + cname, 'w')
         fh.write(fileinfo['body'])
         fh.close()
