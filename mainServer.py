@@ -1,8 +1,9 @@
 import tornado.web
 import tornado.httpserver
 import subprocess
-import json
-import md5
+import os
+#import md5
+import hashlib
 
 import Settings
 import dbCon
@@ -18,7 +19,10 @@ class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         #this reads the secured cookie and if username is found
         # current_user is set which accounts for logged in users
-        return self.get_secure_cookie("username")
+        username = self.get_secure_cookie("username")
+        if username:
+            username = username.decode()
+        return username
 
 class logoutHandler(BaseHandler):
     @tornado.web.authenticated
@@ -40,7 +44,8 @@ class loginHandler(BaseHandler):
         #reads username and checks password for authentication
         myDb = dbCon.datacon()
         username = self.get_argument('username')
-        password = md5.md5( self.get_argument('password')).digest()
+        password = hashlib.md5( self.get_argument('password').encode()).hexdigest()
+        #password = md5.md5( self.get_argument('password')).digest()
         querry = 'select u.Password, a.Path from Users as u Join AccountInfo as a on u.id=a.User_Id where u.UserName = %s;'
         resp = myDb.fetchOne(querry, (username,))
         if not resp:
@@ -70,9 +75,9 @@ class makeUser(BaseHandler):
             resp = myDb.run(querry, (self.username, self.password, self.lastname, self.firstname, self.email, "OVGU", "Magdeburg"))
             if resp:
                 try:
-                    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.username])
-                    subprocess.call(["mkdir", "-p", Settings.UPLOAD_LOCATION + self.username + "/datFiles"])
-                    subprocess.call(["mkdir", "-p",Settings.UPLOAD_LOCATION + self.username + "/prbFiles"])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username)])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, "datFiles")])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, "prbFiles")])
                     subprocess.call(["mkdir", "-p", "."+Settings.DOWNLOAD_LOCATION + self.username])
                     querry = 'select Id from Users where UserName = %s;'
                     resp = myDb.fetchOne(querry, (self.username,) )
@@ -95,7 +100,8 @@ class makeUser(BaseHandler):
         
         self.email = self.get_argument('email')
         self.username = self.get_argument('username')
-        self.password = md5.md5(self.get_argument('password')).digest()
+        self.password = hashlib.md5( self.get_argument('password').encode()).hexdigest()
+        #self.password = md5.md5(self.get_argument('password')).digest()
         self.lastname = self.get_argument('lastname')
         self.firstname = self.get_argument('firstname')
         
