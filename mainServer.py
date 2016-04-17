@@ -7,7 +7,7 @@ import hashlib
 
 import Settings
 import dbCon
-import fileHandler
+#import fileHandler
 import mpcGenerator
 import dataGenerator
 import loggerHandler
@@ -76,9 +76,9 @@ class makeUser(BaseHandler):
             if resp:
                 try:
                     subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username)])
-                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, "datFiles")])
-                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, "prbFiles")])
-                    subprocess.call(["mkdir", "-p", "."+Settings.DOWNLOAD_LOCATION + self.username])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, Settings.DAT_FILE_LOCATION)])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.UPLOAD_LOCATION, self.username, Settings.PRB_FILE_LOCATION)])
+                    subprocess.call(["mkdir", "-p", os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.username)])
                     querry = 'select Id from Users where UserName = %s;'
                     resp = myDb.fetchOne(querry, (self.username,) )
                     UserId = resp[0]
