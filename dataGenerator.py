@@ -118,10 +118,9 @@ class FileExecution(BaseHandler):
         fileName = self.get_argument('fileName')
         
         path = os.path.join(Settings.UPLOAD_LOCATION, self.current_user)
-        codePath = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.current_user, self.get_prbfilename(),\
-                                Settings.muoPrefix)
+        codePath = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.current_user, self.get_prbfilename()+Settings.muoPrefix)
         dataPath = os.path.join(os.getcwd(), Settings.UPLOAD_LOCATION, self.current_user,\
-                                 Settings.DAT_FILE_LOCATION, self.get_prbfilename()) 
+                                 Settings.DAT_FILE_LOCATION, self.get_prbfilename())
 
         f = open(os.path.join(path, "resultantFile"), 'w')
         msg = subprocess.call(["python3", "executeForData.py", codePath, os.path.join(dataPath, fileName)], stderr=f, stdout=f)
