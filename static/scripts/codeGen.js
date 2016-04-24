@@ -57,6 +57,15 @@ $(document).ready(
                 			this.submit();
                 		}
                 		);
+                $("#editableDivId").keydown(function(e) {
+                    // trap the return key being pressed
+                    if (e.keyCode === 13) {
+                      // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+                      document.execCommand('insertHTML', false, '<br><br>');
+                      // prevent the default behaviour of return key pressed
+                      return false;
+                    }
+                  });
 				$("#saveButtonId").click(
 					function()
 						{
@@ -139,11 +148,102 @@ $(document).ready(
 	   		}
 	   		);
 
+function getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    if (typeof window.getSelection != "undefined") {
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+}
+
+function getCaretPos() {
+    var el = document.getElementById("editableDivId");
+    var pos = getCaretCharacterOffsetWithin(el);
+    console.log( "Caret position: " + pos);
+    return pos;
+}
+
+function overwriteDefault()
+{
+	if (e.keyCode === 13) 
+	{
+	      // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+	      document.execCommand('insertHTML', false, '<br><br>');
+	      // prevent the default behaviour of return key pressed
+	      return false;
+	}
+}
+
+function textNodesUnder(node){
+	  var all = "";
+	  for (node=node.firstChild;node;node=node.nextSibling)
+	  {
+			if (node.nodeType==3) 
+			{
+				var strVal = node.textContent;
+				all = all + strVal;
+//				if(node.parentNode.nodeName == "DIV" && node.parentNode.contentEditable==true )
+//				{
+//					all = all + "\n";
+//				}
+			}
+			else if(node.nodeName == "BR")
+			{
+				all = all + "\n";
+			}
+			else 
+			{
+				all = all.concat(textNodesUnder(node));
+			}
+	  }
+	  return all;
+	}
+
+function childFinder(division)
+{
+	var node;
+	var code = "";
+	for(var i=0; i<division.childElementCount; i++)
+	{
+		node = division.childNodes[i];
+        console.log("this ->" + node.innerHTML);
+		switch(node.tagName)
+		{
+			case "FONT":
+				code = code + node.innerHTML;
+				break;
+			case "SPAN":
+				code = code + node.innerHTML;
+				break;
+			case "BR":
+				code = code + "\n";
+				break;
+			case "DIV":
+				var res = childFinder(node);
+				code = "\n" + code + node.innerHTML;
+				break;
+		}
+	}
+	return code;
+}
+
+var code;
+
 function codeRegenerator()
 {
 	var area = document.getElementById("editableDivId");
 	var node;
-	var code = "";
+	//var code = "";
 	for(var i=0; i<area.childElementCount; i++)
 	{
 		node = area.childNodes[i];
@@ -155,9 +255,58 @@ function codeRegenerator()
 			case "BR":
 				code = code + "\n";
 				break;
+			case "DIV":
+				var res = childFinder(node);
+				code = "\n" + code + node.innerHTML;
+				break;
 		}
 	}
 	return code;
+}
+
+function regen(area)
+{
+	var txt = "";
+	var node;
+	var ls = area.children();
+	for(var i=0; i<ls.length; i++)
+	{
+		node = ls[i];
+		if(node.childElementCount > 0)
+		{
+			var t = regen($(node));
+			txt = txt + "\n" + t;
+		}
+		else
+		{
+			switch(node.tagName)
+			{
+				case "FONT":
+					txt = txt + node.innerHTML;
+					break;
+				case "SPAN":
+					txt = txt + node.innerHTML;
+					break;
+				case "BR":
+					txt = txt + "\n";
+					break;
+				case "FONT":
+					txt = txt + node;
+					break;
+				default:
+					txt = txt + "\n" + node.innerHTML;
+					break;
+			}
+		}
+	}
+	console.log("Text: " + txt);
+	return txt;
+}
+
+function codeRegenTest()
+{
+	var area = document.getElementById("editableDivId");
+	code = regen($(area));
 }
 
 function cleanEditor()
@@ -204,7 +353,13 @@ function syntaxPrep(syntax)
 
 function syntaxFetch()
 {
-	$.get("/codegen/load", { Code: codeRegenerator()},
+//	$.get("/codegen/load", { Code: codeRegenerator()},
+//			function(result)
+//			{
+//				syntaxPrep(result);
+//			}, "json");
+	var container = document.getElementById("editableDivId");
+	$.get("/codegen/load", { Code: textNodesUnder(container)},
 				function(result)
 				{
 					syntaxPrep(result);
