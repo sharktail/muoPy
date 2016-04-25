@@ -83,7 +83,7 @@ class FileHandler(object):
             return destination + ".zip"
 
     def findDownloadLink(self, filename):
-        if os.path.isfile(self.pathToDownloadDir[1:] + filename):
+        if os.path.isfile(os.path.join(self.pathToDownloadDir[1:], filename)):
             return self.pathToDownloadDir + filename
         else:
             return None
