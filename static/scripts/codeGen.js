@@ -73,7 +73,9 @@ $(document).ready(
 						    	{
 						    		$.post("/codegen/save",
 	    				       			//{ Data: $("#textAreaId").val(), fileName: currentFile},codeRegenerator()
-						    			{ Data: codeRegenerator(), fileName: currentFile},
+						    			//{ Data: codeRegenerator(), fileName: currentFile},
+						    			{Data: textNodesUnder(document.getElementById("editableDivId")), 
+							    		fileName: currentFile},
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").val(result);
@@ -113,7 +115,9 @@ $(document).ready(
 						    	{
 						    		$.post("/datagen/save",
 	    				       			//{ Data: $("#textAreaId").val(), fileName: currentDatFile},
-						    			{ Data: codeRegenerator(), fileName: currentDatFile},
+						    			//{ Data: codeRegenerator(), fileName: currentDatFile},
+						    			{Data: textNodesUnder(document.getElementById("editableDivId")), 
+						    			fileName: currentDatFile},
 	    				       			function(result)
 		    				       			{
 		    				       				$("#consoleAreaId").val(result);
@@ -262,51 +266,6 @@ function codeRegenerator()
 		}
 	}
 	return code;
-}
-
-function regen(area)
-{
-	var txt = "";
-	var node;
-	var ls = area.children();
-	for(var i=0; i<ls.length; i++)
-	{
-		node = ls[i];
-		if(node.childElementCount > 0)
-		{
-			var t = regen($(node));
-			txt = txt + "\n" + t;
-		}
-		else
-		{
-			switch(node.tagName)
-			{
-				case "FONT":
-					txt = txt + node.innerHTML;
-					break;
-				case "SPAN":
-					txt = txt + node.innerHTML;
-					break;
-				case "BR":
-					txt = txt + "\n";
-					break;
-				case "FONT":
-					txt = txt + node;
-					break;
-				default:
-					txt = txt + "\n" + node.innerHTML;
-					break;
-			}
-		}
-	}
-	console.log("Text: " + txt);
-	return txt;
-}
-
-function codeRegenTest()
-{
-	var area = document.getElementById("editableDivId");
-	code = regen($(area));
 }
 
 function cleanEditor()
