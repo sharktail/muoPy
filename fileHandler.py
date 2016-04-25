@@ -9,6 +9,7 @@ class FileHandler(object):
         self.username = username;
         self.listOfFiles = []
         self.pathToDownloadDir = os.path.join(Settings.DOWNLOAD_LOCATION[1:], self.username)
+        self.browserPathToDownloadDir = os.path.join(Settings.DOWNLOAD_LOCATION, self.username)
         self.filePathtoUserDirectory = os.path.join(Settings.UPLOAD_LOCATION, self.username)
         
     def createFolder(self):
@@ -83,18 +84,18 @@ class FileHandler(object):
             return destination + ".zip"
 
     def findDownloadLink(self, filename):
-        if os.path.isfile(os.path.join(self.pathToDownloadDir[1:], filename)):
-            return self.pathToDownloadDir + filename
+        if os.path.isfile(os.path.join(self.pathToDownloadDir, filename)):
+            return os.path.join(self.browserPathToDownloadDir, filename)
         else:
             return None
 
     def findDataDownloadLink(self, fileName, prbFilename):
-        path = os.path.join(self.pathToDownloadDir[1:], prbFilename + Settings.muoPrefix, "data")
-        if os.path.isdir(path + fileName):
-            if os.path.isfile(path + fileName + ".zip"):
-                return "/" + path + fileName + ".zip"
+        path = os.path.join(self.pathToDownloadDir, prbFilename + Settings.muoPrefix, "data")
+        if os.path.isdir(os.path.join(path, fileName)):
+            if os.path.isfile(os.path.join(path, fileName) + ".zip"):
+                return "/" + os.path.join(path, fileName) + ".zip"
             else:
-                result = self.zipFolder(path + fileName, path + fileName)
+                result = self.zipFolder(os.path.join(path, fileName), os.path.join(path, fileName))
                 if result == -1:
                     return None
                 else:
