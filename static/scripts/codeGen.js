@@ -35,8 +35,8 @@ catch(err)
         alert("Current File Error: "+ err.message); 
 }
 
-//var syntax = [{"error": "some things"},{"newline": ""}, {"param": "N  1"},{},{"variables": "hahaha"}];
 var syntaxCaller;
+var syntaxCaretPosition=0;
 
 $(document).ready(
 		function()
@@ -318,10 +318,12 @@ function syntaxFetch()
 //				syntaxPrep(result);
 //			}, "json");
 	var container = document.getElementById("editableDivId");
+	syntaxCaretPosition = $('#editableDivId').caret('pos');
 	$.get("/codegen/load", { Code: textNodesUnder(container)},
 				function(result)
 				{
 					syntaxPrep(result);
+					$('#editableDivId').caret('pos', syntaxCaretPosition);
 				}, "json");
 }
 
