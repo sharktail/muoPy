@@ -57,11 +57,33 @@ $(document).ready(
                 			this.submit();
                 		}
                 		);
+                $("#editableDivId").on("paste", 
+                		function(e)
+                		{
+                	        e.preventDefault();
+                			var data = e.originalEvent.clipboardData.getData('Text');
+                			data = data.split("\n");
+    						var container = document.getElementById("editableDivId");
+                			for(var i=0; i<data.length; i++)
+                			{
+                				var text = data[i]; 
+        						var sec = document.createElement("span");
+        						var br = document.createElement("br");
+        						sec.setAttribute("spellcheck", "false");
+        						sec.innerHTML = text;
+        						
+        						container.appendChild(sec);
+        						container.appendChild(br);
+                				
+                			}
+                			
+                		}
+                );
                 $("#editableDivId").keydown(function(e) {
                     // trap the return key being pressed
                     if (e.keyCode === 13) {
                       // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
-                      document.execCommand('insertHTML', false, '<br><br>');
+                      document.execCommand('insertHTML', false, '<br>');
                       // prevent the default behaviour of return key pressed
                       return false;
                     }
@@ -177,16 +199,16 @@ function getCaretPos() {
     return pos;
 }
 
-function overwriteDefault()
-{
-	if (e.keyCode === 13) 
-	{
-	      // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
-	      document.execCommand('insertHTML', false, '<br><br>');
-	      // prevent the default behaviour of return key pressed
-	      return false;
-	}
-}
+//function overwriteDefault()
+//{
+//	if (e.keyCode === 13) 
+//	{
+//	      // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+//	      document.execCommand('insertHTML', false, '<br><br>');
+//	      // prevent the default behaviour of return key pressed
+//	      return false;
+//	}
+//}
 
 function textNodesUnder(node){
 	  var all = "";
