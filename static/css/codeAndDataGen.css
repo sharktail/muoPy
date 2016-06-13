@@ -67,6 +67,7 @@ body
 .editableDiv
 {
 	position: relative;
+	display:inline-block;
 	float: left; 
 	top: 1.5em;
 	height: 40em;

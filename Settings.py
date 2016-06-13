@@ -21,4 +21,4 @@ muoPrefix = "_" + Prefix
 loggerPath = "loggers/"
 mainLogger = "mainLogger.log"
 
-portNumber = 8888
+portNumber = 8001

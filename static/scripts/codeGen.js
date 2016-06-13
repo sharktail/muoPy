@@ -83,6 +83,7 @@ $(document).ready(
                     // trap the return key being pressed
                     if (e.keyCode === 13) {
                       // insert 2 br tags (if only one br tag is inserted the cursor won't go to the next line)
+                      $("#editableDivId").caret($("pos","#editableDivId").caret("post") + 1);
                       document.execCommand('insertHTML', false, '<br>');
                       // prevent the default behaviour of return key pressed
                       return false;
@@ -227,6 +228,11 @@ function textNodesUnder(node){
 			{
 				all = all + "\n";
 			}
+			else if(node.nodeType==1 & node.nodeName=="DIV")
+			{
+				all = all + "\n";
+				all = all.concat(textNodesUnder(node));
+			}
 			else 
 			{
 				all = all.concat(textNodesUnder(node));
@@ -339,20 +345,24 @@ function syntaxFetch()
 //			{
 //				syntaxPrep(result);
 //			}, "json");
-	var container = document.getElementById("editableDivId");
-	syntaxCaretPosition = $('#editableDivId').caret('pos');
-	$.get("/codegen/load", { Code: textNodesUnder(container)},
-				function(result)
-				{
-					syntaxPrep(result);
-					$('#editableDivId').caret('pos', syntaxCaretPosition);
-				}, "json");
+	if(document.activeElement.id == "editableDivId")
+	{
+		var container = document.getElementById("editableDivId");
+		syntaxCaretPosition = $('#editableDivId').caret('pos');
+		$.get("/codegen/load", { Code: textNodesUnder(container)},
+					function(result)
+					{
+						syntaxPrep(result);
+						$('#editableDivId').caret('pos', syntaxCaretPosition);
+					}, "json");
+	}
+	
 }
 
 function syntaxCall()
 {
 	clearTimeout(syntaxCaller);
-	syntaxCaller = setTimeout(syntaxFetch, 3000);
+	syntaxCaller = setTimeout(syntaxFetch, 5000);
 }
 
 function createFileFormValidation() 
